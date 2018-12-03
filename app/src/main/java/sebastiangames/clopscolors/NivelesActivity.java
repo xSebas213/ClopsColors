@@ -51,7 +51,7 @@ public class NivelesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_niveles);
 
         adView = findViewById(R.id.adViewNiveles);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build();
         adView.loadAd(adRequest);
 
         datos = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);

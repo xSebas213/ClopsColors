@@ -76,7 +76,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         setContentView(R.layout.activity_final);
 
         adView = findViewById(R.id.adViewFinal);
-        AdRequest adRequest;adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest;adRequest = new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build();
         adView.loadAd(adRequest);
 
         Bundle extras = getIntent().getExtras();
@@ -285,7 +285,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     }
 
     public void cargarVideo(){
-        rewardedVideoAd.loadAd("ca-app-pub-5684983410597851/2127205474", new AdRequest.Builder().build());
+        rewardedVideoAd.loadAd("ca-app-pub-5684983410597851/2127205474", new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build());
     }
     public void multiplicaPuntos(View view){
         if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
@@ -422,6 +422,27 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     }
     @Override
     public void onRewardedVideoAdClosed() {
+        if (!visto) {
+            textoToast.setText(getString(R.string.sinVideo));
+            cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+            toast.show();
+            cargarVideo();
+        }
+    }
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+    }
+    @Override
+    public void onRewardedVideoCompleted() {
         datos.edit().putBoolean("PARTIDAPERDIDA", false).apply();
         puntuacion = (int) (puntuacion * (1.5));
         punticosOp.setText(getString(R.string.nuevosPuntos));
@@ -438,19 +459,5 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
             usuarios.document(id).update("puntos", Integer.toString(puntosTo));
             subirPuntos(puntosTo);
         }
-    }
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-
-    }
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-    }
-    @Override
-    public void onRewardedVideoCompleted() {
     }
 }

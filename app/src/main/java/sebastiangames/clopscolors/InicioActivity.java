@@ -71,7 +71,7 @@ public class InicioActivity extends AppCompatActivity {
         MobileAds.initialize(this, getString(R.string.mods_id));
 
         adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build();
         adView.loadAd(adRequest);
 
         soundPool = new SoundPool.Builder().setMaxStreams(10)

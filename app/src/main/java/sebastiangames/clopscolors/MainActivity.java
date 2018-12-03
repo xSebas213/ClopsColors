@@ -414,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
 
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getString(R.string.screen_main));
-        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.loadAd(new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build());
 
 
         botonAlertaNo.setOnClickListener(new View.OnClickListener() {

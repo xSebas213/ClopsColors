@@ -17,6 +17,8 @@
 
     <string name="sinFace">La aplicación no está instalada</string>
 
+    <string name="sinVideo">Debes terminar el vídeo para multiplicar tus puntos.</string>
+
     <string name="puntos">Clops</string>
     <string name="premios">Premios</string>
     <string name="nuevosPuntos">Nuevos clops</string>

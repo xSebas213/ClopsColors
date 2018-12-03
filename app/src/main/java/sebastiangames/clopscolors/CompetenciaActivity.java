@@ -98,7 +98,7 @@ public class CompetenciaActivity extends AppCompatActivity {
         datos.edit().putBoolean("PARTIDAPERDIDA", false).apply();
 
         adView = findViewById(R.id.adViewCompetir);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build();
         adView.loadAd(adRequest);
 
         random = new Random(System.currentTimeMillis());
