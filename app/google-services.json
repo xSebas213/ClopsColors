@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "698762017931",
+    "firebase_url": "https://clops-colors.firebaseio.com",
+    "project_id": "clops-colors",
+    "storage_bucket": "clops-colors.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698762017931:android:95281ce38c1b599d",
+        "android_client_info": {
+          "package_name": "sebastiangames.clopscolors"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698762017931-422jsqq3ba195037q0n1f6cj39bnjr0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sebastiangames.clopscolors",
+            "certificate_hash": "154eeb92dc95a43ebb8a94a1da7724b498ce273f"
+          }
+        },
+        {
+          "client_id": "698762017931-j4e3r730cjvcqqh1f5f7fmgaqqkb1k9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgJdjQ4Hl2nBfD-m_TCo_xPbviDDeD1mQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698762017931-j4e3r730cjvcqqh1f5f7fmgaqqkb1k9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

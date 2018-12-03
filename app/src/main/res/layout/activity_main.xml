@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/land"
+    tools:context=".MainActivity" >
+
+
+    <TextView
+        android:textSize="200sp"
+        android:elevation="28dp"
+        android:textColor="@color/blanco"
+        android:id="@+id/regresiva"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:elevation="9dp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_marginEnd="@dimen/margenMejorasMain"
+            android:id="@+id/mejora1"
+            android:elevation="9dp"
+            android:padding="@dimen/paddingMejora"
+            android:layout_width="@dimen/tamañoMejorasMain"
+            android:layout_height="@dimen/tamañoMejorasMain" />
+        <ImageView
+            android:layout_marginEnd="@dimen/margenMejorasMain"
+            android:elevation="9dp"
+            android:id="@+id/mejora2"
+            android:padding="@dimen/paddingMejora"
+            android:layout_width="@dimen/tamañoMejorasMain"
+            android:layout_height="@dimen/tamañoMejorasMain" />
+        <ImageView
+            android:layout_marginEnd="@dimen/margenMejorasMain"
+            android:elevation="9dp"
+            android:id="@+id/mejora3"
+            android:padding="@dimen/paddingMejora"
+            android:layout_width="@dimen/tamañoMejorasMain"
+            android:layout_height="@dimen/tamañoMejorasMain" />
+        <ImageView
+            android:id="@+id/mejora4"
+            android:elevation="9dp"
+            android:padding="@dimen/paddingMejora"
+            android:layout_width="@dimen/tamañoMejorasMain"
+            android:layout_height="@dimen/tamañoMejorasMain" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margenLineaPlay"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_marginEnd="@dimen/margenSiguiente"
+            android:layout_marginTop="@dimen/margenSiguiente"
+            android:foreground="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/siguiente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="4dp">
+        </FrameLayout>
+        <FrameLayout
+            android:layout_margin="@dimen/margenPlay"
+            android:onClick="play"
+            android:id="@+id/play"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/rosado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="16dp"
+            android:foreground="?selectableItemBackground">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/marginPlay"
+                android:layout_width="@dimen/tamañoPlay"
+                android:layout_height="@dimen/tamañoPlay"
+                android:src="@drawable/play"/>
+        </FrameLayout>
+        <FrameLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?selectableItemBackground"
+            android:onClick="menu"
+            android:layout_marginStart="@dimen/margenHome"
+            android:id="@+id/homeMain"
+            android:background="@drawable/rosado"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:padding="@dimen/paddingImagenHome"
+                android:layout_margin="1dp"
+                android:layout_width="@dimen/tamañoHome"
+                android:layout_height="@dimen/tamañoHome"
+                android:src="@drawable/home"/>
+        </FrameLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/margenLineaVidas"
+        android:layout_marginEnd="@dimen/margenLineaVidas"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <FrameLayout
+            android:id="@+id/lasVidas"
+            android:layout_marginEnd="@dimen/margenVidas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:elevation="4dp"
+            android:foreground="?selectableItemBackground"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center" >
+
+                <ImageView
+                    android:layout_marginStart="10dp"
+                    android:layout_width="@dimen/tamañoVidas"
+                    android:layout_height="@dimen/tamañoVidas"
+                    android:src="@drawable/corazon"/>
+
+                <TextView
+                    android:text="10"
+                    android:id="@+id/vidas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blanco"
+                    android:textSize="@dimen/tamañoNumeroVidas"/>
+
+            </LinearLayout>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:elevation="4dp"
+            android:foreground="?selectableItemBackground"
+            android:focusable="true">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageView
+                    android:src="@drawable/puntosazul"
+                    android:id="@+id/puntosIcono"
+                    android:layout_width="@dimen/tamañoVidas"
+                    android:layout_height="@dimen/tamañoVidas" />
+
+                <TextView
+                    android:layout_marginEnd="5dp"
+                    android:id="@+id/puntaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blanco"
+                    android:textSize="@dimen/tamañoNumeroVidas"
+                    android:text="255"/>
+
+            </LinearLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:id="@+id/cronometro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15"
+        android:textColor="@color/blanco"
+        android:textSize="@dimen/textoCronometro" />
+
+    <LinearLayout
+        android:id="@+id/elLayout"
+        android:visibility="visible"
+        android:elevation="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/marginMainTOP"
+        android:layout_marginBottom="@dimen/marginMainBOT"
+        android:layout_marginRight="@dimen/marginMainLados"
+        android:layout_marginLeft="@dimen/marginMainLados">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:clickable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"
+                android:focusable="true" />
+            <FrameLayout
+                android:clickable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"
+                android:focusable="true" />
+            <FrameLayout
+                android:clickable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"
+                android:focusable="true" />
+            <FrameLayout
+                android:clickable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"
+                android:focusable="true" />
+            <FrameLayout
+                android:clickable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"
+                android:focusable="true" />
+            <FrameLayout
+                android:clickable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"
+                android:focusable="true" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="16dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton11"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton12"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton13"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton14"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton15"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton16"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton17"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+            <FrameLayout
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="sumarPuntuacion"
+                android:id="@+id/boton18"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/botonesMain"
+                android:background="@drawable/defecto"
+                android:elevation="4dp"
+                android:foreground="?selectableItemBackground"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

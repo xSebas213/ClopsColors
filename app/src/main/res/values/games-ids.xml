@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app_id -->
+    <string name="app_id" translatable="false">698762017931</string>
+    <!-- leaderboard Ranking -->
+    <string name="leaderboard_ranking" translatable="false">CgkIi_nYi6sUEAIQAQ</string>
+
+    <!-- publicidad -->
+    <string name="mods_id" translatable="false">ca-app-pub-5684983410597851~2777942164</string>
+    <!-- Banners -->
+    <string name="banner_inicio" translatable="false">ca-app-pub-5684983410597851/6152428008</string>
+    <string name="banner_competencia" translatable="false">ca-app-pub-5684983410597851/1795214745</string>
+    <string name="banner_final" translatable="false">ca-app-pub-5684983410597851/1758172839</string>
+    <string name="banner_niveles" translatable="false">ca-app-pub-5684983410597851/5776065629</string>
+    <!-- FullScreen -->
+    <string name="screen_main" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <!-- videos -->
+    <string name="video_inicio" translatable="false">123</string>
+    <string name="video_niveles" translatable="false">123</string>
+    <string name="video_competencia" translatable="false">123</string>
+    <string name="video_final" translatable="false">123</string>
+    <string name="video_puntos" translatable="false">ca-app-pub-5684983410597851/2127205474</string>
+
+
+    <string name="page_face" translatable="false">fb://page/1149160871917154</string>
+    <string name="web_face" translatable="false">http://www.facebook.com/ClopsColors</string>
+</resources>

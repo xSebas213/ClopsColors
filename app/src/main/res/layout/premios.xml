@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="20dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp">
+
+    <ImageView
+        android:id="@+id/fondoPremio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/cerrar"
+        android:layout_margin="@dimen/margenBotonCerrarPremios"
+        android:layout_gravity="end"
+        android:layout_width="@dimen/tamañoCerrar"
+        android:layout_height="@dimen/tamañoCerrar"
+        android:src="@drawable/cerrar"
+        android:background="@drawable/blanco"/>
+
+    <FrameLayout
+        android:id="@+id/enterate"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:elevation="2dp"
+        android:background="@drawable/blanco"
+        android:layout_width="@dimen/botonPremioEnterateAncho"
+        android:layout_height="@dimen/botonPremioEnterateLargo"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="@dimen/margenBotonPremios">
+
+        <TextView
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
+            android:paddingBottom="3dp"
+            app:autoSizeTextType="uniform"
+            android:id="@+id/textoBotonPremios"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/leyendaPremios"
+            android:gravity="center" />
+    </FrameLayout>
+
+</android.support.v7.widget.CardView>

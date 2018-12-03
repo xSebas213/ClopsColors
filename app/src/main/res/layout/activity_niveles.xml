@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NivelesActivity"
+    android:background="@drawable/port">
+
+    <FrameLayout
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margenBotonesInterfaz"
+        android:layout_marginStart="@dimen/margenBotonesInterfaz"
+        android:id="@+id/homiNiveles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rosado"
+        android:focusable="true">
+
+        <ImageView
+            android:padding="@dimen/paddingImagenHome"
+            android:layout_margin="@dimen/marginBotonesInterfaz"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/tamañoBotonsInterfaz"
+            android:layout_height="@dimen/tamañoBotonsInterfaz"
+            android:src="@drawable/home"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:layout_marginTop="@dimen/margenBotonesInterfaz"
+        android:layout_marginEnd="@dimen/margenBotonesInterfaz"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:id="@+id/infoNiveles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true">
+
+        <ImageView
+            android:padding="@dimen/paddingImagenInfo"
+            android:layout_margin="@dimen/marginBotonesInterfaz"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/tamañoBotonsInterfaz"
+            android:layout_height="@dimen/tamañoBotonsInterfaz"
+            android:src="@drawable/info"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/nivelesLados">
+
+        <FrameLayout
+            android:layout_marginStart="@dimen/margenIconoNivelesLados"
+            android:layout_marginEnd="@dimen/margenIconoNivelesLados"
+            android:foreground="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="5dp"
+            android:layout_marginTop="@dimen/margenIconoNivelesTOPBOT"
+            android:id="@+id/iconoNiveles"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/icono"/>
+
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.5"
+            android:layout_marginBottom="@dimen/marginFrameNiveles"
+            android:layout_marginLeft="@dimen/marginFrameNiveles"
+            android:layout_marginRight="@dimen/marginFrameNiveles">
+
+            <FrameLayout
+                android:layout_gravity="center"
+                android:id="@+id/nivel1"
+                android:onClick="tutorial"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:background="@drawable/rosado"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/nivelesTOP"
+                android:layout_marginEnd="@dimen/nivelesLados"
+                android:layout_marginStart="@dimen/nivelesLados"
+                android:layout_marginBottom="@dimen/nivelesBot">
+
+                <TextView
+                    android:paddingBottom="@dimen/paddingTextoNiveles"
+                    app:autoSizeTextType="uniform"
+                    android:id="@+id/textoFacil"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/textoTuto"
+                    android:gravity="center" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_gravity="center"
+                android:id="@+id/nivel2"
+                android:onClick="goMain"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:background="@drawable/verde"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/nivelesLados"
+                android:layout_marginBottom="@dimen/nivelesBot"
+                android:layout_marginStart="@dimen/nivelesLados"
+                android:layout_marginTop="@dimen/nivelesTOP">
+
+                <TextView
+                    android:paddingBottom="@dimen/paddingTextoNiveles"
+                    app:autoSizeTextType="uniform"
+                    android:id="@+id/textoNormal"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/textoFacil"
+                    android:gravity="center" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_gravity="center"
+                android:id="@+id/nivel3"
+                android:onClick="goMain"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:background="@drawable/cyan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/nivelesLados"
+                android:layout_marginBottom="@dimen/nivelesBot"
+                android:layout_marginStart="@dimen/nivelesLados"
+                android:layout_marginTop="@dimen/nivelesTOP">
+
+                <TextView
+                    android:paddingBottom="@dimen/paddingTextoNiveles"
+                    app:autoSizeTextType="uniform"
+                    android:id="@+id/textoDificil"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/textoNormal"
+                    android:gravity="center" />
+            </FrameLayout>
+            <FrameLayout
+
+                android:layout_gravity="center"
+                android:id="@+id/nivel4"
+                android:onClick="goMain"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?selectableItemBackground"
+                android:background="@drawable/morado"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/nivelesLados"
+                android:layout_marginBottom="@dimen/nivelesBot"
+                android:layout_marginStart="@dimen/nivelesLados"
+                android:layout_marginTop="@dimen/nivelesTOP">
+
+                <TextView
+                    android:paddingBottom="@dimen/paddingTextoNiveles"
+                    android:id="@+id/textoExperto"
+                    app:autoSizeTextType="uniform"
+                    android:text="@string/textoDificil"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/informacionNiveles"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark" >
+
+        <FrameLayout
+            android:foreground="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/atrasInfoNiveles"
+            android:layout_marginStart="@dimen/margenAtrasInfo"
+            android:layout_marginTop="@dimen/margenAtrasInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:layout_width="@dimen/tamañoAtrasInfo"
+                android:layout_height="@dimen/tamañoAtrasInfo"
+                android:src="@drawable/atrasinfo"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textoNivelesInfo"
+                android:layout_marginTop="@dimen/margenTituloInfoMejora"
+                android:textSize="@dimen/tamañotituloInfoMejora"
+                android:textColor="@color/blanco"
+                android:text="@string/infoNiveles1"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margenLineaMejorasInfoTop"
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/margenLineaMejorasInfoLados"
+                android:layout_marginEnd="@dimen/margenLineaMejorasInfoLados" >
+
+                <FrameLayout
+                    android:layout_marginStart="@dimen/margenMejoraInfoSTAREND"
+                    android:layout_marginEnd="@dimen/margenMejorasInfo"
+                    android:layout_weight="1"
+                    android:id="@+id/explo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blanco"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="@dimen/tamañoMejorasInfo"
+                        android:layout_height="@dimen/tamañoMejorasInfo"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/marginMejorasInfo"
+                        android:padding="@dimen/paddingMejorasInfo"
+                        android:src="@drawable/explo" />
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_marginEnd="@dimen/margenMejorasInfo"
+                    android:layout_weight="1"
+                    android:id="@+id/mitad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blanco"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="@dimen/tamañoMejorasInfo"
+                        android:layout_height="@dimen/tamañoMejorasInfo"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/marginMejorasInfo"
+                        android:padding="@dimen/paddingMejorasInfo"
+                        android:src="@drawable/mitad" />
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_marginEnd="@dimen/margenMejorasInfo"
+                    android:layout_weight="1"
+                    android:id="@+id/vidas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blanco"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="@dimen/tamañoMejorasInfo"
+                        android:layout_height="@dimen/tamañoMejorasInfo"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/marginMejorasInfo"
+                        android:padding="@dimen/paddingMejorasInfo"
+                        android:src="@drawable/vidas" />
+                </FrameLayout>
+                <FrameLayout
+                    android:layout_marginEnd="@dimen/margenMejoraInfoSTAREND"
+                    android:layout_weight="1"
+                    android:id="@+id/tiempo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blanco"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="@dimen/tamañoMejorasInfo"
+                        android:layout_height="@dimen/tamañoMejorasInfo"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/marginMejorasInfo"
+                        android:padding="@dimen/paddingMejorasInfo"
+                        android:src="@drawable/tiempo" />
+                </FrameLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="@dimen/margenFrameMejorasInfoBOT"
+                android:layout_marginStart="@dimen/margenFrameMejorasInfo"
+                android:layout_marginEnd="@dimen/margenFrameMejorasInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:id="@+id/tituloExpli"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center" >
+
+                    <VideoView
+                        android:layout_gravity="center"
+                        android:id="@+id/explicacionVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_weight="1.2"
+                    android:id="@+id/explicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:autoSizeTextType="uniform"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/adViewNiveles"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_niveles" />
+
+</RelativeLayout>

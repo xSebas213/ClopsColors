@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/incioActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/port"
+    tools:context=".InicioActivity" >
+
+    <ProgressBar
+        android:id="@+id/progressInicio"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margenBotonesInterfaz"
+        android:layout_marginTop="@dimen/margenBotonesInterfaz"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/musicInicio"
+        android:foreground="?selectableItemBackground">
+
+        <ImageView
+            android:padding="@dimen/paddingImagenMusica"
+            android:layout_width="@dimen/tamañoBotonsInterfaz"
+            android:layout_height="@dimen/tamañoBotonsInterfaz"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/marginBotonesInterfaz"
+            android:src="@drawable/music" />
+    </FrameLayout>
+
+    <ImageView
+        android:foreground="?selectableItemBackground"
+        android:layout_marginTop="@dimen/margenEstrellaInicio"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/compite"
+        android:layout_width="@dimen/tamañoEstrella"
+        android:layout_height="@dimen/tamañoEstrella"
+        android:src="@drawable/estrella" />
+
+    <TextView
+        android:id="@+id/tituloCompetencia"
+        android:layout_marginTop="@dimen/margenTextoCompetirInicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/compite"
+        android:layout_centerHorizontal="true"
+        android:text="@string/textoCompetencia"
+        android:textColor="@color/blanco"
+        android:textSize="@dimen/tamañoTextoCompetirInicio" />
+
+    <FrameLayout
+        android:id="@+id/inforInicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/margenBotonesInterfaz"
+        android:layout_marginTop="@dimen/margenBotonesInterfaz"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground">
+
+        <ImageView
+            android:padding="@dimen/paddingImagenInfo"
+            android:layout_width="@dimen/tamañoBotonsInterfaz"
+            android:layout_height="@dimen/tamañoBotonsInterfaz"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/marginBotonesInterfaz"
+            android:src="@drawable/info" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/iconoInicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground">
+
+        <ImageView
+            android:layout_width="@dimen/tamañoIconoInicio"
+            android:layout_height="@dimen/tamañoIconoInicio"
+            android:src="@drawable/icono" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/jugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margenBotonJugar"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground">
+
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/textoJugar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginTopTextoJugar"
+            android:layout_marginBottom="@dimen/marginButtomTextoJugar"
+            android:layout_marginLeft="@dimen/marginLadosTextoJugar"
+            android:layout_marginRight="@dimen/marginLadosTextoJugar"
+            android:gravity="center"
+            android:text="@string/textoJugar"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/tamañoTextoJugar" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/informacion"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark" >
+
+        <FrameLayout
+            android:foreground="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/atrasInfo"
+            android:layout_marginStart="@dimen/margenAtrasInfo"
+            android:layout_marginTop="@dimen/margenAtrasInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:layout_width="@dimen/tamañoAtrasInfo"
+                android:layout_height="@dimen/tamañoAtrasInfo"
+                android:src="@drawable/atrasinfo"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textoInicioBy"
+                android:layout_marginTop="@dimen/margenTituloInfoInicio"
+                android:textSize="@dimen/textoTituloInfoInicio"
+                android:textColor="@color/blanco"
+                android:text="@string/textoInfo1"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margenTituloInfoInicioBot"/>
+
+            <TextView
+                android:layout_marginBottom="@dimen/margenNombres"
+                android:id="@+id/textoInicioNombre1"
+                android:textSize="@dimen/tamañoNombre"
+                android:textColor="@color/blanco"
+                android:text="@string/textoInfo2"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textoInicioNombre2"
+                android:textSize="@dimen/tamañoNombre"
+                android:textColor="@color/blanco"
+                android:text="@string/textoInfo3"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/adView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_inicio" />
+
+</RelativeLayout>

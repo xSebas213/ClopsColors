@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FinalActivity"
+    android:background="@drawable/land"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/punticos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/puntos"
+                android:textColor="@color/colorQuintaryClick"
+                android:textSize="@dimen/tamañoTextoPuntos" />
+
+            <TextView
+                android:padding="@dimen/paddingpuntos"
+                android:id="@+id/score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/colorSecundaryClick"
+                android:textSize="@dimen/tamañoPuntos" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/homeFin"
+        android:onClick="menu"
+        android:layout_marginBottom="@dimen/margenHomeFinalBOT"
+        android:layout_marginEnd="@dimen/margenHomeFinalLado"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:padding="@dimen/paddingImagenHome"
+            android:id="@+id/casita"
+            android:layout_margin="@dimen/marginBotonesInterfaz"
+            android:layout_width="@dimen/tamañoHomeFinal"
+            android:layout_height="@dimen/tamañoHomeFinal"
+            android:src="@drawable/home"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:onClick="playAgain"
+        android:id="@+id/playAgain"
+        android:layout_marginTop="@dimen/margenAtrasFinal"
+        android:layout_marginStart="@dimen/margenAtrasFinal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="@dimen/tamañoAtrasFinal"
+            android:layout_height="@dimen/tamañoAtrasFinal"
+            android:src="@drawable/atras"/>
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/puntosRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/record"
+        android:layout_toEndOf="@+id/record"
+        android:layout_marginStart="@dimen/margenPuntosRecord"
+        android:textColor="@color/colorTercearyClick"
+        android:textSize="@dimen/tamañoPuntosRecord" />
+
+    <TextView
+        android:id="@+id/record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/margenLadoRecord"
+        android:layout_marginBottom="@dimen/margenBotRecord"
+        android:text="@string/record"
+        android:textColor="@color/azulFinal"
+        android:textSize="@dimen/tamañoRecord" />
+
+    <FrameLayout
+        android:onClick="multiplicaPuntos"
+        android:layout_marginTop="@dimen/margenMultiplica"
+        android:layout_marginEnd="@dimen/margenMultiplica"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/multiplicar"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackground"
+        android:focusable="true">
+        <TextView
+            android:layout_marginStart="@dimen/marginMultiplica"
+            android:layout_marginEnd="@dimen/marginMultiplica"
+            android:id="@+id/textoMultiplica"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/multiplica"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/tamañoMultiplica"
+            android:gravity="center"/>
+    </FrameLayout>
+
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/adViewFinal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="FULL_BANNER"
+        ads:adUnitId="@string/banner_inicio" />
+
+
+
+
+
+</RelativeLayout>

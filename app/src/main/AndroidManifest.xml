@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="sebastiangames.clopscolors">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <supports-screens android:requiresSmallestWidthDp="300" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icono"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/icono"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/mods_id" />
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/app_id" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".MainActivity"
+
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".InicioActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".FinalActivity"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".CompetenciaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NivelesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TutoActivity"
+            android:screenOrientation="sensorLandscape" />
+
+        <service
+            android:name=".Musica"
+            android:enabled="true"
+            android:exported="false" />
+    </application>
+
+</manifest>

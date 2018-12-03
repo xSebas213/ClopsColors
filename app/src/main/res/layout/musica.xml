@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_margin="20dp"
+        android:layout_width="@dimen/tamañoAlertaMusicaAncho"
+        android:layout_height="@dimen/tamañoAlertaMusicaLargo"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardCornerRadius="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <FrameLayout
+                android:background="@drawable/blanco"
+                android:layout_marginEnd="35dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/musicaAlerta"
+                android:foreground="?selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/musicaImagen"
+                    android:padding="@dimen/paddingImagenMusica"
+                    android:layout_width="@dimen/tamañoBotonsInterfaz"
+                    android:layout_height="@dimen/tamañoBotonsInterfaz"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/marginBotonesInterfaz"
+                    android:src="@drawable/music" />
+            </FrameLayout>
+            <FrameLayout
+                android:background="@drawable/blanco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/sonidoAlerta"
+                android:foreground="?selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/sonidoImagen"
+                    android:padding="1dp"
+                    android:layout_width="@dimen/tamañoBotonsInterfaz"
+                    android:layout_height="@dimen/tamañoBotonsInterfaz"
+                    android:layout_gravity="center"
+                    android:layout_margin="2dp"
+                    android:src="@drawable/sonido" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

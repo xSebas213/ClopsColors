@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margenMejorasMain">80dp</dimen>
+    <dimen name="tamañoMejorasMain">50dp</dimen>
+    <dimen name="paddingMejora">7dp</dimen>
+
+    <dimen name="margenLineaPlay">25dp</dimen>
+    <dimen name="margenPlay">8dp</dimen>
+    <dimen name="tamañoPlay">55dp</dimen>
+    <dimen name="marginPlay">5dp</dimen>
+    <dimen name="margenSiguiente">15dp</dimen>
+
+    <dimen name="bordeColores">20dp</dimen>
+
+    <dimen name="botonPremioEnterateAncho">160dp</dimen>
+    <dimen name="botonPremioEnterateLargo">42dp</dimen>
+
+    <dimen name="tamañoAlertaMusicaAncho">173dp</dimen>
+    <dimen name="tamañoAlertaMusicaLargo">73dp</dimen>
+
+    <dimen name="margenHome">20dp</dimen>
+    <dimen name="marginHome">2dp</dimen>
+    <dimen name="tamañoHome">38dp</dimen>
+
+    <dimen name="toastLargo">65dp</dimen>
+
+    <dimen name="margenBotonPremios">20dp</dimen>
+    <dimen name="margenBotonCerrarPremios">7dp</dimen>
+
+    <dimen name="tamañoCerrar">32dp</dimen>
+
+    <dimen name="margenLineaVidas">20dp</dimen>
+    <dimen name="margenVidas">20dp</dimen>
+    <dimen name="tamañoVidas">40dp</dimen>
+    <dimen name="tamañoNumeroVidas">30sp</dimen>
+
+    <dimen name="marginMainTOP">80dp</dimen>
+    <dimen name="marginMainLados">30dp</dimen>
+    <dimen name="marginMainBOT">5dp</dimen>
+
+    <dimen name="botonesMain">6dp</dimen>
+
+    <dimen name="tamañoIconoInicio">190dp</dimen>
+    <dimen name="margenIconoNivelesTOPBOT">20dp</dimen>
+    <dimen name="margenIconoNivelesLados">55dp</dimen>
+    <dimen name="marginFrameNiveles">40dp</dimen>
+
+    <dimen name="margenRanking">25dp</dimen>
+    <dimen name="marginImagenRankingTOP">3dp</dimen>
+    <dimen name="marginImagenRankingBOT">4dp</dimen>
+    <dimen name="anchoImagenRanking">70dp</dimen>
+    <dimen name="largoImagenRanking">70dp</dimen>
+
+    <dimen name="margenPerfilTOP">105dp</dimen>
+    <dimen name="margenPerfilBOT">182dp</dimen>
+    <dimen name="margenImagenPerfil">5dp</dimen>
+
+    <dimen name="margenLineaIntentos">10dp</dimen>
+    <dimen name="margenMasIntentos">20dp</dimen>
+    <dimen name="paddingMasIntentos">1dp</dimen>
+
+    <dimen name="tamañoIntentosRestantes">25sp</dimen>
+    <dimen name="tamañoNumeroIntentos">40sp</dimen>
+    <dimen name="margenNumeroIntentos">20dp</dimen>
+    <dimen name="tamañointentos">30dp</dimen>
+
+    <dimen name="nivelesTOP">15dp</dimen>
+    <dimen name="nivelesBot">10dp</dimen>
+
+    <dimen name="margenTituloInfoMejora">30dp</dimen>
+    <dimen name="tamañotituloInfoMejora">45sp</dimen>
+
+    <dimen name="margenLineaMejorasInfoTop">20dp</dimen>
+    <dimen name="margenLineaMejorasInfoLados">30dp</dimen>
+    <dimen name="margenMejoraInfoSTAREND">10dp</dimen>
+    <dimen name="margenMejorasInfo">20dp</dimen>
+
+    <dimen name="margenFrameMejorasInfoBOT">60dp</dimen>
+    <dimen name="margenFrameMejorasInfo">20dp</dimen>
+
+    <dimen name="margenExpliLado">10dp</dimen>
+    <dimen name="margenExpliTOP">10dp</dimen>
+
+    <dimen name="tamañoMejorasInfo">50dp</dimen>
+    <dimen name="marginMejorasInfo">3dp</dimen>
+    <dimen name="paddingMejorasInfo">3dp</dimen>
+
+    <dimen name="nivelesLados">25dp</dimen>
+    <dimen name="paddingTextoNiveles">3dp</dimen>
+
+    <dimen name="margenBotonJugar">70dp</dimen>
+    <dimen name="marginTopTextoJugar">3dp</dimen>
+    <dimen name="marginButtomTextoJugar">5dp</dimen>
+    <dimen name="marginLadosTextoJugar">15dp</dimen>
+    <dimen name="tamañoTextoJugar">28sp</dimen>
+
+    <dimen name="margenAtrasInfo">15dp</dimen>
+    <dimen name="tamañoAtrasInfo">64dp</dimen>
+
+    <dimen name="margenTituloInfoInicio">80dp</dimen>
+    <dimen name="textoTituloInfoInicio">45sp</dimen>
+    <dimen name="margenTituloInfoInicioBot">80dp</dimen>
+
+    <dimen name="tamañoNombre">30sp</dimen>
+    <dimen name="margenNombres">10dp</dimen>
+
+    <dimen name="textoCronometro">60sp</dimen>
+
+    <dimen name="margenTextoPuntos">5dp</dimen>
+    <dimen name="tamañoTextoPuntos">35sp</dimen>
+    <dimen name="paddingpuntos">10dp</dimen>
+    <dimen name="tamañoPuntos">70sp</dimen>
+
+    <dimen name="margenHomeFinalBOT">80dp</dimen>
+    <dimen name="margenHomeFinalLado">50dp</dimen>
+    <dimen name="tamañoHomeFinal">60dp</dimen>
+
+    <dimen name="margenAtrasFinal">70dp</dimen>
+    <dimen name="tamañoAtrasFinal">74dp</dimen>
+
+    <dimen name="margenPuntosRecord">20dp</dimen>
+    <dimen name="tamañoPuntosRecord">30sp</dimen>
+    <dimen name="tamañoRecord">20sp</dimen>
+    <dimen name="margenBotRecord">90dp</dimen>
+    <dimen name="margenLadoRecord">40dp</dimen>
+
+    <dimen name="margenMultiplica">40dp</dimen>
+    <dimen name="tamañoMultiplica">20sp</dimen>
+    <dimen name="marginMultiplica">10dp</dimen>
+
+    <dimen name="margenBotonesInterfaz">30dp</dimen>
+    <dimen name="margenBotonPremio">25dp</dimen>
+    <dimen name="marginBotonesInterfaz">2dp</dimen>
+    <dimen name="tamañoBotonsInterfaz">45dp</dimen>
+
+    <dimen name="paddingImagenMusica">2dp</dimen>
+    <dimen name="paddingImagenHome">5dp</dimen>
+    <dimen name="paddingImagenInfo">4dp</dimen>
+
+    <dimen name="tamañoEstrella">80dp</dimen>
+    <dimen name="margenEstrellaInicio">30dp</dimen>
+
+    <dimen name="tamañoTextoCompetirInicio">15sp</dimen>
+    <dimen name="margenTextoCompetirInicio">15dp</dimen>
+</resources>

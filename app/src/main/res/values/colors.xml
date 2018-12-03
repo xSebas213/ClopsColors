@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">#0C090D</color>
+
+    <color name="colorPrimary">#01020a</color>
+    <color name="colorAccent">#ec25b0</color>
+
+    <!--Error / Nice-->
+    <color name="error">#FE0000</color>
+    <color name="nice">#00bb2d</color>
+    <!-- Azul -->
+    <color name="azulComienzo">#00E9FF</color>
+    <color name="azulFinal">#00DEF2</color>
+    <!-- Rosado -->
+    <color name="colorSecundary">#FF0080</color>
+    <color name="colorSecundaryClick">#F20079</color>
+    <!-- Verde -->
+    <color name="colorTerceary">#33FF00</color>
+    <color name="colorTercearyClick">#30F200</color>
+    <!-- Amarillo -->
+    <color name="colorQuartary">#FFFF00</color>
+    <color name="colorQuartaryClick">#F2F200</color>
+    <!-- Morado -->
+    <color name="colorQuintary">#7F00FF</color>
+    <color name="colorQuintaryClick">#7900F2</color>
+
+    <!-- Botones y texto -->
+    <color name="blanco">#EFF1F3</color>
+    <color name="defecto">#cccccc</color>
+    <color name="fail">#666666</color>
+    <color name="edit">#2F6690</color>
+    <color name="principal">#054A91</color>
+    <color name="principalClick">#106ca7</color>
+    <color name="face">#146DE1</color>
+    <color name="faceClick">#1361c7</color>
+</resources>

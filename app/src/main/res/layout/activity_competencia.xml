@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CompetenciaActivity"
+    android:background="@drawable/port" >
+
+    <ProgressBar
+        android:id="@+id/progresCompe"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+    <FrameLayout
+        android:background="@drawable/blanco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:layout_marginTop="@dimen/margenRanking"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/posiciones">
+
+        <ImageView
+            android:layout_marginTop="@dimen/marginImagenRankingTOP"
+            android:layout_marginBottom="@dimen/marginImagenRankingBOT"
+            android:layout_width="@dimen/anchoImagenRanking"
+            android:layout_height="@dimen/largoImagenRanking"
+            android:src="@drawable/posiciones"/>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margenBotonesInterfaz"
+        android:layout_marginStart="@dimen/margenBotonesInterfaz"
+        android:id="@+id/homiCompi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true">
+
+        <ImageView
+            android:padding="@dimen/paddingImagenHome"
+            android:layout_margin="@dimen/marginBotonesInterfaz"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/tamañoBotonsInterfaz"
+            android:layout_height="@dimen/tamañoBotonsInterfaz"
+            android:src="@drawable/home"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/margenBotonPremio"
+        android:layout_marginTop="@dimen/margenBotonesInterfaz" >
+
+        <FrameLayout
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/infoCompetencia"
+            android:foreground="?selectableItemBackground"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/imagenInfo"
+                android:padding="@dimen/paddingImagenInfo"
+                android:layout_width="@dimen/tamañoBotonsInterfaz"
+                android:layout_height="@dimen/tamañoBotonsInterfaz"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/marginBotonesInterfaz"
+                android:src="@drawable/info" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_gravity="center"
+            android:id="@+id/textoPremios"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/premios"
+            android:textColor="@color/blanco"
+            android:textSize="@dimen/tamañoTextoCompetirInicio" />
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margenPerfilTOP"
+        android:layout_marginBottom="@dimen/margenPerfilBOT">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                app:autoSizeTextType="uniform"
+                android:layout_weight="1"
+                android:id="@+id/puestoJugador"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/blanco"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+
+            <ImageView
+                android:foreground="?selectableItemBackground"
+                android:layout_marginTop="@dimen/margenImagenPerfil"
+                android:layout_weight="0.4"
+                android:src="@drawable/usuarioerror"
+                android:layout_gravity="center"
+                android:id="@+id/imagenJugador"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/margenImagenPerfil"/>
+
+            <TextView
+                app:autoSizeTextType="uniform"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/nombreJugador"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/blanco" />
+
+            <TextView
+                app:autoSizeTextType="uniform"
+                android:layout_weight="0.95"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/puntosJugador"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/blanco" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/margenLineaIntentos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/competir"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_marginEnd="@dimen/margenMasIntentos"
+            android:background="@drawable/blanco"
+            android:foreground="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="center"
+            android:id="@+id/masIntentos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_margin="@dimen/paddingMasIntentos"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/tamañointentos"
+                android:layout_height="@dimen/tamañointentos"
+                android:src="@drawable/maspuntos"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/textoIntentos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/intentos"
+            android:textColor="@color/blanco"
+            android:textSize="@dimen/tamañoIntentosRestantes" />
+
+        <TextView
+            android:id="@+id/intentos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margenNumeroIntentos"
+            android:textColor="@color/blanco"
+            android:textSize="@dimen/tamañoNumeroIntentos" />
+
+
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/competir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margenBotonJugar"
+        android:clickable="true"
+        android:foreground="?selectableItemBackground"
+        android:focusable="true">
+
+        <TextView
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/textoCompetir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginTopTextoJugar"
+            android:layout_marginBottom="@dimen/marginButtomTextoJugar"
+            android:layout_marginLeft="@dimen/marginLadosTextoJugar"
+            android:layout_marginRight="@dimen/marginLadosTextoJugar"
+            android:text="@string/textoCompetir"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/tamañoTextoJugar" />
+    </FrameLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/adViewCompetir"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_competencia" />
+
+</RelativeLayout>
