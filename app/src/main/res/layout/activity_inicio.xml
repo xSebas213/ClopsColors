@@ -148,7 +148,7 @@
                 android:id="@+id/textoInicioBy"
                 android:layout_marginTop="@dimen/margenTituloInfoInicio"
                 android:textSize="@dimen/textoTituloInfoInicio"
-                android:textColor="@color/blanco"
+                android:textColor="@color/colorSecundaryClick"
                 android:text="@string/textoInfo1"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
@@ -156,23 +156,16 @@
                 android:layout_marginBottom="@dimen/margenTituloInfoInicioBot"/>
 
             <TextView
+                android:gravity="center"
+                android:layout_marginEnd="@dimen/margenNombres"
+                android:layout_marginStart="@dimen/margenNombres"
                 android:layout_marginBottom="@dimen/margenNombres"
                 android:id="@+id/textoInicioNombre1"
-                android:textSize="@dimen/tamañoNombre"
-                android:textColor="@color/blanco"
+                app:autoSizeTextType="uniform"
+                android:textColor="@color/colorQuintaryClick"
                 android:text="@string/textoInfo2"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/textoInicioNombre2"
-                android:textSize="@dimen/tamañoNombre"
-                android:textColor="@color/blanco"
-                android:text="@string/textoInfo3"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
     </FrameLayout>

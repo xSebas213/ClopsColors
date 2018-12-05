@@ -53,7 +53,7 @@ public class InicioActivity extends AppCompatActivity {
     private Boolean aBoolean, musicaSi, sonidosSi, salir;
     private Handler handler;
     private Typeface negrita, normalita;
-    private TextView textoJugar, textoBy, textoNombre1, textoNombre2, tituloAlerta, mensajeAlerta, textoBotonAlerta, textoBotonAlertaNo,
+    private TextView textoJugar, textoBy, textoNombre1, tituloAlerta, mensajeAlerta, textoBotonAlerta, textoBotonAlertaNo,
             textoBotonAlertaSi, textoBontonIntentos, competenciaTi;
     private int[] colores, seleccionados;
     private GoogleSignInClient googleSignInClient;
@@ -161,7 +161,6 @@ public class InicioActivity extends AppCompatActivity {
         textoBy = findViewById(R.id.textoInicioBy);
         competenciaTi = findViewById(R.id.tituloCompetencia);
         textoNombre1 = findViewById(R.id.textoInicioNombre1);
-        textoNombre2 = findViewById(R.id.textoInicioNombre2);
         tituloAlerta = dialog.findViewById(R.id.tituloAlerta);
         mensajeAlerta = dialog.findViewById(R.id.mensajeAlerta);
         textoBotonAlerta = dialog.findViewById(R.id.textoBotonAlerta);
@@ -173,7 +172,6 @@ public class InicioActivity extends AppCompatActivity {
         textoJugar.setTypeface(negrita);
         textoBy.setTypeface(negrita);
         textoNombre1.setTypeface(normalita);
-        textoNombre2.setTypeface(normalita);
 
         tituloAlerta.setTypeface(negrita);
         mensajeAlerta.setTypeface(normalita);

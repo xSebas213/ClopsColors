@@ -927,7 +927,7 @@ public class MainActivity extends AppCompatActivity {
                 if (sonidosSi) soundPool.play(cuentaSonido, 1,1,1, 0, 0.95f);
                 vibrator.vibrate(700);
                 restar = false;
-                handler.postDelayed(hilo29, 2000);
+                handler.postDelayed(hilo29, 1800);
 
                 play.startAnimation(sextaAnimacion);
                 if(siguiente.getAlpha() == ((float) 0.9)){
@@ -1118,11 +1118,11 @@ public class MainActivity extends AppCompatActivity {
                                 pulsadin.startAnimation(cuartaAnimacion);
                             }
                         }
-                    } else {
+                    } else if (restar) {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
-                        if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
+                        if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
                         seguidasMitad = 0;
                         seguidasVidas = 0;
                         vida.setText("" + vidas);
@@ -1149,7 +1149,7 @@ public class MainActivity extends AppCompatActivity {
                                 pulsadin.startAnimation(cuartaAnimacion);
                             }
                         }
-                    } else {
+                    } else if (restar) {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
@@ -1180,7 +1180,7 @@ public class MainActivity extends AppCompatActivity {
                                 pulsadin.startAnimation(cuartaAnimacion);
                             }
                         }
-                    } else {
+                    } else if (restar) {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
@@ -1210,7 +1210,7 @@ public class MainActivity extends AppCompatActivity {
                             pulsadin.startAnimation(cuartaAnimacion);
                         }
                     }
-                } else {
+                } else if (restar) {
                     view.setBackgroundResource(R.drawable.error);
                     handler.postDelayed(hilo21, 50);
                     vidas--;
@@ -1271,6 +1271,8 @@ public class MainActivity extends AppCompatActivity {
                     if(colorPlay == color) {
                         if (pulsadoBoton[pulsado]){
                             if (restar) {
+                                restar = false;
+                                handler.postDelayed(hilo29, 550);
                                 vidas--;
                                 if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                                 seguidasMitad = 0;
@@ -1399,6 +1401,8 @@ public class MainActivity extends AppCompatActivity {
                     if (colorPlay == color2) {
                         if (pulsadoBoton[pulsado2]) {
                             if (restar) {
+                                restar = false;
+                                handler.postDelayed(hilo29, 550);
                                 vidas--;
                                 if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                                 seguidasMitad = 0;
@@ -1460,6 +1464,8 @@ public class MainActivity extends AppCompatActivity {
                 if (boton3.getAlpha() == ((float) 0.999)) {
                     if (pulsadoBoton[pulsado3]) {
                         if (restar) {
+                            restar = false;
+                            handler.postDelayed(hilo29, 550);
                             seguidasMitad = 0;
                             seguidasVidas = 0;
                             vidas--;
@@ -1510,6 +1516,8 @@ public class MainActivity extends AppCompatActivity {
                 if (boton4.getAlpha() == ((float) 0.9999)) {
                     if (pulsadoBoton[pulsado4]) {
                         if (restar) {
+                            restar = false;
+                            handler.postDelayed(hilo29, 550);
                             vidas--;
                             if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                             seguidasMitad = 0;
@@ -1560,6 +1568,8 @@ public class MainActivity extends AppCompatActivity {
                 if (boton5.getAlpha() == ((float) 0.999999)) {
                     if (pulsadoBoton[pulsado5]) {
                         if (restar) {
+                            restar = false;
+                            handler.postDelayed(hilo29, 550);
                             vidas--;
                             if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                             seguidasMitad = 0;
@@ -1677,6 +1687,8 @@ public class MainActivity extends AppCompatActivity {
                     if (colorPlay == color6) {
                         if (pulsadoBoton[pulsado6]) {
                             if (restar) {
+                                restar = false;
+                                handler.postDelayed(hilo29, 550);
                                 vidas--;
                                 if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                                 seguidasMitad = 0;

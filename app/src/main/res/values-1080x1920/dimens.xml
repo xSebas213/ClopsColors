@@ -99,10 +99,9 @@
 
     <dimen name="margenTituloInfoInicio">90dp</dimen>
     <dimen name="textoTituloInfoInicio">45sp</dimen>
-    <dimen name="margenTituloInfoInicioBot">80dp</dimen>
+    <dimen name="margenTituloInfoInicioBot">20dp</dimen>
 
-    <dimen name="tamañoNombre">30sp</dimen>
-    <dimen name="margenNombres">10dp</dimen>
+    <dimen name="margenNombres">30dp</dimen>
 
     <dimen name="textoCronometro">65sp</dimen>
 

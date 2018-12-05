@@ -93,14 +93,13 @@
     <dimen name="tamañoTextoJugar">24sp</dimen>
 
     <dimen name="margenAtrasInfo">15dp</dimen>
-    <dimen name="tamañoAtrasInfo">55dp</dimen>
+    <dimen name="tamañoAtrasInfo">40dp</dimen>
 
-    <dimen name="margenTituloInfoInicio">80dp</dimen>
+    <dimen name="margenTituloInfoInicio">55dp</dimen>
     <dimen name="textoTituloInfoInicio">40sp</dimen>
-    <dimen name="margenTituloInfoInicioBot">50dp</dimen>
+    <dimen name="margenTituloInfoInicioBot">15dp</dimen>
 
-    <dimen name="tamañoNombre">25sp</dimen>
-    <dimen name="margenNombres">10dp</dimen>
+    <dimen name="margenNombres">30dp</dimen>
 
     <dimen name="textoCronometro">55sp</dimen>
 

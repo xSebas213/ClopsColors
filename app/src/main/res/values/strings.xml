@@ -6,9 +6,8 @@
     <string name="trancicionUsuario">usuTran</string>
     <string name="trancicionContra">contraTran</string>
     <string name="trancicionIconoInico">imagenTran</string>
-    <string name="textoInfo1">Hecho por</string>
-    <string name="textoInfo2">Sebastián Saldaña</string>
-    <string name="textoInfo3">Leonardo Luna</string>
+    <string name="textoInfo1">Clops Colors</string>
+    <string name="textoInfo2">Es la visión del \nfuturo inmediato, más que un videojuego.. \nEs una integración del mundo real con el digital.\n\nLlega a lo más alto del ranking para participar por nuestro premios SEMANALES\n</string>
     <string name="textoCompetir">¡ Competir !</string>
     <string name="textoCompetencia">Competir</string>
     <string name="textoJugar">¡ Jugar !</string>
