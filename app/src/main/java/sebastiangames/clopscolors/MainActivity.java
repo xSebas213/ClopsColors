@@ -7,17 +7,14 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
-import android.media.PlaybackParams;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -27,7 +24,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -711,7 +707,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (mejora){
             case 0:
-                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(0.9f));
+                if (Build.VERSION.SDK_INT >= 23 && musicaSi) mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(0.9f));
                 enTiempo = true;
                 entraMejora = true;
                 novenaAnimacion.setRepeatCount(Animation.INFINITE);
@@ -737,7 +733,7 @@ public class MainActivity extends AppCompatActivity {
                 handler.postDelayed(hilo23, 1000);
                 break;
             case 2:
-                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(1.4f));
+                if (Build.VERSION.SDK_INT >= 23 && musicaSi) mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(1.4f));
                 enExplo = true;
                 entraMejora = true;
                 finalizar();
@@ -882,7 +878,7 @@ public class MainActivity extends AppCompatActivity {
                         velocidadEntrada = 1000;
                         velocidadSalida = 500;
                         novenaAnimacion.setRepeatCount(0);
-                        mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(1.0f));
+                        if (Build.VERSION.SDK_INT >= 23 && musicaSi) mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(1.0f));
                     }
                 }else if(enExplo){
                     if (entraMejora) {
@@ -903,7 +899,7 @@ public class MainActivity extends AppCompatActivity {
                         enExplo = false;
                         handler.removeCallbacks(hilo25);
                         porDefecto();
-                        mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(1.0f));
+                        if (Build.VERSION.SDK_INT >= 23 && musicaSi) mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(1.0f));
                         for(int i = 0; i<numeroBotones;i++){
                             botonesPulsados[i].startAnimation(terceraAnimacion);
                         }
@@ -1018,7 +1014,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public  void finDelJuego(){
         mediaPlayer.release();
-        if (sonidosSi) soundPool.play(fin, 1,1,1, -1, 1);
+        if (musicaSi) soundPool.play(fin, 1,1,1, -1, 1);
         octavaAnimacion.setFillAfter(false);
         countDownTimer.cancel();
         finalizar();

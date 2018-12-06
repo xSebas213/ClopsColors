@@ -106,7 +106,7 @@ public class CompetenciaActivity extends AppCompatActivity {
         numeroPremio = 0;
         create = false;
         seleccionados = new int[3];
-        premiosFondo = new int[3];
+        premiosFondo = new int[4];
         usuario = new HashMap<>();
         aBoolean = false;
         handler = new Handler();
@@ -219,8 +219,9 @@ public class CompetenciaActivity extends AppCompatActivity {
         seleccionados[2] = colores[random.nextInt(5)];
 
         premiosFondo[0] = R.drawable.clowns;
-        premiosFondo[1] = R.drawable.leo;
+        premiosFondo[1] = R.drawable.ofocus;
         premiosFondo[2] = R.drawable.superfood;
+        premiosFondo[3] = R.drawable.leo;
 
         fondoPremio.setBackgroundResource(premiosFondo[numeroPremio]);
 
@@ -436,7 +437,7 @@ public class CompetenciaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
-                if (numeroPremio == 2) numeroPremio = -1;
+                if (numeroPremio == 3) numeroPremio = -1;
                 fondoPremio.setBackgroundResource(premiosFondo[numeroPremio + 1]);
                 numeroPremio = numeroPremio + 1;
             }

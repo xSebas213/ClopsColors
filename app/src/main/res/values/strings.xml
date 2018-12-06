@@ -38,6 +38,10 @@
     <string name="textoAlertaInternet">¡ No hay conexión a internet !</string>
     <string name="botonAlertaInternet">Okas</string>
 
+    <string name="tituloAlertaActu">Actualización disponible</string>
+    <string name="textoAlertaActu">¡ Debes actualizar el juego para competir !</string>
+    <string name="botonAlertaActu">Okas</string>
+
     <string name="tituloAlertaTuto">Tutorial</string>
     <string name="textoAlertaTuto">¿ Quieres realizar el tutorial ?</string>
     <string name="botonAlertaNo">Soy pro</string>
