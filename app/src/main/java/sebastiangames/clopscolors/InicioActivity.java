@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -38,6 +40,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Random;
 
@@ -59,15 +63,24 @@ public class InicioActivity extends AppCompatActivity {
     private GoogleSignInClient googleSignInClient;
     private GoogleSignInOptions googleSignInOptions;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     private Dialog dialog, progressBar, musica;
     private AdView adView;
     private SharedPreferences datos;
+    private PackageInfo packageInfo;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+        db = FirebaseFirestore.getInstance();
+        try {
+            packageInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         MobileAds.initialize(this, getString(R.string.mods_id));
 
         adView = findViewById(R.id.adView);
@@ -195,22 +208,30 @@ public class InicioActivity extends AppCompatActivity {
         competencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.show();
                 if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
-                if(mAuth.getCurrentUser() == null) {
-                    if (isOnline(InicioActivity.this)) {
-                        alertaInicio();
-                    }else {
-                        alertaInternet();
-                    }
+                if (isOnline(InicioActivity.this)){
+                    db.collection("Versiones").document("VERSION").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            progressBar.dismiss();
+                            if (task.getResult().get("Version").equals(packageInfo.versionName)){
+                                if (mAuth.getCurrentUser() == null) {
+                                    alertaInicio();
+                                } else {
+                                    salir = false;
+                                    Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                                    startActivity(intent);
+                                }
+                            }else{
+                                alertaActu();
+                            }
+                        }
+                    });
                 }else{
-                    if (isOnline(InicioActivity.this)) {
-                        salir = false;
-                        Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
-                        startActivity(intent);
-                    }else {
-                        alertaInternet();
-                    }
+                    alertaInternet();
                 }
+
             }
         });
 
@@ -402,6 +423,21 @@ public class InicioActivity extends AppCompatActivity {
         tituloAlerta.setText(getString(R.string.tituloAlertaInternet));
         mensajeAlerta.setText(getString(R.string.textoAlertaInternet));
         textoBotonAlerta.setText(getString(R.string.botonAlertaInternet));
+        botonAlertaNo.setVisibility(View.INVISIBLE);
+        botonAlertaNo.setEnabled(false);
+        botonAlertaSi.setVisibility(View.INVISIBLE);
+        botonAlertaSi.setEnabled(false);
+        botonAlerta.setVisibility(View.VISIBLE);
+        botonAlerta.setEnabled(true);
+        botonIntentos.setVisibility(View.INVISIBLE);
+        botonIntentos.setEnabled(false);
+        dialog.show();
+    }
+    private void alertaActu() {
+        tituloAlerta.setText(getString(R.string.tituloAlertaActu));
+        mensajeAlerta.setText(getString(R.string.textoAlertaActu));
+        textoBotonAlerta.setText(getString(R.string.botonAlertaActu));
+        mensajeAlerta.setTextSize(25);
         botonAlertaNo.setVisibility(View.INVISIBLE);
         botonAlertaNo.setEnabled(false);
         botonAlertaSi.setVisibility(View.INVISIBLE);
