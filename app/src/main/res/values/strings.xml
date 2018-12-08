@@ -11,8 +11,16 @@
     <string name="textoCompetir">¡ Competir !</string>
     <string name="textoCompetencia">Competir</string>
     <string name="textoJugar">¡ Jugar !</string>
+
+    <string name="sinPuesto">Sin puesto</string>
+
+
+    <string name="nuevoRecord">¡NUEVO RECORD!</string>
+
     <string name="infoNiveles1">Mejoras</string>
-    <string name="playError">Presiona el botón PLAY para empezar</string>
+    <string name="playError">¡ Presiona el botón PLAY para empezar !</string>
+    <string name="cuentaError">¡ Espera que empiece la partida !</string>
+    <string name="contador">15</string>
 
     <string name="sinFace">La aplicación no está instalada</string>
 
@@ -20,7 +28,7 @@
 
     <string name="puntos">Clops</string>
     <string name="premios">Premios</string>
-    <string name="nuevosPuntos">Nuevos clops</string>
+    <string name="nuevosPuntos">¡Nuevos clops!</string>
 
     <string name="intentos">Intentos restantes :</string>
     <string name="sinIntentos">No tienes más intentos</string>
@@ -31,12 +39,17 @@
     <string name="felicidadesMensaje">Tus clops han sido canjeados exitosamente</string>
 
     <string name="tituloAlerta">Inicio de sesión</string>
-    <string name="textoAlerta">¡ Debes iniciar sesión antes de poder competir !</string>
+    <string name="textoAlerta">¡ Debes iniciar sesión antes de poder \ncompetir !</string>
     <string name="botonAlerta">Iniciar sesión</string>
 
     <string name="tituloAlertaInternet">Sin internet</string>
     <string name="textoAlertaInternet">¡ No hay conexión a internet !</string>
     <string name="botonAlertaInternet">Okas</string>
+
+    <string name="tituloAlertaGanador">¡ ERES UN GANADOR !</string>
+    <string name="textoAlertaGanador">Pronto te contactaremos. \n¡ DISFRÚTALO !</string>
+    <string name="telefonoGanador">Teléfono de contacto</string>
+    <string name="botonAlertaGanador">Genial</string>
 
     <string name="tituloAlertaActu">Actualización disponible</string>
     <string name="textoAlertaActu">¡ Debes actualizar el juego para competir !</string>

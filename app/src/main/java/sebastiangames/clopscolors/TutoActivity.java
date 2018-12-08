@@ -9,13 +9,13 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 public class TutoActivity extends AppCompatActivity {
-    private VideoView videoView;
-    private MediaController mediaController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tuto);
+        VideoView videoView;
+        MediaController mediaController;
         videoView = findViewById(R.id.videoTuto);
         mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);

@@ -14,6 +14,7 @@
     <string name="banner_niveles" translatable="false">ca-app-pub-5684983410597851/5776065629</string>
     <!-- FullScreen -->
     <string name="screen_main" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="screen_compue" translatable="false">ca-app-pub-5684983410597851/4088409359</string>
     <!-- videos -->
     <string name="video_inicio" translatable="false">123</string>
     <string name="video_niveles" translatable="false">123</string>

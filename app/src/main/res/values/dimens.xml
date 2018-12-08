@@ -88,6 +88,8 @@
     <dimen name="nivelesLados">25dp</dimen>
     <dimen name="paddingTextoNiveles">3dp</dimen>
 
+    <dimen name="margenAlerta">20dp</dimen>
+
     <dimen name="margenBotonJugar">70dp</dimen>
     <dimen name="marginTopTextoJugar">3dp</dimen>
     <dimen name="marginButtomTextoJugar">5dp</dimen>

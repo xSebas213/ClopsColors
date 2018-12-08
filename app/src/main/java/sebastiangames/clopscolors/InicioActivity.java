@@ -27,8 +27,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -43,29 +45,26 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class InicioActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     private Vibrator vibrator;
-    private Random random;
     private SoundPool soundPool;
     private int efecto, intents;
     private ImageView competencia, musicaImagen, sonidoImagen;
-    private FrameLayout icono, jugar, music, info, informa, atras, botonAlerta, botonAlertaNo, botonAlertaSi, botonIntentos, musicAlerta, sonidoAlerta;
-    private Animation primeraAnimacion, segundaAnimacion, terceraAnimacion, cuartaAnimacion, quintaAnimacion;
-    private Boolean aBoolean, musicaSi, sonidosSi, salir;
+    private FrameLayout icono, jugar, music, info, informa, atras, botonAlerta, botonAlertaNo, botonAlertaSi, botonIntentos;
+    private Animation terceraAnimacion, cuartaAnimacion;
+    private Boolean aBoolean, sonidosSi, salir;
     private Handler handler;
-    private Typeface negrita, normalita;
-    private TextView textoJugar, textoBy, textoNombre1, tituloAlerta, mensajeAlerta, textoBotonAlerta, textoBotonAlertaNo,
-            textoBotonAlertaSi, textoBontonIntentos, competenciaTi;
-    private int[] colores, seleccionados;
+    private TextView tituloAlerta, mensajeAlerta, textoBotonAlerta, textoBotonAlertaNo,
+            textoBotonAlertaSi;
     private GoogleSignInClient googleSignInClient;
-    private GoogleSignInOptions googleSignInOptions;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private Dialog dialog, progressBar, musica;
-    private AdView adView;
+    private InterstitialAd interstitialAd;
     private SharedPreferences datos;
     private PackageInfo packageInfo;
 
@@ -74,17 +73,41 @@ public class InicioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+        Random random;
+        FrameLayout musicAlerta, sonidoAlerta;
+        Animation primeraAnimacion, segundaAnimacion,quintaAnimacion;
+        TextView textoJugar, textoBy, textoNombre1, competenciaTi;
+        Typeface negrita, normalita;
+        int[] colores, seleccionados;
+        GoogleSignInOptions googleSignInOptions;
+        AdView adView;
+
+
         db = FirebaseFirestore.getInstance();
         try {
             packageInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
         MobileAds.initialize(this, getString(R.string.mods_id));
 
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.screen_compue));
+        interstitialAd.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                salir = false;
+                Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                startActivity(intent);
+                progressBar.dismiss();
+                if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+            }
+        });
+
         adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         adView.loadAd(adRequest);
 
         soundPool = new SoundPool.Builder().setMaxStreams(10)
@@ -103,15 +126,15 @@ public class InicioActivity extends AppCompatActivity {
 
         progressBar = new Dialog(this);
         progressBar.setContentView(R.layout.progress);
-        progressBar.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(progressBar.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.alerta);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         musica = new Dialog(this);
         musica.setContentView(R.layout.musica);
-        musica.getWindow().setGravity(Gravity.TOP | Gravity.START);
+        Objects.requireNonNull(musica.getWindow()).setGravity(Gravity.TOP | Gravity.START);
         musica.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
@@ -179,7 +202,6 @@ public class InicioActivity extends AppCompatActivity {
         textoBotonAlerta = dialog.findViewById(R.id.textoBotonAlerta);
         textoBotonAlertaNo = dialog.findViewById(R.id.textoBotonNo);
         textoBotonAlertaSi = dialog.findViewById(R.id.textoBotonSi);
-        textoBontonIntentos = dialog.findViewById(R.id.textoBotonIntentos);
 
         competenciaTi.setTypeface(negrita);
         textoJugar.setTypeface(negrita);
@@ -209,35 +231,40 @@ public class InicioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressBar.show();
-                if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                 if (isOnline(InicioActivity.this)){
-                    db.collection("Versiones").document("VERSION").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            progressBar.dismiss();
-                            if (task.getResult().get("Version").equals(packageInfo.versionName)){
-                                if (mAuth.getCurrentUser() == null) {
-                                    alertaInicio();
-                                } else {
-                                    salir = false;
-                                    Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
-                                    startActivity(intent);
+                    if (mAuth.getCurrentUser() == null){
+                        alertaInicio();
+                    }else {
+                        db.collection("Versiones").document("VERSION").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (Objects.equals(Objects.requireNonNull(task.getResult()).get("Version"), packageInfo.versionName)){
+                                    if (interstitialAd.isLoaded()){
+                                        interstitialAd.show();
+                                    }else {
+                                        salir = false;
+                                        Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                                        startActivity(intent);
+                                        progressBar.dismiss();
+                                        if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                                    }
+                                }else{
+                                    alertaActu();
                                 }
-                            }else{
-                                alertaActu();
                             }
-                        }
-                    });
+                        });
+                    }
                 }else{
                     alertaInternet();
                 }
 
             }
         });
-
         botonAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.dismiss();
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                 if (textoBotonAlerta.getText() == getString(R.string.botonAlerta)) {
                     iniciarSesion();
@@ -379,7 +406,7 @@ public class InicioActivity extends AppCompatActivity {
     public static boolean isOnline(Context context){
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     public void iniciarSesion(){
@@ -472,10 +499,19 @@ public class InicioActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    progressBar.dismiss();
-                    salir = false;
-                    Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
-                    startActivity(intent);
+                    db.collection("Versiones").document("VERSION").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            progressBar.dismiss();
+                            if (Objects.equals(Objects.requireNonNull(task.getResult()).get("Version"), packageInfo.versionName)){
+                                salir = false;
+                                Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                                startActivity(intent);
+                            }else{
+                                alertaActu();
+                            }
+                        }
+                    });
                 }else {
                     alertaInicioError();
                 }
@@ -489,7 +525,7 @@ public class InicioActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             if (task.isSuccessful()) {
                 GoogleSignInAccount signedInAccount = task.getResult();
-                firebaseGooglePlay(signedInAccount);
+                firebaseGooglePlay(Objects.requireNonNull(signedInAccount));
             } else {
                 alertaInicio();
             }
@@ -499,6 +535,7 @@ public class InicioActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Boolean musicaSi;
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         musicaSi = datos.getBoolean("MUSICA", true);
         sonidosSi = datos.getBoolean("SONIDOS", true);

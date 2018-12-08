@@ -85,6 +85,8 @@
     <dimen name="marginMejorasInfo">3dp</dimen>
     <dimen name="paddingMejorasInfo">3dp</dimen>
 
+    <dimen name="margenAlerta">20dp</dimen>
+
     <dimen name="nivelesLados">30dp</dimen>
     <dimen name="paddingTextoNiveles">3dp</dimen>
 

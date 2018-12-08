@@ -41,33 +41,27 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 public class FinalActivity extends AppCompatActivity implements RewardedVideoAdListener {
-    private ImageView home, imagenToast;
+    private ImageView imagenToast;
     private String id;
     private SoundPool soundPool;
-    private FrameLayout playAgain, multiplica, menu;
-    private TextView score, punticosOp, textoMultiplica, record, puntosRecord, textoToast;
-    private int[] fondos, seleccionados;
+    private FrameLayout multiplica;
+    private TextView score, punticosOp, textoToast;
     private int puntuacion, nuevoRecord, veces, zoom;
-    private Random random;
-    private Typeface normalita, negrita;
     private int nivel, intentos, puntosRanking, puntosViejos, efecto, intents;
     private Boolean aBoolean, competencia, visto, sonidosSi, musicaSi, salir, reinicio, focus;
     private Handler handler;
-    private Animation primeraAnimacion, segundaAnimacion, terceraAnimacion, cuartaAnimacion, quintaAnimacion, sextaAnimacion;
-    private FirebaseFirestore db;
+    private Animation terceraAnimacion, quintaAnimacion, sextaAnimacion;
     private CollectionReference usuarios;
     private Map<String, Object> usuario;
     private RewardedVideoAd rewardedVideoAd;
-    private AdView adView;
     private SharedPreferences datos;
     private SharedPreferences.Editor editor;
     private Toast toast;
     private CardView cardIntentos;
-    private View viewToast;
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -75,8 +69,18 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final);
 
+        FrameLayout playAgain, menu;
+        TextView textoMultiplica, record, puntosRecord;
+        int[] fondos, seleccionados;
+        Random random;
+        Typeface normalita, negrita;
+        Animation primeraAnimacion, segundaAnimacion, cuartaAnimacion;
+        FirebaseFirestore db;
+        AdView adView;
+        View viewToast;
+
         adView = findViewById(R.id.adViewFinal);
-        AdRequest adRequest;adRequest = new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build();
+        AdRequest adRequest;adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         adView.loadAd(adRequest);
 
         Bundle extras = getIntent().getExtras();
@@ -118,11 +122,20 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         seleccionados = new int[3];
         handler = new Handler();
         usuario = new HashMap<>();
-        fondos = extras.getIntArray("FONDOS");
-        puntuacion = extras.getInt("PUNTOS");
-        nivel = extras.getInt("NIVEL");
-        competencia = extras.getBoolean("COMPETENCIA");
-        intentos = extras.getInt("INTENTOS");
+        fondos =  new int[5];
+
+        fondos[0] = R.drawable.rosado;
+        fondos[1] = R.drawable.verde;
+        fondos[2] = R.drawable.amarillo;
+        fondos[3] = R.drawable.morado;
+        fondos[4] = R.drawable.cyan;
+
+        if (extras != null) {
+            puntuacion = extras.getInt("PUNTOS");
+            nivel = extras.getInt("NIVEL");
+            competencia = extras.getBoolean("COMPETENCIA");
+            intentos = extras.getInt("INTENTOS");
+        }
 
         if (savedInstanceState != null ){
             puntuacion = savedInstanceState.getInt("PUNTOSYA");
@@ -151,7 +164,6 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         playAgain = findViewById(R.id.playAgain);
         multiplica = findViewById(R.id.multiplicar);
         menu = findViewById(R.id.homeFin);
-        home = findViewById(R.id.casita);
         score = findViewById(R.id.score);
 
         multiplica.setEnabled(false);
@@ -180,13 +192,13 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
 
         if(puntuacion>nuevoRecord){
             nuevoRecord = puntuacion;
-            punticosOp.setText("NUEVO RECORD");
-            score.setText(""+nuevoRecord);
-            puntosRecord.setText(""+nuevoRecord);
+            punticosOp.setText(getString(R.string.nuevoRecord));
+            score.setText(String.valueOf(nuevoRecord));
+            puntosRecord.setText(String.valueOf(nuevoRecord));
             guardarRecord();
         }else{
-            score.setText(""+puntuacion);
-            puntosRecord.setText(""+nuevoRecord);
+            score.setText(String.valueOf(puntuacion));
+            puntosRecord.setText(String.valueOf(nuevoRecord));
         }
 
         score.startAnimation(primeraAnimacion);
@@ -244,7 +256,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         if (competencia) {
             intentos--;
 
-            id = GoogleSignIn.getLastSignedInAccount(FinalActivity.this).getId();
+            id = Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(FinalActivity.this)).getId();
             db = FirebaseFirestore.getInstance();
             usuarios = db.collection("Usuarios");
 
@@ -252,8 +264,8 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
                 usuarios.document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        usuario = task.getResult().getData();
-                        puntosRanking = Integer.parseInt((String) usuario.get("puntos"));
+                        usuario = Objects.requireNonNull(task.getResult()).getData();
+                        puntosRanking = Integer.parseInt((String) Objects.requireNonNull(Objects.requireNonNull(usuario).get("puntos")));
                         int puntosTo = puntosRanking + puntuacion;
 
                         usuario.put("puntos", Integer.toString(puntosTo));
@@ -268,7 +280,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     }
 
     public void subirPuntos(int puntos){
-        Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(FinalActivity.this))
+        Games.getLeaderboardsClient(this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(FinalActivity.this)))
                 .submitScore(getString(R.string.leaderboard_ranking), puntos);
     }
 
@@ -285,7 +297,8 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     }
 
     public void cargarVideo(){
-        rewardedVideoAd.loadAd("ca-app-pub-5684983410597851/2127205474", new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build());
+        rewardedVideoAd.loadAd(getString(R.string.video_puntos), new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
     }
     public void multiplicaPuntos(View view){
         if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
@@ -341,7 +354,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     public static boolean isOnline(Context context){
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     public void menu(View view){
@@ -444,9 +457,9 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     @Override
     public void onRewardedVideoCompleted() {
         datos.edit().putBoolean("PARTIDAPERDIDA", false).apply();
-        puntuacion = (int) (puntuacion * (1.5));
+        puntuacion = (int) (puntuacion * (1.3));
         punticosOp.setText(getString(R.string.nuevosPuntos));
-        score.setText(""+puntuacion);
+        score.setText(String.valueOf(puntuacion));
         terceraAnimacion.setRepeatCount(3);
         score.startAnimation(terceraAnimacion);
         actualizarPuntos();

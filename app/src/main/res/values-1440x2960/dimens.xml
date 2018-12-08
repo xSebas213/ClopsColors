@@ -94,6 +94,8 @@
     <dimen name="marginLadosTextoJugar">15dp</dimen>
     <dimen name="tamañoTextoJugar">38sp</dimen>
 
+    <dimen name="margenAlerta">35dp</dimen>
+
     <dimen name="margenAtrasInfo">20dp</dimen>
     <dimen name="tamañoAtrasInfo">70dp</dimen>
 

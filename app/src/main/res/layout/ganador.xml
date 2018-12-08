@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:gravity="center">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/tiutloGanador"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:textAlignment="center"
+                app:autoSizeTextType="uniform"
+                android:text="@string/tituloAlertaGanador"
+                android:textColor="@color/blanco"/>
+
+            <TextView
+                android:id="@+id/mensajeGanador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:textColor="@color/blanco"
+                android:text="@string/textoAlertaGanador" />
+
+            <EditText
+                android:id="@+id/numeroGanador"
+                android:cursorVisible="false"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginStart="45dp"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blanco"
+                android:hint="@string/telefonoGanador"
+                android:textColorHint="@color/blanco"
+                android:gravity="center"/>
+
+            <FrameLayout
+                android:layout_marginTop="@dimen/margenAlerta"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/botonGanador"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="6dp"
+                android:foreground="?selectableItemBackground"
+                android:background="@drawable/blanco">
+
+                <TextView
+                    android:id="@+id/textoBotonGanador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:gravity="center"
+                    android:text="@string/botonAlertaGanador"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="30sp" />
+            </FrameLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

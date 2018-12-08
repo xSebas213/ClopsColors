@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Handler;
@@ -28,30 +27,32 @@ import com.google.android.gms.ads.AdView;
 import java.util.Random;
 
 public class NivelesActivity extends AppCompatActivity {
-    private Random random;
     private SoundPool soundPool;
     private int efecto, intents;
-    private FrameLayout tutorial, niveles1, niveles2, niveles3, iconoInicio, home, info, ventanaInfo, atrasInfo,
-            explo, mitad, tiempo, vidas, video;
-    private Typeface normalita, negrita;
+    private FrameLayout tutorial, niveles1, niveles2, niveles3, home, info, ventanaInfo, atrasInfo,
+            explo, mitad, tiempo, vidas;
     private VideoView videoView;
     private MediaController mediaController;
     private Boolean aBoolean, sonidosSi, musicaSi, salir;
     private Handler handler;
-    private TextView textoFacil, textoNormal, textoDificil, textoExperto, textoInfo, explicacion;
-    private Animation primeraAnimacion, segundaAnimacion, terceraAnimacion, cuartaAnimacion, sextaAnimacion, septimaAnimacion, octavaAnimacion;
-    private int[] colores, seleccionados;
-    private AdView adView;
-    private SharedPreferences datos;
-
+    private TextView explicacion;
+    private Animation terceraAnimacion, cuartaAnimacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_niveles);
+        Random random;
+        FrameLayout iconoInicio;
+        Typeface normalita, negrita;
+        Animation primeraAnimacion, segundaAnimacion, sextaAnimacion, septimaAnimacion, octavaAnimacion;
+        TextView textoFacil, textoNormal, textoDificil, textoExperto, textoInfo;
+        int[] colores, seleccionados;
+        AdView adView;
+        SharedPreferences datos;
 
         adView = findViewById(R.id.adViewNiveles);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         adView.loadAd(adRequest);
 
         datos = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
@@ -106,7 +107,6 @@ public class NivelesActivity extends AppCompatActivity {
         vidas.setEnabled(false);
         tiempo.setEnabled(false);
 
-        video = findViewById(R.id.tituloExpli);
         explicacion = findViewById(R.id.explicacion);
 
         textoInfo = findViewById(R.id.textoNivelesInfo);

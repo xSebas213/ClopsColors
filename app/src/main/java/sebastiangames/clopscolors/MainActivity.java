@@ -39,6 +39,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,25 +47,23 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences datos;
     private LinearLayout miLayout;
     private Toast toast;
-    int cuentica;
+    private int cuentica;
     private Dialog dialog;
     private CardView cardIntentos;
-    private View viewToast;
-    private AnimatorSet animatorSet;
-    private ObjectAnimator objectAnimator, objectAnimator2, movimientoX;
+    private ObjectAnimator objectAnimator2;
     private View pulsadin;
     private InterstitialAd interstitialAd;
     private SoundPool soundPool;
     private MediaPlayer mediaPlayer;
     private int toque, efecto, intents, fallo, fin, cuentaSonido;
     private ImageView iconoPuntos, imagenToast;
-    private int contador, vidas, nivel, start, colorPlay, segundos, cuenta, vueltas, seguidasMitad, seguidasVidas, vueltasGeneral, mejoraView, mejora;
+    private int contador, vidas, nivel, colorPlay, segundos, cuenta, vueltas, seguidasMitad, seguidasVidas, vueltasGeneral, mejoraView, mejora;
     private int opcionRandom1, opcionRandom2, opcionRandom3, opcionRandom4, opcionRandom5, colorPuto1, opcionRandom6;
     private int color, color2, color6, numeroBotones, cuentaTiempo, cuentaFaltaExpo, intentos;
     private Random random, randomColor;
     private FrameLayout boton, boton2, boton3, boton4, boton5, boton6, lasVidas, botonAlerta, botonAlertaNo, botonAlertaSi, botonIntentos;
-    private int[] colores, iconos, siguientes, plays;
-    private float[] alphas;
+    private int[] colores, plays;
+
     private FrameLayout[] botonesPulsados;
     private FrameLayout play, siguiente, home;
     private CountDownTimer countDownTimer;
@@ -370,15 +369,19 @@ public class MainActivity extends AppCompatActivity {
 
         enJuego = false;
         Bundle extras = getIntent().getExtras();
-        nivel = extras.getInt("NIVEL");
-        enCompetencia = extras.getBoolean("COMPETENCIA");
+        if (extras != null) {
+            nivel = extras.getInt("NIVEL");
+            enCompetencia = extras.getBoolean("COMPETENCIA");
+            if (enCompetencia) intentos = Integer.parseInt(Objects.requireNonNull(extras.getString("INTENTOS")));
+        }
+
         musicaSi = datos.getBoolean("MUSICA", true);
         sonidosSi = datos.getBoolean("SONIDOS", true);
-        if (enCompetencia) intentos = Integer.parseInt(extras.getString("INTENTOS"));
+
 
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.alerta);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         play = findViewById(R.id.play);
         home = findViewById(R.id.homeMain);
@@ -410,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
 
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getString(R.string.screen_main));
-        interstitialAd.loadAd(new AdRequest.Builder().addTestDevice("B2E5254D91A171016E8857AD516AD84F").build());
+        interstitialAd.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
 
 
         botonAlertaNo.setOnClickListener(new View.OnClickListener() {
@@ -462,6 +465,8 @@ public class MainActivity extends AppCompatActivity {
                     if (musicaSi) mediaPlayer.start();
                     paraAnimacion(primeraAnimacion);
                     enJuego = true;
+                    cuentica = 4;
+                    cuentaAnimacion.cancel();
                     handler.postDelayed(hilo28, 500);
                     cuentaRegre.setVisibility(View.INVISIBLE);
                 }
@@ -475,6 +480,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void inicio(){
         if (musicaSi && datos.getBoolean("REINI", true))startService(new Intent(this, Musica.class));
+
+        View viewToast;
+        int start;
+        int[] iconos, siguientes;
+        float[] alphas;
 
         mediaPlayer = MediaPlayer.create(this, R.raw.partida);
         mediaPlayer.setVolume(0.7f, 0.7f);
@@ -617,7 +627,7 @@ public class MainActivity extends AppCompatActivity {
         vida.setText(String.valueOf(vidas));
         puntaje.setText(String.valueOf(contador));
 
-        cronometro.setText("15");
+        cronometro.setText(getString(R.string.contador));
 
         primeraAnimacion.setRepeatCount(Animation.INFINITE);
         play.startAnimation(primeraAnimacion);
@@ -755,6 +765,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mejoraRun(final ImageView mejora){
+        AnimatorSet animatorSet;
+        ObjectAnimator objectAnimator, movimientoX;
+
         mejora.setAlpha((float) 0.99999);
         mejora.setEnabled(true);
         mejora.setScaleX(1);
@@ -1043,7 +1056,6 @@ public class MainActivity extends AppCompatActivity {
                     salir = false;
                     Intent intent = new Intent(MainActivity.this, FinalActivity.class);
                     intent.putExtra("PUNTOS", contador);
-                    intent.putExtra("FONDOS", colores);
                     intent.putExtra("NIVEL", nivel);
                     intent.putExtra("INTENTOS", intentos);
                     intent.putExtra("COMPETENCIA", enCompetencia);
@@ -1057,7 +1069,6 @@ public class MainActivity extends AppCompatActivity {
             salir = false;
             Intent intent = new Intent(this, FinalActivity.class);
             intent.putExtra("PUNTOS", contador);
-            intent.putExtra("FONDOS", colores);
             intent.putExtra("NIVEL", nivel);
             intent.putExtra("INTENTOS", intentos);
             intent.putExtra("COMPETENCIA", enCompetencia);
@@ -1107,7 +1118,7 @@ public class MainActivity extends AppCompatActivity {
                                     seguidasMitad++;
                                     seguidasVidas++;
                                 }
-                                puntaje.setText("" + contador);
+                                puntaje.setText(String.valueOf(contador));
                                 if (sonidosSi) soundPool.play(toque, 0.7f,0.7f,0, 0, 1);
                                 pulsadoBoton[i] = false;
                                 pulsadin.setBackgroundResource(R.drawable.defecto);
@@ -1121,12 +1132,12 @@ public class MainActivity extends AppCompatActivity {
                         if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
                         seguidasMitad = 0;
                         seguidasVidas = 0;
-                        vida.setText("" + vidas);
+                        vida.setText(String.valueOf(vidas));
                         if (contador == 0) {
-                            puntaje.setText("" + contador);
+                            puntaje.setText(String.valueOf(contador));
                         } else {
                             contador--;
-                            puntaje.setText("" + contador);
+                            puntaje.setText(String.valueOf(contador));
                         }
                     }
                 } else if (view.getAlpha() == ((float) 0.99)) {
@@ -1138,7 +1149,7 @@ public class MainActivity extends AppCompatActivity {
                                     seguidasMitad++;
                                     seguidasVidas++;
                                 }
-                                puntaje.setText("" + contador);
+                                puntaje.setText(String.valueOf(contador));
                                 if (sonidosSi) soundPool.play(toque, 0.7f,0.7f,0, 0, 1);
                                 pulsadoBoton[i] = false;
                                 pulsadin.setBackgroundResource(R.drawable.defecto);
@@ -1152,12 +1163,12 @@ public class MainActivity extends AppCompatActivity {
                         if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                         seguidasMitad = 0;
                         seguidasVidas = 0;
-                        vida.setText("" + vidas);
+                        vida.setText(String.valueOf(vidas));
                         if (contador == 0) {
-                            puntaje.setText("" + contador);
+                            puntaje.setText(String.valueOf(contador));
                         } else {
                             contador--;
-                            puntaje.setText("" + contador);
+                            puntaje.setText(String.valueOf(contador));
                         }
                     }
                 } else if (view.getAlpha() == ((float) 0.9999999)) {
@@ -1169,7 +1180,7 @@ public class MainActivity extends AppCompatActivity {
                                     seguidasMitad++;
                                     seguidasVidas++;
                                 }
-                                puntaje.setText("" + contador);
+                                puntaje.setText(String.valueOf(contador));
                                 if (sonidosSi) soundPool.play(toque, 0.7f,0.7f,0, 0, 1);
                                 pulsadoBoton[i] = false;
                                 pulsadin.setBackgroundResource(R.drawable.defecto);
@@ -1183,12 +1194,12 @@ public class MainActivity extends AppCompatActivity {
                         if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                         seguidasMitad = 0;
                         seguidasVidas = 0;
-                        vida.setText("" + vidas);
+                        vida.setText(String.valueOf(vidas));
                         if (contador == 0) {
-                            puntaje.setText("" + contador);
+                            puntaje.setText(String.valueOf(contador));
                         } else {
                             contador--;
-                            puntaje.setText("" + contador);
+                            puntaje.setText(String.valueOf(contador));
                         }
                     }
                 } else if (view.getAlpha() == ((float) 0.999) || view.getAlpha() == ((float) 0.9999) || view.getAlpha() == ((float) 0.999999)) {
@@ -1199,7 +1210,7 @@ public class MainActivity extends AppCompatActivity {
                                 seguidasMitad++;
                                 seguidasVidas++;
                             }
-                            puntaje.setText("" + contador);
+                            puntaje.setText(String.valueOf(contador));
                             if (sonidosSi) soundPool.play(toque, 0.7f,0.7f,0, 0, 1);
                             pulsadoBoton[i] = false;
                             pulsadin.setBackgroundResource(R.drawable.defecto);
@@ -1213,21 +1224,28 @@ public class MainActivity extends AppCompatActivity {
                     if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                     seguidasMitad = 0;
                     seguidasVidas = 0;
-                    vida.setText("" + vidas);
+                    vida.setText(String.valueOf(vidas));
                     if (contador == 0) {
-                        puntaje.setText("" + contador);
+                        puntaje.setText(String.valueOf(contador));
                     } else {
                         contador--;
-                        puntaje.setText("" + contador);
+                        puntaje.setText(String.valueOf(contador));
                     }
                 }
             }
         }else{
-            if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
-            textoToast.setText(getString(R.string.playError));
-            cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
-            toast.show();
+            if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
+            if (cuentica != 4) {
+                textoToast.setText(getString(R.string.cuentaError));
+                cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                toast.show();
+            }else {
+                textoToast.setText(getString(R.string.playError));
+                cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                toast.show();
+            }
         }
     }
 
@@ -1273,7 +1291,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                                 seguidasMitad = 0;
                                 seguidasVidas = 0;
-                                vida.setText("" + vidas);
+                                vida.setText(String.valueOf(vidas));
                                 pulsadoBoton[pulsado] = false;
                                 boton.setBackgroundResource(R.drawable.error);
                             }
@@ -1403,7 +1421,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                                 seguidasMitad = 0;
                                 seguidasVidas = 0;
-                                vida.setText("" + vidas);
+                                vida.setText(String.valueOf(vidas));
                                 pulsadoBoton[pulsado2] = false;
                                 boton2.setBackgroundResource(R.drawable.error);
                             }
@@ -1466,7 +1484,7 @@ public class MainActivity extends AppCompatActivity {
                             seguidasVidas = 0;
                             vidas--;
                             if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
-                            vida.setText("" + vidas);
+                            vida.setText(String.valueOf(vidas));
                             pulsadoBoton[pulsado3] = false;
                             boton3.setBackgroundResource(R.drawable.error);
                         }
@@ -1518,7 +1536,7 @@ public class MainActivity extends AppCompatActivity {
                             if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                             seguidasMitad = 0;
                             seguidasVidas = 0;
-                            vida.setText("" + vidas);
+                            vida.setText(String.valueOf(vidas));
                             pulsadoBoton[pulsado4] = false;
                             boton4.setBackgroundResource(R.drawable.error);
                         }
@@ -1570,7 +1588,7 @@ public class MainActivity extends AppCompatActivity {
                             if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                             seguidasMitad = 0;
                             seguidasVidas = 0;
-                            vida.setText("" + vidas);
+                            vida.setText(String.valueOf(vidas));
                             pulsadoBoton[pulsado5] = false;
                             boton5.setBackgroundResource(R.drawable.error);
                         }
@@ -1689,7 +1707,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                                 seguidasMitad = 0;
                                 seguidasVidas = 0;
-                                vida.setText("" + vidas);
+                                vida.setText(String.valueOf(vidas));
                                 pulsadoBoton[pulsado6] = false;
                                 boton6.setBackgroundResource(R.drawable.error);
                             }

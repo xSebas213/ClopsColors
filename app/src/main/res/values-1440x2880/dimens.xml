@@ -97,6 +97,8 @@
     <dimen name="margenAtrasInfo">20dp</dimen>
     <dimen name="tamañoAtrasInfo">70dp</dimen>
 
+    <dimen name="margenAlerta">30dp</dimen>
+
     <dimen name="margenTituloInfoInicio">100dp</dimen>
     <dimen name="textoTituloInfoInicio">50sp</dimen>
     <dimen name="margenTituloInfoInicioBot">30dp</dimen>
