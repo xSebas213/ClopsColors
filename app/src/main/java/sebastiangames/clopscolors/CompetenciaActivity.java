@@ -128,7 +128,6 @@ public class CompetenciaActivity extends AppCompatActivity {
         toast = new Toast(CompetenciaActivity.this);
         toast.setView(viewToast);
         toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 100);
 
         normalita = Typeface.createFromAsset(getAssets(), "fuentes/normal.otf");
         negrita = Typeface.createFromAsset(getAssets(), "fuentes/negrita.otf");
@@ -289,8 +288,16 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonGanador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ganador.dismiss();
-                usuarios.document(id).update("ganador", numeroGanador.getText().toString().trim());
+                if (!numeroGanador.getText().toString().equals("")) {
+                    ganador.dismiss();
+                    usuarios.document(id).update("ganador", numeroGanador.getText().toString().trim());
+                }else {
+                    textoToast.setText(getString(R.string.sinNumero));
+                    cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                    toast.setGravity(Gravity.BOTTOM, 0, 100);
+                    toast.show();
+                }
             }
         });
 
@@ -354,6 +361,7 @@ public class CompetenciaActivity extends AppCompatActivity {
                                             textoToast.setText(getString(R.string.sinIntentos));
                                             cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                                             imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                                            toast.setGravity(Gravity.CENTER, 0, 100);
                                             toast.show();
                                         }
 
@@ -381,6 +389,7 @@ public class CompetenciaActivity extends AppCompatActivity {
                     textoToast.setText(getString(R.string.sinFace));
                     cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                     imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                    toast.setGravity(Gravity.CENTER, 0, 100);
                     toast.show();
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.web_face))));
                 }
@@ -452,6 +461,7 @@ public class CompetenciaActivity extends AppCompatActivity {
                     dialog.dismiss();
                     cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                     imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                    toast.setGravity(Gravity.CENTER, 0, 100);
                     toast.show();
                 }else {
                     if (isOnline(CompetenciaActivity.this)) {
@@ -470,6 +480,7 @@ public class CompetenciaActivity extends AppCompatActivity {
                         textoToast.setText(getString(R.string.felicidadesMensaje));
                         cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                         imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.correcto));
+                        toast.setGravity(Gravity.CENTER, 0, 100);
                         toast.show();
                     }else {
                         alertaInternet();
@@ -511,9 +522,6 @@ public class CompetenciaActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
-
-
                 }else {
                     progressBar.dismiss();
                     alertaInternet();

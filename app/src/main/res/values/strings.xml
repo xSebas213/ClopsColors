@@ -36,7 +36,7 @@
     <string name="tituloIntentos">Clops acumulados</string>
     <string name="botonIntentos">Canjear clops</string>
 
-
+    <string name="sinNumero">Por favor escríbenos tu número de teléfono en el recuadro para ponernos en contacto contigo</string>
 
     <string name="falloMensaje">Necesitas 3000 clops para canjear por un intento</string>
     <string name="felicidadesMensaje">Tus clops han sido canjeados exitosamente</string>
