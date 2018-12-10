@@ -473,6 +473,8 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     @Override
     public void onRewardedVideoAdClosed() {
         if (!visto) {
+            multiplica.setEnabled(false);
+            multiplica.setAlpha((float) 0.6);
             textoToast.setText(getString(R.string.sinVideo));
             cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
