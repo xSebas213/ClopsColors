@@ -8,11 +8,19 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="16dp">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:elevation="2dp"
+            android:layout_gravity="end"
+            android:id="@+id/cerrarTuto"
+            android:layout_margin="@dimen/margenBotonCerrarPremios"
+            android:layout_width="@dimen/tamañoCerrar"
+            android:layout_height="@dimen/tamañoCerrar"
+            android:src="@drawable/cerrar"
+            android:background="@drawable/blanco"/>
 
         <VideoView
-            android:layout_gravity="center"
             android:id="@+id/videoTuto"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

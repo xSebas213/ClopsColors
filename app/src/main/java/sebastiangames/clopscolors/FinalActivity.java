@@ -32,9 +32,12 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -76,6 +79,8 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         Typeface normalita, negrita;
         Animation primeraAnimacion, segundaAnimacion, cuartaAnimacion;
         FirebaseFirestore db;
+        FirebaseAuth mAuth;
+
         AdView adView;
         View viewToast;
 
@@ -104,7 +109,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         viewToast = inflater.inflate(R.layout.toast, null);
         toast = new Toast(FinalActivity.this);
         toast.setView(viewToast);
-        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setDuration(Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 50);
 
         primeraAnimacion = AnimationUtils.loadAnimation(this, R.anim.puntosfin);
@@ -256,8 +261,9 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         if (competencia) {
             intentos--;
 
-            id = Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(FinalActivity.this)).getId();
+            mAuth = FirebaseAuth.getInstance();
             db = FirebaseFirestore.getInstance();
+            id = Objects.requireNonNull(mAuth.getCurrentUser()).getEmail();
             usuarios = db.collection("Usuarios");
 
             if (datos.getBoolean("SUBIRPUNTOS", true)) {
@@ -279,9 +285,25 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         }
     }
 
-    public void subirPuntos(int puntos){
-        Games.getLeaderboardsClient(this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(FinalActivity.this)))
-                .submitScore(getString(R.string.leaderboard_ranking), puntos);
+    public void subirPuntos(final int puntos){
+        Games.getLeaderboardsClient(this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(this)))
+                .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
+                .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
+                        try {
+                            Objects.requireNonNull(task.getResult()).get();
+                            Games.getLeaderboardsClient(FinalActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(FinalActivity.this)))
+                                    .submitScore(getString(R.string.leaderboard_ranking), puntos);
+                        } catch (Exception e) {
+                            textoToast.setText(getString(R.string.sinRanking));
+                            cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                            toast.show();
+                        }
+                    }
+                });
+
     }
 
     public void guardarRecord(){
@@ -309,20 +331,35 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         datos.edit().putBoolean("PARTIDAPERDIDA", false).apply();
         if (competencia) {
             if (isOnline(this)) {
-                if (intentos > 0) {
-                    salir = false;
-                    if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
-                    Intent intent = new Intent(this, MainActivity.class);
-                    intent.putExtra("NIVEL", nivel);
-                    intent.putExtra("INTENTOS", Integer.toString(intentos));
-                    intent.putExtra("COMPETENCIA", competencia);
-                    startActivity(intent);
-                } else {
-                    textoToast.setText(getString(R.string.sinIntentos));
-                    cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                    imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
-                    toast.show();
-                }
+                Games.getLeaderboardsClient(this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(this)))
+                        .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
+                        .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
+                                try {
+                                    Objects.requireNonNull(task.getResult()).get();
+                                    if (intentos > 0) {
+                                        salir = false;
+                                        if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                                        Intent intent = new Intent(FinalActivity.this, MainActivity.class);
+                                        intent.putExtra("NIVEL", nivel);
+                                        intent.putExtra("INTENTOS", Integer.toString(intentos));
+                                        intent.putExtra("COMPETENCIA", competencia);
+                                        startActivity(intent);
+                                    } else {
+                                        textoToast.setText(getString(R.string.sinIntentos));
+                                        cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                                        imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                                        toast.show();
+                                    }
+                                } catch (Exception e) {
+                                    textoToast.setText(getString(R.string.sinRanking));
+                                    cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                                    imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                                    toast.show();
+                                }
+                            }
+                        });
             }else {
                 if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
                 textoToast.setText(getString(R.string.textoAlertaInternet));

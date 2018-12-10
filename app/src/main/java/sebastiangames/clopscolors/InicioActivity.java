@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -36,14 +34,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.games.AnnotatedData;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 import java.util.Random;
@@ -62,11 +61,9 @@ public class InicioActivity extends AppCompatActivity {
             textoBotonAlertaSi;
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
     private Dialog dialog, progressBar, musica;
     private InterstitialAd interstitialAd;
     private SharedPreferences datos;
-    private PackageInfo packageInfo;
 
 
     @Override
@@ -82,13 +79,6 @@ public class InicioActivity extends AppCompatActivity {
         GoogleSignInOptions googleSignInOptions;
         AdView adView;
 
-
-        db = FirebaseFirestore.getInstance();
-        try {
-            packageInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
         MobileAds.initialize(this, getString(R.string.mods_id));
 
         interstitialAd = new InterstitialAd(this);
@@ -234,28 +224,34 @@ public class InicioActivity extends AppCompatActivity {
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                 if (isOnline(InicioActivity.this)){
                     if (mAuth.getCurrentUser() == null){
+                        progressBar.dismiss();
                         alertaInicio();
                     }else {
-                        db.collection("Versiones").document("VERSION").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (Objects.equals(Objects.requireNonNull(task.getResult()).get("Version"), packageInfo.versionName)){
-                                    if (interstitialAd.isLoaded()){
-                                        interstitialAd.show();
-                                    }else {
-                                        salir = false;
-                                        Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
-                                        startActivity(intent);
-                                        progressBar.dismiss();
-                                        if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                        Games.getLeaderboardsClient(InicioActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(InicioActivity.this)))
+                                .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
+                                .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
+                                        try {
+                                            Objects.requireNonNull(task.getResult()).get();
+                                            if (interstitialAd.isLoaded()){
+                                                interstitialAd.show();
+                                            }else {
+                                                salir = false;
+                                                Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                                                startActivity(intent);
+                                                progressBar.dismiss();
+                                                if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                                            }
+                                        } catch (Exception e) {
+                                            progressBar.dismiss();
+                                            alertaActu();
+                                        }
                                     }
-                                }else{
-                                    alertaActu();
-                                }
-                            }
-                        });
+                                });
                     }
                 }else{
+                    progressBar.dismiss();
                     alertaInternet();
                 }
 
@@ -264,7 +260,6 @@ public class InicioActivity extends AppCompatActivity {
         botonAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.dismiss();
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                 if (textoBotonAlerta.getText() == getString(R.string.botonAlerta)) {
                     iniciarSesion();
@@ -351,7 +346,6 @@ public class InicioActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -499,20 +493,24 @@ public class InicioActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    db.collection("Versiones").document("VERSION").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            progressBar.dismiss();
-                            if (Objects.equals(Objects.requireNonNull(task.getResult()).get("Version"), packageInfo.versionName)){
-                                salir = false;
-                                Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
-                                startActivity(intent);
-                            }else{
-                                alertaActu();
-                            }
-                        }
-                    });
+                    Games.getLeaderboardsClient(InicioActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(InicioActivity.this)))
+                            .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
+                            .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
+                                    try{
+                                        progressBar.dismiss();
+                                        salir = false;
+                                        Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                                        startActivity(intent);
+                                    }catch (Exception e){
+                                        progressBar.dismiss();
+                                        alertaActu();
+                                    }
+                                }
+                            });
                 }else {
+                    progressBar.dismiss();
                     alertaInicioError();
                 }
             }

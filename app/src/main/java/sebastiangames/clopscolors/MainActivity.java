@@ -63,12 +63,11 @@ public class MainActivity extends AppCompatActivity {
     private Random random, randomColor;
     private FrameLayout boton, boton2, boton3, boton4, boton5, boton6, lasVidas, botonAlerta, botonAlertaNo, botonAlertaSi, botonIntentos;
     private int[] colores, plays;
-
     private FrameLayout[] botonesPulsados;
     private FrameLayout play, siguiente, home;
     private CountDownTimer countDownTimer;
     private int pulsado, pulsado2, pulsado3, pulsado4, pulsado5, pulsado6;
-    private Boolean[] pulsadoBoton;
+    private Boolean[] pulsadoBoton, restarBoton;
     private Boolean aBoolean, enJuego, enTiempo, enExplo, sonidosSi, enMitad, enVida, enCompetencia, musicaSi, restar, salir, entraMejora;
     private TextView puntaje, vida, cronometro, textoToast, tituloAlerta, mensajeAlerta, textoBotonAlertaNo,
             textoBotonAlertaSi, cuentaRegre;
@@ -341,6 +340,43 @@ public class MainActivity extends AppCompatActivity {
             restar = true;
         }
     };
+    private Runnable hilo30 = new Runnable() {
+        @Override
+        public void run() {
+            restarBoton[pulsado] = true;
+        }
+    };
+    private Runnable hilo31 = new Runnable() {
+        @Override
+        public void run() {
+            restarBoton[pulsado2] = true;
+        }
+    };
+    private Runnable hilo32 = new Runnable() {
+        @Override
+        public void run() {
+            restarBoton[pulsado3] = true;
+        }
+    };
+    private Runnable hilo33 = new Runnable() {
+        @Override
+        public void run() {
+            restarBoton[pulsado4] = true;
+        }
+    };
+    private Runnable hilo34 = new Runnable() {
+        @Override
+        public void run() {
+            restarBoton[pulsado5] = true;
+        }
+    };
+    private Runnable hilo35 = new Runnable() {
+        @Override
+        public void run() {
+            restarBoton[pulsado6] = true;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -483,7 +519,7 @@ public class MainActivity extends AppCompatActivity {
 
         View viewToast;
         int start;
-        int[] iconos, siguientes;
+        int[] iconos;
         float[] alphas;
 
         mediaPlayer = MediaPlayer.create(this, R.raw.partida);
@@ -512,9 +548,28 @@ public class MainActivity extends AppCompatActivity {
         alphas = new float[5];
         plays = new int[5];
         imageViews = new ImageView[4];
-        siguientes = new int[5];
         botonesPulsados = new FrameLayout[18];
         pulsadoBoton = new Boolean[18];
+        restarBoton = new Boolean[18];
+
+        restarBoton[0] = true;
+        restarBoton[1] = true;
+        restarBoton[2] = true;
+        restarBoton[3] = true;
+        restarBoton[4] = true;
+        restarBoton[5] = true;
+        restarBoton[6] = true;
+        restarBoton[7] = true;
+        restarBoton[8] = true;
+        restarBoton[9] = true;
+        restarBoton[10] = true;
+        restarBoton[11] = true;
+        restarBoton[12] = true;
+        restarBoton[13] = true;
+        restarBoton[14] = true;
+        restarBoton[15] = true;
+        restarBoton[16] = true;
+        restarBoton[17] = true;
 
         botonesPulsados[0] = findViewById(R.id.boton1);
         botonesPulsados[0].setVisibility(View.VISIBLE);
@@ -571,12 +626,6 @@ public class MainActivity extends AppCompatActivity {
         iconos[2] = R.drawable.puntosamarillo;
         iconos[3] = R.drawable.puntosmorado;
         iconos[4] = R.drawable.puntosazul;
-
-        siguientes[0] = R.drawable.playdefault1;
-        siguientes[1] = R.drawable.playdefault2;
-        siguientes[2] = R.drawable.playdefault3;
-        siguientes[3] = R.drawable.playdefault4;
-        siguientes[4] = R.drawable.playdefault5;
 
         textoToast =  viewToast.findViewById(R.id.textoToast);
         cardIntentos = viewToast.findViewById(R.id.cardIntentos);
@@ -641,7 +690,6 @@ public class MainActivity extends AppCompatActivity {
                 play.setBackgroundResource(colores[i]);
                 play.setAlpha(alphas[i]);
                 home.setBackgroundResource(colores[i]);
-                siguiente.setBackgroundResource(siguientes[i]);
                 iconoPuntos.setImageResource(iconos[i]);
                 colorPlay = colores[i];
             }
@@ -918,7 +966,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         empiezaNiveles();
                         restar = false;
-                        handler.postDelayed(hilo29, 1800);
+                        handler.postDelayed(hilo29, 1900);
                     }
                 }else{
                     segundos = (int)(millisUntilFinished / 1000);
@@ -936,7 +984,7 @@ public class MainActivity extends AppCompatActivity {
                 if (sonidosSi) soundPool.play(cuentaSonido, 1,1,1, 0, 0.95f);
                 vibrator.vibrate(700);
                 restar = false;
-                handler.postDelayed(hilo29, 1800);
+                handler.postDelayed(hilo29, 1900);
 
                 play.startAnimation(sextaAnimacion);
                 if(siguiente.getAlpha() == ((float) 0.9)){
@@ -1114,18 +1162,18 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < numeroBotones; i++) {
                             if (view == botonesPulsados[i] && pulsadoBoton[i]) {
                                 contador++;
-                                if (!enExplo){
+                                if (!enExplo) {
                                     seguidasMitad++;
                                     seguidasVidas++;
                                 }
                                 puntaje.setText(String.valueOf(contador));
-                                if (sonidosSi) soundPool.play(toque, 0.7f,0.7f,0, 0, 1);
-                                pulsadoBoton[i] = false;
+                                if (sonidosSi) soundPool.play(toque, 0.7f, 0.7f, 0, 0, 1);
+                                pulsadoBoton[pulsado] = false;
                                 pulsadin.setBackgroundResource(R.drawable.defecto);
                                 pulsadin.startAnimation(cuartaAnimacion);
                             }
                         }
-                    } else if (restar) {
+                    } else {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
@@ -1145,22 +1193,22 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < numeroBotones; i++) {
                             if (view == botonesPulsados[i] && pulsadoBoton[i]) {
                                 contador++;
-                                if (!enExplo){
+                                if (!enExplo) {
                                     seguidasMitad++;
                                     seguidasVidas++;
                                 }
                                 puntaje.setText(String.valueOf(contador));
-                                if (sonidosSi) soundPool.play(toque, 0.7f,0.7f,0, 0, 1);
-                                pulsadoBoton[i] = false;
+                                if (sonidosSi) soundPool.play(toque, 0.7f, 0.7f, 0, 0, 1);
+                                pulsadoBoton[pulsado2] = false;
                                 pulsadin.setBackgroundResource(R.drawable.defecto);
                                 pulsadin.startAnimation(cuartaAnimacion);
                             }
                         }
-                    } else if (restar) {
+                    } else {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
-                        if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
+                        if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
                         seguidasMitad = 0;
                         seguidasVidas = 0;
                         vida.setText(String.valueOf(vidas));
@@ -1176,22 +1224,22 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < numeroBotones; i++) {
                             if (view == botonesPulsados[i] && pulsadoBoton[i]) {
                                 contador++;
-                                if (!enExplo){
+                                if (!enExplo) {
                                     seguidasMitad++;
                                     seguidasVidas++;
                                 }
                                 puntaje.setText(String.valueOf(contador));
-                                if (sonidosSi) soundPool.play(toque, 0.7f,0.7f,0, 0, 1);
-                                pulsadoBoton[i] = false;
+                                if (sonidosSi) soundPool.play(toque, 0.7f, 0.7f, 0, 0, 1);
+                                pulsadoBoton[pulsado6] = false;
                                 pulsadin.setBackgroundResource(R.drawable.defecto);
                                 pulsadin.startAnimation(cuartaAnimacion);
                             }
                         }
-                    } else if (restar) {
+                    } else {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
-                        if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
+                        if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
                         seguidasMitad = 0;
                         seguidasVidas = 0;
                         vida.setText(String.valueOf(vidas));
@@ -1206,34 +1254,38 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < numeroBotones; i++) {
                         if (view == botonesPulsados[i] && pulsadoBoton[i]) {
                             contador++;
-                            if (!enExplo){
+                            if (!enExplo) {
                                 seguidasMitad++;
                                 seguidasVidas++;
                             }
                             puntaje.setText(String.valueOf(contador));
-                            if (sonidosSi) soundPool.play(toque, 0.7f,0.7f,0, 0, 1);
+                            if (sonidosSi) soundPool.play(toque, 0.7f, 0.7f, 0, 0, 1);
                             pulsadoBoton[i] = false;
                             pulsadin.setBackgroundResource(R.drawable.defecto);
                             pulsadin.startAnimation(cuartaAnimacion);
                         }
                     }
-                } else if (restar) {
-                    view.setBackgroundResource(R.drawable.error);
-                    handler.postDelayed(hilo21, 50);
-                    vidas--;
-                    if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
-                    seguidasMitad = 0;
-                    seguidasVidas = 0;
-                    vida.setText(String.valueOf(vidas));
-                    if (contador == 0) {
-                        puntaje.setText(String.valueOf(contador));
-                    } else {
-                        contador--;
-                        puntaje.setText(String.valueOf(contador));
+                } else {
+                    for (int i = 0; i < numeroBotones; i++) {
+                        if (view == botonesPulsados[i] && restarBoton[i]) {
+                            view.setBackgroundResource(R.drawable.error);
+                            handler.postDelayed(hilo21, 50);
+                            vidas--;
+                            if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
+                            seguidasMitad = 0;
+                            seguidasVidas = 0;
+                            vida.setText(String.valueOf(vidas));
+                            if (contador == 0) {
+                                puntaje.setText(String.valueOf(contador));
+                            } else {
+                                contador--;
+                                puntaje.setText(String.valueOf(contador));
+                            }
+                        }
                     }
                 }
             }
-        }else{
+        } else{
             if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
             if (cuentica != 4) {
                 textoToast.setText(getString(R.string.cuentaError));
@@ -1256,11 +1308,11 @@ public class MainActivity extends AppCompatActivity {
             finDelJuego();
         }else {
 
-            if(seguidasMitad == 80 && !enMitad){
+            if(seguidasMitad == 100 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
-            if(seguidasVidas == 50 && !enVida){
+            if(seguidasVidas == 70 && !enVida){
                 enVida = true;
                 mejoraVidas();
             }
@@ -1285,8 +1337,8 @@ public class MainActivity extends AppCompatActivity {
                     if(colorPlay == color) {
                         if (pulsadoBoton[pulsado]){
                             if (restar) {
-                                restar = false;
-                                handler.postDelayed(hilo29, 550);
+                                restarBoton[pulsado] = false;
+                                handler.postDelayed(hilo30, 550);
                                 vidas--;
                                 if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                                 seguidasMitad = 0;
@@ -1326,11 +1378,11 @@ public class MainActivity extends AppCompatActivity {
         if (vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         } else {
-            if(seguidasMitad == 80 && !enMitad){
+            if(seguidasMitad == 100 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
-            if(seguidasVidas == 50 && !enVida){
+            if(seguidasVidas == 70 && !enVida){
                 enVida = true;
                 mejoraVidas();
             }
@@ -1415,8 +1467,8 @@ public class MainActivity extends AppCompatActivity {
                     if (colorPlay == color2) {
                         if (pulsadoBoton[pulsado2]) {
                             if (restar) {
-                                restar = false;
-                                handler.postDelayed(hilo29, 550);
+                                restarBoton[pulsado2] = false;
+                                handler.postDelayed(hilo31, 550);
                                 vidas--;
                                 if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                                 seguidasMitad = 0;
@@ -1456,11 +1508,11 @@ public class MainActivity extends AppCompatActivity {
         if(vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         }else {
-            if(seguidasMitad == 80 && !enMitad){
+            if(seguidasMitad == 100 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
-            if(seguidasVidas == 50 && !enVida){
+            if(seguidasVidas == 70 && !enVida){
                 enVida = true;
                 mejoraVidas();
             }
@@ -1478,8 +1530,8 @@ public class MainActivity extends AppCompatActivity {
                 if (boton3.getAlpha() == ((float) 0.999)) {
                     if (pulsadoBoton[pulsado3]) {
                         if (restar) {
-                            restar = false;
-                            handler.postDelayed(hilo29, 550);
+                            restarBoton[pulsado3] = false;
+                            handler.postDelayed(hilo32, 550);
                             seguidasMitad = 0;
                             seguidasVidas = 0;
                             vidas--;
@@ -1508,11 +1560,11 @@ public class MainActivity extends AppCompatActivity {
         if(vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         }else {
-            if(seguidasMitad == 80 && !enMitad){
+            if(seguidasMitad == 100 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
-            if(seguidasVidas == 50 && !enVida){
+            if(seguidasVidas == 70 && !enVida){
                 enVida = true;
                 mejoraVidas();
             }
@@ -1530,8 +1582,8 @@ public class MainActivity extends AppCompatActivity {
                 if (boton4.getAlpha() == ((float) 0.9999)) {
                     if (pulsadoBoton[pulsado4]) {
                         if (restar) {
-                            restar = false;
-                            handler.postDelayed(hilo29, 550);
+                            restarBoton[pulsado4] = false;
+                            handler.postDelayed(hilo33, 550);
                             vidas--;
                             if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                             seguidasMitad = 0;
@@ -1560,11 +1612,11 @@ public class MainActivity extends AppCompatActivity {
         if(vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         }else {
-            if(seguidasMitad == 80 && !enMitad){
+            if(seguidasMitad == 100 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
-            if(seguidasVidas == 50 && !enVida){
+            if(seguidasVidas == 70 && !enVida){
                 enVida = true;
                 mejoraVidas();
             }
@@ -1582,8 +1634,8 @@ public class MainActivity extends AppCompatActivity {
                 if (boton5.getAlpha() == ((float) 0.999999)) {
                     if (pulsadoBoton[pulsado5]) {
                         if (restar) {
-                            restar = false;
-                            handler.postDelayed(hilo29, 550);
+                            restarBoton[pulsado5] = false;
+                            handler.postDelayed(hilo34, 550);
                             vidas--;
                             if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                             seguidasMitad = 0;
@@ -1612,11 +1664,11 @@ public class MainActivity extends AppCompatActivity {
         if (vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         } else {
-            if(seguidasMitad == 80 && !enMitad){
+            if(seguidasMitad == 100 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
-            if(seguidasVidas == 50 && !enVida){
+            if(seguidasVidas == 70 && !enVida){
                 enVida = true;
                 mejoraVidas();
             }
@@ -1701,8 +1753,8 @@ public class MainActivity extends AppCompatActivity {
                     if (colorPlay == color6) {
                         if (pulsadoBoton[pulsado6]) {
                             if (restar) {
-                                restar = false;
-                                handler.postDelayed(hilo29, 550);
+                                restarBoton[pulsado6] = false;
+                                handler.postDelayed(hilo35, 550);
                                 vidas--;
                                 if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
                                 seguidasMitad = 0;
@@ -1775,6 +1827,12 @@ public class MainActivity extends AppCompatActivity {
         handler.removeCallbacks(hilo20);
         handler.removeCallbacks(hilo21);
         handler.removeCallbacks(hilo29);
+        handler.removeCallbacks(hilo30);
+        handler.removeCallbacks(hilo31);
+        handler.removeCallbacks(hilo32);
+        handler.removeCallbacks(hilo33);
+        handler.removeCallbacks(hilo34);
+        handler.removeCallbacks(hilo35);
     }
     public void menu(View view){
         if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);

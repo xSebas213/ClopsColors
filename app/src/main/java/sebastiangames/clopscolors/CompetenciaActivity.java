@@ -25,7 +25,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,25 +54,23 @@ public class CompetenciaActivity extends AppCompatActivity {
     private ImageView fondoPremio;
     private ImageManager imageManager;
     private ImageView imagenJugador, imagenToast;
-    private String nombre, intentos, id, puntos, ganadorNum;
+    private String  intentos, id, puntos;
     private FrameLayout infoCompe, competir, botonAlerta, botonAlertaNo, botonAlertaSi, botonIntentos;
     private TextView textoPuntosIntentos, puntosJuador, nombreJugador, puestoJugador,
             textoBotonAlerta, mensajeAlerta, tituloAlerta, textoToast, textoBotonNo, textoBotonSi;
     private Animation primeraAnimacion, cuartaAnimacion;
     private int[] premiosFondo;
-    private FirebaseFirestore db;
     private CollectionReference usuarios;
     private Map<String, Object> usuario;
-    private Boolean aBoolean, sonidosSi, create, musicaSi, salir;
+    private Boolean aBoolean, sonidosSi, create, musicaSi, salir, actualizacion;
     private Handler handler;
     private SoundPool soundPool;
-    private Dialog dialog, premios, ganador;
+    private Dialog dialog, premios, ganador, progressBar;
     private int puntosIntentos, numeroPremio, efecto, intents, fallo, nice;
     private SharedPreferences datos;
     private SharedPreferences.Editor editor;
     private Toast toast;
     private CardView cardIntentos;
-    private ProgressBar progresCompe;
     private EditText numeroGanador;
 
     @Override
@@ -81,6 +78,8 @@ public class CompetenciaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_competencia);
 
+        FirebaseAuth mAuth;
+        FirebaseFirestore db;
         ImageView cerrar,informaImagen;
         Random random;
         FrameLayout homeCompe, posiciones, masIntentos, botonPremios, botonGanador;
@@ -109,6 +108,10 @@ public class CompetenciaActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         adView.loadAd(adRequest);
 
+        progressBar = new Dialog(this);
+        progressBar.setContentView(R.layout.progress);
+        Objects.requireNonNull(progressBar.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         random = new Random(System.currentTimeMillis());
         colores = new int[5];
         numeroPremio = 0;
@@ -117,6 +120,7 @@ public class CompetenciaActivity extends AppCompatActivity {
         premiosFondo = new int[5];
         usuario = new HashMap<>();
         aBoolean = false;
+        actualizacion = false;
         handler = new Handler();
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -159,7 +163,6 @@ public class CompetenciaActivity extends AppCompatActivity {
         textoPuntosIntentos = findViewById(R.id.intentos);
         textoIntentos = findViewById(R.id.textoIntentos);
         informaImagen = findViewById(R.id.imagenInfo);
-        progresCompe = findViewById(R.id.progresCompe);
         imagenJugador = findViewById(R.id.imagenJugador);
         puntosJuador = findViewById(R.id.puntosJugador);
         nombreJugador = findViewById(R.id.nombreJugador);
@@ -198,11 +201,12 @@ public class CompetenciaActivity extends AppCompatActivity {
         textoBotonIntentos.setTypeface(negrita);
         textoBotonPremio.setTypeface(negrita);
 
-        id = Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)).getId();
+        mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        id = Objects.requireNonNull(mAuth.getCurrentUser()).getEmail();
         usuarios = db.collection("Usuarios");
 
-        nombre = Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)).getDisplayName();
+        progressBar.show();
         usuarios.document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -213,38 +217,26 @@ public class CompetenciaActivity extends AppCompatActivity {
                     puntos = (String) task.getResult().get("puntos");
                     intentos = (String) task.getResult().get("intentos");
                 }
+
                 mostrarPerfil();
 
-                usuario.put("nombre", nombre);
+                if (Objects.requireNonNull(task.getResult()).get("ganador") != null && Objects.equals(task.getResult().get("ganador"), "Sisa")){
+                    usuario.put("ganador", "Sisa");
+                    ganador.show();
+                }else {
+                    usuario.put("ganador", "");
+                }
                 usuario.put("puntos", puntos);
                 usuario.put("intentos", intentos);
 
-                usuarios.document(id).set(usuario);
-
+                if (task.getResult().exists()){
+                    usuarios.document(id).update(usuario);
+                }else {
+                    usuarios.document(id).set(usuario);
+                }
                 textoPuntosIntentos.setText(intentos);
             }
         });
-
-        if (isOnline(this)) {
-            db.collection("Versiones").document("GANADORES").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (Objects.equals(Objects.requireNonNull(task.getResult()).get("Ganador1"), nombre)) {
-                        if (sonidosSi) soundPool.play(nice, 1, 1, 1, 0, 1);
-                        ganador.show();
-                        ganadorNum = "Ganador1";
-                    } else if (Objects.equals(task.getResult().get("Ganador2"), nombre)) {
-                        if (sonidosSi) soundPool.play(nice, 1, 1, 1, 0, 1);
-                        ganador.show();
-                        ganadorNum = "Ganador2";
-                    } else if (Objects.equals(task.getResult().get("Ganador2"), nombre)) {
-                        if (sonidosSi) soundPool.play(nice, 1, 1, 1, 0, 1);
-                        ganador.show();
-                        ganadorNum = "Ganador3";
-                    }
-                }
-            });
-        }
 
         colores[0] = R.drawable.rosado;
         colores[1] = R.drawable.verde;
@@ -297,12 +289,8 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonGanador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline(CompetenciaActivity.this)) {
-                    ganador.dismiss();
-                    db.collection("Versiones").document("GANADORES").update(ganadorNum, numeroGanador.getText().toString().trim());
-                }else {
-                    alertaInternet();
-                }
+                ganador.dismiss();
+                usuarios.document(id).update("ganador", numeroGanador.getText().toString().trim());
             }
         });
 
@@ -338,26 +326,46 @@ public class CompetenciaActivity extends AppCompatActivity {
         competir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.show();
                 if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
                 if (isOnline(CompetenciaActivity.this)) {
-                    if (!intentos.equals("0")) {
-                        if (puntos.equals("0")){
-                            alertaCompetir();
-                        }else {
-                            salir = false;
-                            Intent intent = new Intent(CompetenciaActivity.this, MainActivity.class);
-                            intent.putExtra("NIVEL", 4);
-                            intent.putExtra("COMPETENCIA", true);
-                            intent.putExtra("INTENTOS", intentos);
-                            startActivity(intent);
-                        }
-                    }else {
-                        textoToast.setText(getString(R.string.sinIntentos));
-                        cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                        imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
-                        toast.show();
-                    }
+                    Games.getLeaderboardsClient(CompetenciaActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)))
+                            .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
+                            .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
+                                    try {
+                                        Objects.requireNonNull(task.getResult()).get();
+                                        if (!intentos.equals("0")) {
+                                            if (puntos.equals("0")){
+                                                progressBar.dismiss();
+                                                alertaCompetir();
+                                            }else {
+                                                progressBar.dismiss();
+                                                salir = false;
+                                                Intent intent = new Intent(CompetenciaActivity.this, MainActivity.class);
+                                                intent.putExtra("NIVEL", 4);
+                                                intent.putExtra("COMPETENCIA", true);
+                                                intent.putExtra("INTENTOS", intentos);
+                                                startActivity(intent);
+                                            }
+                                        }else {
+                                            progressBar.dismiss();
+                                            textoToast.setText(getString(R.string.sinIntentos));
+                                            cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                                            imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                                            toast.show();
+                                        }
+
+                                    } catch (Exception e) {
+                                        progressBar.dismiss();
+                                        actualizacion = true;
+                                        alertaActu();
+                                    }
+                                }
+                            });
                 }else {
+                    progressBar.dismiss();
                     alertaInternet();
                 }
             }
@@ -400,7 +408,7 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isOnline(CompetenciaActivity.this)) {
+                if (isOnline(CompetenciaActivity.this) && (!actualizacion)) {
                     if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                     dialog.dismiss();
                 }else {
@@ -474,20 +482,40 @@ public class CompetenciaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
-                progresCompe.setVisibility(View.VISIBLE);
+                progressBar.show();
                 if (isOnline(CompetenciaActivity.this)) {
-                    Games.getLeaderboardsClient(getApplicationContext(), Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(getApplicationContext())))
-                            .getLeaderboardIntent(getString(R.string.leaderboard_ranking))
-                            .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                    Games.getLeaderboardsClient(CompetenciaActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)))
+                            .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
+                            .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
                                 @Override
-                                public void onSuccess(Intent intent) {
-                                    salir = false;
-                                    startActivityForResult(intent, RC_LEADERBOARD_UI);
-                                    progresCompe.setVisibility(View.GONE);
-                                    create = true;
+                                public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
+                                    try {
+                                        Objects.requireNonNull(task.getResult()).get();
+                                        Games.getLeaderboardsClient(getApplicationContext(), Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(getApplicationContext())))
+                                                .getLeaderboardIntent(getString(R.string.leaderboard_ranking))
+                                                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                                                    @Override
+                                                    public void onSuccess(Intent intent) {
+                                                        Games.getLeaderboardsClient(CompetenciaActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)))
+                                                                .submitScore(getString(R.string.leaderboard_ranking), Integer.parseInt(puntos));
+                                                        salir = false;
+                                                        startActivityForResult(intent, RC_LEADERBOARD_UI);
+                                                        progressBar.dismiss();
+                                                        create = true;
+                                                    }
+                                                });
+                                    } catch (Exception e) {
+                                        progressBar.dismiss();
+                                        actualizacion = true;
+                                        alertaActu();
+                                    }
                                 }
                             });
+
+
+
                 }else {
+                    progressBar.dismiss();
                     alertaInternet();
                 }
 
@@ -573,6 +601,21 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonAlerta.setEnabled(false);
         dialog.show();
     }
+    private void alertaActu() {
+        tituloAlerta.setText(getString(R.string.tituloAlertaActu));
+        mensajeAlerta.setText(getString(R.string.textoAlertaActu));
+        textoBotonAlerta.setText(getString(R.string.botonAlertaActu));
+        mensajeAlerta.setTextSize(25);
+        botonAlertaNo.setVisibility(View.INVISIBLE);
+        botonAlertaNo.setEnabled(false);
+        botonAlertaSi.setVisibility(View.INVISIBLE);
+        botonAlertaSi.setEnabled(false);
+        botonAlerta.setVisibility(View.VISIBLE);
+        botonAlerta.setEnabled(true);
+        botonIntentos.setVisibility(View.INVISIBLE);
+        botonIntentos.setEnabled(false);
+        dialog.show();
+    }
     private void alertaInternet() {
         tituloAlerta.setText(getString(R.string.tituloAlertaInternet));
         mensajeAlerta.setText(getString(R.string.textoAlertaInternet));
@@ -596,13 +639,14 @@ public class CompetenciaActivity extends AppCompatActivity {
     }
 
     public void mostrarPerfil(){
+        progressBar.dismiss();
         Games.getPlayersClient(this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(this))).getCurrentPlayer().addOnCompleteListener(new OnCompleteListener<Player>() {
             @Override
             public void onComplete(@NonNull Task<Player> task) {
                 if (task.isSuccessful()){
                     Uri uri = Objects.requireNonNull(task.getResult()).getHiResImageUri();
                     imageManager.loadImage(imagenJugador, uri);
-                    nombreJugador.setText(nombre);
+                    nombreJugador.setText(Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)).getDisplayName());
                     puntosJuador.setText(puntos);
                 }else{
                     imagenJugador.setBackgroundResource(R.drawable.usuarioerror);
@@ -624,9 +668,9 @@ public class CompetenciaActivity extends AppCompatActivity {
                             if(puntos.equals("0")){
                                 puestoJugador.setText(getString(R.string.sinPuesto));
                             }else {
-                                if (Objects.requireNonNull(Objects.requireNonNull(task.getResult()).get()).getDisplayRank() != null){
-                                    puestoJugador.setText(Objects.requireNonNull(task.getResult().get()).getDisplayRank());
-                                }else {
+                                try{
+                                    puestoJugador.setText(Objects.requireNonNull(Objects.requireNonNull(task.getResult()).get()).getDisplayRank());
+                                }catch (Exception e){
                                     puestoJugador.setText("");
                                 }
                             }

@@ -26,14 +26,17 @@
 
     <string name="sinVideo">Debes terminar el vídeo para multiplicar tus puntos.</string>
 
-    <string name="puntos">Clops</string>
+    <string name="puntos">Tus Clops</string>
     <string name="premios">Premios</string>
-    <string name="nuevosPuntos">¡Nuevos clops!</string>
+    <string name="nuevosPuntos">¡Nuevos Clops!</string>
 
     <string name="intentos">Intentos restantes :</string>
     <string name="sinIntentos">No tienes más intentos</string>
+    <string name="sinRanking">El ranking está cerrado\nPero tus puntos se guardaron para el ranking siguiente</string>
     <string name="tituloIntentos">Clops acumulados</string>
     <string name="botonIntentos">Canjear clops</string>
+
+
 
     <string name="falloMensaje">Necesitas 3000 clops para canjear por un intento</string>
     <string name="felicidadesMensaje">Tus clops han sido canjeados exitosamente</string>
@@ -51,7 +54,7 @@
     <string name="telefonoGanador">Teléfono de contacto</string>
     <string name="botonAlertaGanador">Genial</string>
 
-    <string name="tituloAlertaActu">Actualización disponible</string>
+    <string name="tituloAlertaActu">Ranking cerrado</string>
     <string name="textoAlertaActu">¡ Debes actualizar el juego para competir !</string>
     <string name="botonAlertaActu">Okas</string>
 
@@ -88,8 +91,8 @@
     <string name="infoTiempo">Reajustar Tiempo</string>
 
     <string name="infoExplicacionExplo">Llega hasta la ronda 12 y tendrás una explosión de colores</string>
-    <string name="infoExplicacionMitad">Consigue 80\nclops seguidos y podrás jugar en un tablero reducido</string>
-    <string name="infoExplicacionVidas">Consigue 50 clops seguidos y\npodrás reclamar 5 vidas extra en tu partida</string>
+    <string name="infoExplicacionMitad">Consigue 100\nclops seguidos y podrás jugar en un tablero reducido</string>
+    <string name="infoExplicacionVidas">Consigue 70 clops seguidos y\npodrás reclamar 5 vidas extra en tu partida</string>
     <string name="infoExplicacionTiempo">Llega hasta la ronda 8 y podrás volver el tiempo lento por 10 segundos además de reiniciar los tiempos de reacción</string>
 
     <string name="explicacionMejoras">Explicación de mejoras</string>

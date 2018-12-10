@@ -7,13 +7,6 @@
     tools:context=".CompetenciaActivity"
     android:background="@drawable/port" >
 
-    <ProgressBar
-        android:id="@+id/progresCompe"
-        android:visibility="gone"
-        android:layout_centerInParent="true"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
-
     <FrameLayout
         android:background="@drawable/blanco"
         android:layout_width="wrap_content"
