@@ -936,8 +936,8 @@ public class MainActivity extends AppCompatActivity {
                         enTiempo = false;
                         cuentaTiempo = 16;
                         vueltas = 0;
-                        velocidadEntrada = 1000;
-                        velocidadSalida = 500;
+                        velocidadEntrada = 900;
+                        velocidadSalida = 450;
                         novenaAnimacion.setRepeatCount(0);
                         if (Build.VERSION.SDK_INT >= 23 && musicaSi) mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(1.0f));
                     }
@@ -1062,6 +1062,8 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(hilo4, 700);
         }
         if (nivel == 4){
+            velocidadEntrada = 950;
+            velocidadSalida = 450;
             handler.postDelayed(hilo1, 700);
         }
     }
