@@ -36,7 +36,10 @@
     <string name="tituloIntentos">Clops acumulados</string>
     <string name="botonIntentos">Canjear clops</string>
 
-    <string name="sinNumero">Por favor escríbenos tu número de teléfono en el recuadro para ponernos en contacto contigo</string>
+    <string name="conexionGoogle">Demasiadas conexiones seguidas, espera 15 segundos.</string>
+
+    <string name="sinNumero">Te contactaremos por correo.\n¡Que lo disfrutes!</string>
+    <string name="conNumero">Te contactaremos por teléfono y por correo.\n¡Que lo disfrutes!</string>
 
     <string name="falloMensaje">Necesitas 3000 clops para canjear por un intento</string>
     <string name="felicidadesMensaje">Tus clops han sido canjeados exitosamente</string>
@@ -50,7 +53,7 @@
     <string name="botonAlertaInternet">Okas</string>
 
     <string name="tituloAlertaGanador">¡ ERES UN GANADOR !</string>
-    <string name="textoAlertaGanador">Pronto te contactaremos. \n¡ DISFRÚTALO !</string>
+    <string name="textoAlertaGanador">Te contactaremos por correo.\nDéjanos tu teléfono para contactarte si así lo prefieres.\n\n¡ DISFRÚTALO !</string>
     <string name="telefonoGanador">Teléfono de contacto</string>
     <string name="botonAlertaGanador">Genial</string>
 

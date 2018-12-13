@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,21 +63,22 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     private SharedPreferences datos;
     private SharedPreferences.Editor editor;
     private Toast toast;
-    private CardView cardIntentos;
+    private FirebaseFirestore db;
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final);
-
         FrameLayout playAgain, menu;
         TextView textoMultiplica, record, puntosRecord;
         int[] fondos, seleccionados;
         Random random;
         Typeface normalita, negrita;
         Animation primeraAnimacion, segundaAnimacion, cuartaAnimacion;
-        FirebaseFirestore db;
+
         FirebaseAuth mAuth;
 
         AdView adView;
@@ -160,7 +160,6 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         puntosRecord.setElevation(32);
 
         textoToast =  viewToast.findViewById(R.id.textoToast);
-        cardIntentos = viewToast.findViewById(R.id.cardIntentos);
         imagenToast = viewToast.findViewById(R.id.imagenToast);
         textoToast.setTypeface(normalita);
 
@@ -286,24 +285,14 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     }
 
     public void subirPuntos(final int puntos){
-        Games.getLeaderboardsClient(this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(this)))
-                .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
-                .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
-                        try {
-                            Objects.requireNonNull(task.getResult()).get();
-                            Games.getLeaderboardsClient(FinalActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(FinalActivity.this)))
-                                    .submitScore(getString(R.string.leaderboard_ranking), puntos);
-                        } catch (Exception e) {
-                            textoToast.setText(getString(R.string.sinRanking));
-                            cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                            imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
-                            toast.show();
-                        }
-                    }
-                });
-
+        if (datos.getBoolean("VERSION", true)){
+            Games.getLeaderboardsClient(FinalActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(FinalActivity.this)))
+                    .submitScore(getString(R.string.leaderboard_ranking), puntos);
+        }else {
+            textoToast.setText(getString(R.string.sinRanking));
+            imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+            toast.show();
+        }
     }
 
     public void guardarRecord(){
@@ -348,13 +337,11 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
                                         startActivity(intent);
                                     } else {
                                         textoToast.setText(getString(R.string.sinIntentos));
-                                        cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                                         imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
                                         toast.show();
                                     }
                                 } catch (Exception e) {
                                     textoToast.setText(getString(R.string.sinRanking));
-                                    cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                                     imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
                                     toast.show();
                                 }
@@ -363,7 +350,6 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
             }else {
                 if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
                 textoToast.setText(getString(R.string.textoAlertaInternet));
-                cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
                 toast.show();
             }
@@ -476,7 +462,6 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
             multiplica.setEnabled(false);
             multiplica.setAlpha((float) 0.6);
             textoToast.setText(getString(R.string.sinVideo));
-            cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
             toast.show();
             cargarVideo();

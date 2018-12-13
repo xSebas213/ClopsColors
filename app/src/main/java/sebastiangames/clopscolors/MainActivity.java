@@ -23,7 +23,6 @@ import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private Toast toast;
     private int cuentica;
     private Dialog dialog;
-    private CardView cardIntentos;
     private ObjectAnimator objectAnimator2;
     private View pulsadin;
     private InterstitialAd interstitialAd;
@@ -628,7 +626,6 @@ public class MainActivity extends AppCompatActivity {
         iconos[4] = R.drawable.puntosazul;
 
         textoToast =  viewToast.findViewById(R.id.textoToast);
-        cardIntentos = viewToast.findViewById(R.id.cardIntentos);
         imagenToast = viewToast.findViewById(R.id.imagenToast);
         textoToast.setTypeface(normalita);
 
@@ -1100,8 +1097,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onAdClosed() {
                     super.onAdClosed();
-                    if (nivel == 2) contador = (int) (contador * (1.15));
-                    if (nivel == 3) contador = (int) (contador * (1.3));
+                    if (nivel == 2) contador = (int) (contador * (1.1));
+                    if (nivel == 3) contador = (int) (contador * (1.2));
                     soundPool.release();
                     salir = false;
                     Intent intent = new Intent(MainActivity.this, FinalActivity.class);
@@ -1291,12 +1288,10 @@ public class MainActivity extends AppCompatActivity {
             if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
             if (cuentica != 4) {
                 textoToast.setText(getString(R.string.cuentaError));
-                cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
                 toast.show();
             }else {
                 textoToast.setText(getString(R.string.playError));
-                cardIntentos.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
                 toast.show();
             }

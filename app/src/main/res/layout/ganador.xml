@@ -38,27 +38,43 @@
             <TextView
                 android:id="@+id/mensajeGanador"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="150dp"
+                app:autoSizeTextType="uniform"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:textAlignment="center"
-                android:textSize="25sp"
                 android:textColor="@color/blanco"
                 android:text="@string/textoAlertaGanador" />
 
-            <EditText
-                android:id="@+id/numeroGanador"
-                android:cursorVisible="false"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="45dp"
-                android:layout_marginStart="45dp"
-                android:inputType="number"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blanco"
-                android:hint="@string/telefonoGanador"
-                android:textColorHint="@color/blanco"
-                android:gravity="center"/>
+                android:orientation="horizontal"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
+                android:layout_gravity="center">
+
+                <CheckBox
+                    android:id="@+id/checkGanador"
+                    android:layout_marginEnd="5dp"
+                    android:checked="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+                <EditText
+                    android:id="@+id/numeroGanador"
+                    android:cursorVisible="false"
+                    android:layout_marginTop="5dp"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blanco"
+                    android:hint="@string/telefonoGanador"
+                    android:textColorHint="@color/blanco"
+                    android:gravity="center"/>
+
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_marginTop="@dimen/margenAlerta"

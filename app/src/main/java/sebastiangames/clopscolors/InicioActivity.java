@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -43,9 +44,16 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Objects;
 import java.util.Random;
+
+import javax.annotation.Nullable;
 
 public class InicioActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
@@ -78,6 +86,8 @@ public class InicioActivity extends AppCompatActivity {
         int[] colores, seleccionados;
         GoogleSignInOptions googleSignInOptions;
         AdView adView;
+        View viewToast;
+        final FirebaseFirestore db;
 
         MobileAds.initialize(this, getString(R.string.mods_id));
 
@@ -129,6 +139,7 @@ public class InicioActivity extends AppCompatActivity {
 
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         normalita = Typeface.createFromAsset(getAssets(), "fuentes/normal.otf");
         negrita = Typeface.createFromAsset(getAssets(), "fuentes/negrita.otf");
@@ -145,7 +156,6 @@ public class InicioActivity extends AppCompatActivity {
         colores[2] = R.drawable.amarillo;
         colores[3] = R.drawable.morado;
         colores[4] = R.drawable.cyan;
-
 
         icono = findViewById(R.id.iconoInicio);
         jugar = findViewById(R.id.jugar);
@@ -214,49 +224,93 @@ public class InicioActivity extends AppCompatActivity {
         terceraAnimacion = AnimationUtils.loadAnimation(this, R.anim.info);
         cuartaAnimacion = AnimationUtils.loadAnimation(this, R.anim.info2);
 
+        if(mAuth.getCurrentUser() != null ) {
+            competencia.setAlpha((float) 0.99999999999999);
+        }else {
+            competencia.setAlpha((float) 0.6);
+        }
+
+        if (isOnline(this)) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                DocumentReference documentReference = db.collection("Versiones").document("VERSION");
+                documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (!Objects.equals(Objects.requireNonNull(documentSnapshot).get("version"), "1.0")) {
+                            alertaActu();
+                            competencia.setAlpha((float) 0.5);
+                            datos.edit().putBoolean("VERSION", false).apply();
+                        } else {
+                            datos.edit().putBoolean("VERSION", true).apply();
+                        }
+                    }
+                });
+            } else {
+                competencia.setAlpha((float) 0.5);
+            }
+        }
+
         quintaAnimacion = AnimationUtils.loadAnimation(this, R.anim.competencia);
         competencia.startAnimation(quintaAnimacion);
 
         competencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.show();
-                if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
-                if (isOnline(InicioActivity.this)){
-                    if (mAuth.getCurrentUser() == null){
+                if (competencia.getAlpha() == ((float)0.5)){
+                    alertaActu();
+                }else {
+                    progressBar.show();
+                    if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
+                    if (isOnline(InicioActivity.this)){
+                        if (mAuth.getCurrentUser() == null){
+                            progressBar.dismiss();
+                            alertaInicio();
+                        }else if (isOnline(InicioActivity.this)){
+                            if (interstitialAd.isLoaded()){
+                                interstitialAd.show();
+                            }else {
+                                salir = false;
+                                Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                                startActivity(intent);
+                                progressBar.dismiss();
+                                if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                            }
+                        }else{
+                            progressBar.dismiss();
+                            alertaInternet();
+                        }
+                    }else{
                         progressBar.dismiss();
-                        alertaInicio();
-                    }else {
-                        Games.getLeaderboardsClient(InicioActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(InicioActivity.this)))
-                                .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
-                                .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
-                                        try {
-                                            Objects.requireNonNull(task.getResult()).get();
-                                            if (interstitialAd.isLoaded()){
-                                                interstitialAd.show();
-                                            }else {
-                                                salir = false;
-                                                Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
-                                                startActivity(intent);
-                                                progressBar.dismiss();
-                                                if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
-                                            }
-                                        } catch (Exception e) {
-                                            progressBar.dismiss();
-                                            alertaActu();
-                                        }
-                                    }
-                                });
+                        alertaInternet();
                     }
-                }else{
-                    progressBar.dismiss();
-                    alertaInternet();
                 }
-
             }
         });
+
+        /*if (datos.getBoolean("version", false)){
+            db.collection("Versiones").document("VERSION").get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (Objects.equals(Objects.requireNonNull(task.getResult()).get("version"), "1.0")){
+                                if (interstitialAd.isLoaded()){
+                                    interstitialAd.show();
+                                }else {
+                                    salir = false;
+                                    Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                                    startActivity(intent);
+                                    progressBar.dismiss();
+                                    if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                                }
+                            }else {
+                                progressBar.dismiss();
+                                alertaActu();
+                            }
+                        }
+                    });
+        }*/
+
         botonAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -388,13 +442,6 @@ public class InicioActivity extends AppCompatActivity {
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
             }
         });
-
-
-        if(mAuth.getCurrentUser() != null) {
-            competencia.setAlpha((float) 0.99999999999999);
-        }else {
-            competencia.setAlpha((float) 0.6);
-        }
     }
 
     public static boolean isOnline(Context context){
@@ -493,22 +540,10 @@ public class InicioActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Games.getLeaderboardsClient(InicioActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(InicioActivity.this)))
-                            .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
-                            .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
-                                    try{
-                                        progressBar.dismiss();
-                                        salir = false;
-                                        Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
-                                        startActivity(intent);
-                                    }catch (Exception e){
-                                        progressBar.dismiss();
-                                        alertaActu();
-                                    }
-                                }
-                            });
+                    progressBar.dismiss();
+                    salir = false;
+                    Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                    startActivity(intent);
                 }else {
                     progressBar.dismiss();
                     alertaInicioError();
