@@ -107,7 +107,7 @@ public class CompetenciaActivity extends AppCompatActivity {
         efecto = soundPool.load(this, R.raw.efecto, 1);
         intents = soundPool.load(this, R.raw.intents, 1);
         fallo = soundPool.load(this, R.raw.fallo, 1);
-        nice = soundPool.load(this, R.raw.fin, 1);
+        nice = soundPool.load(this, R.raw.win, 1);
 
         datos.edit().putBoolean("PARTIDAPERDIDA", false).apply();
 
@@ -240,6 +240,7 @@ public class CompetenciaActivity extends AppCompatActivity {
                             if (Objects.requireNonNull(task.getResult()).get("ganador") != null && Objects.equals(task.getResult().get("ganador"), "Sisa")){
                                 usuario.put("ganador", "Sisa");
                                 ganador.show();
+                                if (sonidosSi) soundPool.play(nice, 1,1,1, 0, 1);
                             }else if (Objects.requireNonNull(task.getResult()).get("ganador") != null && Objects.equals(task.getResult().get("ganador"), "correo")){
                                 usuario.put("ganador", "correo");
                             }else{
@@ -477,7 +478,7 @@ public class CompetenciaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (puntosIntentos < 3000){
-                    if (sonidosSi) soundPool.play(fallo, 1,1,1, 0, 1);
+                    if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
                     textoToast.setText(getString(R.string.falloMensaje));
                     dialog.dismiss();
                     imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
@@ -557,7 +558,7 @@ public class CompetenciaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 premios.dismiss();
-                if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
+                if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
             }
         });
 
@@ -574,12 +575,14 @@ public class CompetenciaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (sonidosSi && create) soundPool.play(efecto, 1,1,1, 0, 1);
         if (GoogleSignIn.getLastSignedInAccount(this) == null){
+            if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
             salir = false;
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(CompetenciaActivity.this, InicioActivity.class);
             startActivity(intent);
+        }else {
+            if (sonidosSi && create) soundPool.play(efecto, 1,1,1, 0, 1);
         }
     }
 

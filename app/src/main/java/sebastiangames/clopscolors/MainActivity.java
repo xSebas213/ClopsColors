@@ -443,7 +443,7 @@ public class MainActivity extends AppCompatActivity {
         intents = soundPool.load(this, R.raw.intents, 1);
         fallo = soundPool.load(this, R.raw.fallo, 1);
         fin = soundPool.load(this, R.raw.fin, 1);
-        cuentaSonido = soundPool.load(this, R.raw.cuenta, 1);
+        cuentaSonido = soundPool.load(this, R.raw.brillo, 1);
 
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getString(R.string.screen_main));
@@ -496,7 +496,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (cuentica == 1) {
                     stopService(new Intent(MainActivity.this, Musica.class));
-                    if (musicaSi) mediaPlayer.start();
+                    if (musicaSi) {
+                        soundPool.play(cuentaSonido, 1,1,1, 0, 1);
+                        mediaPlayer.start();
+                    }
                     paraAnimacion(primeraAnimacion);
                     enJuego = true;
                     cuentica = 4;
@@ -1176,7 +1179,7 @@ public class MainActivity extends AppCompatActivity {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
-                        if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
+                        if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                         seguidasMitad = 0;
                         seguidasVidas = 0;
                         vida.setText(String.valueOf(vidas));
@@ -1207,7 +1210,7 @@ public class MainActivity extends AppCompatActivity {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
-                        if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
+                        if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                         seguidasMitad = 0;
                         seguidasVidas = 0;
                         vida.setText(String.valueOf(vidas));
@@ -1238,7 +1241,7 @@ public class MainActivity extends AppCompatActivity {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
-                        if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
+                        if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                         seguidasMitad = 0;
                         seguidasVidas = 0;
                         vida.setText(String.valueOf(vidas));
@@ -1270,7 +1273,7 @@ public class MainActivity extends AppCompatActivity {
                             view.setBackgroundResource(R.drawable.error);
                             handler.postDelayed(hilo21, 50);
                             vidas--;
-                            if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
+                            if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                             seguidasMitad = 0;
                             seguidasVidas = 0;
                             vida.setText(String.valueOf(vidas));
@@ -1285,7 +1288,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } else{
-            if (sonidosSi) soundPool.play(fallo, 1, 1, 0, 0, 1);
+            if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
             if (cuentica != 4) {
                 textoToast.setText(getString(R.string.cuentaError));
                 imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
@@ -1337,7 +1340,7 @@ public class MainActivity extends AppCompatActivity {
                                 restarBoton[pulsado] = false;
                                 handler.postDelayed(hilo30, 550);
                                 vidas--;
-                                if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
+                                if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                                 seguidasMitad = 0;
                                 seguidasVidas = 0;
                                 vida.setText(String.valueOf(vidas));
@@ -1467,7 +1470,7 @@ public class MainActivity extends AppCompatActivity {
                                 restarBoton[pulsado2] = false;
                                 handler.postDelayed(hilo31, 550);
                                 vidas--;
-                                if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
+                                if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                                 seguidasMitad = 0;
                                 seguidasVidas = 0;
                                 vida.setText(String.valueOf(vidas));
@@ -1532,7 +1535,7 @@ public class MainActivity extends AppCompatActivity {
                             seguidasMitad = 0;
                             seguidasVidas = 0;
                             vidas--;
-                            if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
+                            if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                             vida.setText(String.valueOf(vidas));
                             pulsadoBoton[pulsado3] = false;
                             boton3.setBackgroundResource(R.drawable.error);
@@ -1582,7 +1585,7 @@ public class MainActivity extends AppCompatActivity {
                             restarBoton[pulsado4] = false;
                             handler.postDelayed(hilo33, 550);
                             vidas--;
-                            if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
+                            if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                             seguidasMitad = 0;
                             seguidasVidas = 0;
                             vida.setText(String.valueOf(vidas));
@@ -1634,7 +1637,7 @@ public class MainActivity extends AppCompatActivity {
                             restarBoton[pulsado5] = false;
                             handler.postDelayed(hilo34, 550);
                             vidas--;
-                            if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
+                            if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                             seguidasMitad = 0;
                             seguidasVidas = 0;
                             vida.setText(String.valueOf(vidas));
@@ -1753,7 +1756,7 @@ public class MainActivity extends AppCompatActivity {
                                 restarBoton[pulsado6] = false;
                                 handler.postDelayed(hilo35, 550);
                                 vidas--;
-                                if (sonidosSi) soundPool.play(fallo, 1,1,0, 0, 1);
+                                if (sonidosSi) soundPool.play(fallo, 2, 2, 0, 0, 1);
                                 seguidasMitad = 0;
                                 seguidasVidas = 0;
                                 vida.setText(String.valueOf(vidas));

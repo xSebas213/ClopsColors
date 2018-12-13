@@ -59,7 +59,7 @@ public class InicioActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     private Vibrator vibrator;
     private SoundPool soundPool;
-    private int efecto, intents;
+    private int efecto, intents, fallo;
     private ImageView competencia, musicaImagen, sonidoImagen;
     private FrameLayout icono, jugar, music, info, informa, atras, botonAlerta, botonAlertaNo, botonAlertaSi, botonIntentos;
     private Animation terceraAnimacion, cuartaAnimacion;
@@ -114,6 +114,7 @@ public class InicioActivity extends AppCompatActivity {
                 .setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build())
                 .build();
         efecto = soundPool.load(this, R.raw.efecto, 1);
+        fallo = soundPool.load(this, R.raw.fallo, 1);
         intents = soundPool.load(this, R.raw.intents, 1);
         datos = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
         datos.edit().putBoolean("PARTIDAPERDIDA", false).apply();
@@ -472,6 +473,7 @@ public class InicioActivity extends AppCompatActivity {
         dialog.show();
     }
     public void alertaInicioError(){
+        if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
         mensajeAlerta.setTextSize(25);
         botonAlertaNo.setVisibility(View.INVISIBLE);
         botonAlertaNo.setEnabled(false);
@@ -487,6 +489,7 @@ public class InicioActivity extends AppCompatActivity {
         dialog.show();
     }
     public void alertaInternet(){
+        if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
         mensajeAlerta.setTextSize(25);
         tituloAlerta.setText(getString(R.string.tituloAlertaInternet));
         mensajeAlerta.setText(getString(R.string.textoAlertaInternet));
@@ -502,6 +505,7 @@ public class InicioActivity extends AppCompatActivity {
         dialog.show();
     }
     private void alertaActu() {
+        if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
         tituloAlerta.setText(getString(R.string.tituloAlertaActu));
         mensajeAlerta.setText(getString(R.string.textoAlertaActu));
         textoBotonAlerta.setText(getString(R.string.botonAlertaActu));

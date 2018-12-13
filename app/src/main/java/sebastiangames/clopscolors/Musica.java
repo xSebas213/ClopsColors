@@ -1,8 +1,11 @@
 package sebastiangames.clopscolors;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.IBinder;
 
 public class Musica extends Service {
@@ -12,8 +15,8 @@ public class Musica extends Service {
     public void onCreate() {
         super.onCreate();
         fondo = MediaPlayer.create(this, R.raw.fondo);
-        fondo.setVolume(0.7f, 0.7f);
         fondo.setLooping(true);
+        fondo.setVolume(0.4f, 0.4f);
     }
 
     @Override

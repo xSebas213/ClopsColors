@@ -132,6 +132,7 @@
 
     <dimen name="margenBotonesInterfaz">30dp</dimen>
     <dimen name="margenBotonPremio">25dp</dimen>
+    <dimen name="margenBotonPremioTop">25dp</dimen>
     <dimen name="marginBotonesInterfaz">2dp</dimen>
     <dimen name="tamañoBotonsInterfaz">45dp</dimen>
 

@@ -20,6 +20,7 @@
     <dimen name="botonPremioEnterateLargo">50dp</dimen>
 
     <dimen name="margenBotonPremios">25dp</dimen>
+    <dimen name="margenBotonPremioTop">25dp</dimen>
     <dimen name="margenBotonCerrarPremios">10dp</dimen>
 
     <dimen name="margenLineaVidas">25dp</dimen>

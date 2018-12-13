@@ -53,7 +53,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     private FrameLayout multiplica;
     private TextView score, punticosOp, textoToast;
     private int puntuacion, nuevoRecord, veces, zoom;
-    private int nivel, intentos, puntosRanking, puntosViejos, efecto, intents;
+    private int nivel, intentos, puntosRanking, puntosViejos, efecto, intents, fallo;
     private Boolean aBoolean, competencia, visto, sonidosSi, musicaSi, salir, reinicio, focus;
     private Handler handler;
     private Animation terceraAnimacion, quintaAnimacion, sextaAnimacion;
@@ -100,6 +100,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
                 .build();
         efecto = soundPool.load(this, R.raw.efecto, 1);
         intents = soundPool.load(this, R.raw.intents, 1);
+        fallo = soundPool.load(this, R.raw.fallo, 1);
 
         rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         rewardedVideoAd.setRewardedVideoAdListener(this);
@@ -320,41 +321,36 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         datos.edit().putBoolean("PARTIDAPERDIDA", false).apply();
         if (competencia) {
             if (isOnline(this)) {
-                Games.getLeaderboardsClient(this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(this)))
-                        .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
-                        .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AnnotatedData<LeaderboardScore>> task) {
-                                try {
-                                    Objects.requireNonNull(task.getResult()).get();
-                                    if (intentos > 0) {
-                                        salir = false;
-                                        if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
-                                        Intent intent = new Intent(FinalActivity.this, MainActivity.class);
-                                        intent.putExtra("NIVEL", nivel);
-                                        intent.putExtra("INTENTOS", Integer.toString(intentos));
-                                        intent.putExtra("COMPETENCIA", competencia);
-                                        startActivity(intent);
-                                    } else {
-                                        textoToast.setText(getString(R.string.sinIntentos));
-                                        imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
-                                        toast.show();
-                                    }
-                                } catch (Exception e) {
-                                    textoToast.setText(getString(R.string.sinRanking));
-                                    imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
-                                    toast.show();
-                                }
-                            }
-                        });
+                if (datos.getBoolean("VERSION", true)){
+                    if (intentos > 0) {
+                        salir = false;
+                        if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                        Intent intent = new Intent(FinalActivity.this, MainActivity.class);
+                        intent.putExtra("NIVEL", nivel);
+                        intent.putExtra("INTENTOS", Integer.toString(intentos));
+                        intent.putExtra("COMPETENCIA", competencia);
+                        startActivity(intent);
+                    } else {
+                        if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
+                        textoToast.setText(getString(R.string.sinIntentos));
+                        imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                        toast.show();
+                    }
+                }else {
+                    if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
+                    textoToast.setText(getString(R.string.sinRankingPlay));
+                    imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                    toast.show();
+                }
             }else {
-                if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
                 textoToast.setText(getString(R.string.textoAlertaInternet));
                 imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
                 toast.show();
             }
         } else {
             salir = false;
+            if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("NIVEL", nivel);
             intent.putExtra("INTENTOS", Integer.toString(intentos));
@@ -464,6 +460,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
             textoToast.setText(getString(R.string.sinVideo));
             imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
             toast.show();
+            if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
             cargarVideo();
         }
     }

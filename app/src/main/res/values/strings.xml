@@ -32,6 +32,7 @@
 
     <string name="intentos">Intentos restantes :</string>
     <string name="sinIntentos">No tienes más intentos</string>
+    <string name="sinRankingPlay">¡ El ranking está cerddado !</string>
     <string name="sinRanking">El ranking está cerrado\nPero tus puntos se guardaron para el ranking siguiente</string>
     <string name="tituloIntentos">Clops acumulados</string>
     <string name="botonIntentos">Canjear clops</string>
