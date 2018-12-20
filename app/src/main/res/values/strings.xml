@@ -24,16 +24,19 @@
 
     <string name="sinFace">La aplicación no está instalada</string>
 
-    <string name="sinVideo">Debes terminar el vídeo para multiplicar tus puntos.</string>
+    <string name="sinVideo">Debes terminar el vídeo para multiplicar tus Clops.</string>
+
+    <string name="facebook_app_id">269100503727184</string>
 
     <string name="puntos">Tus Clops</string>
     <string name="premios">Premios</string>
     <string name="nuevosPuntos">¡Nuevos Clops!</string>
 
+    <string name="clopsAcumulados">Clops acumulados en partidas normales.</string>
     <string name="intentos">Intentos restantes :</string>
-    <string name="sinIntentos">No tienes más intentos</string>
-    <string name="sinRankingPlay">¡ El ranking está cerddado !</string>
-    <string name="sinRanking">El ranking está cerrado\nPero tus puntos se guardaron para el ranking siguiente</string>
+    <string name="sinIntentos">No tienes más intentos\nJuega partidas normales, acumula clops y canjéalos por un intento.</string>
+    <string name="sinRankingPlay">¡ El ranking está cerraado !</string>
+    <string name="sinRanking">El ranking está cerrado\nPero tus Clops se guardaron para el ranking siguiente</string>
     <string name="tituloIntentos">Clops acumulados</string>
     <string name="botonIntentos">Canjear clops</string>
 
@@ -46,12 +49,16 @@
     <string name="felicidadesMensaje">Tus clops han sido canjeados exitosamente</string>
 
     <string name="tituloAlerta">Inicio de sesión</string>
-    <string name="textoAlerta">¡ Debes iniciar sesión antes de poder \ncompetir !</string>
+    <string name="textoAlerta">¡ Debes iniciar sesión antes de poder competir !</string>
     <string name="botonAlerta">Iniciar sesión</string>
 
     <string name="tituloAlertaInternet">Sin internet</string>
     <string name="textoAlertaInternet">¡ No hay conexión a internet !</string>
     <string name="botonAlertaInternet">Okas</string>
+
+    <string name="tituloRecuerdp">¡ CLOPS EXTRA !</string>
+    <string name="textoRecuerdo">Los jugadores que <b>HOY</b>\nsuban una HISTORIA con el hashtag <b>#ClopSeandoAndo</b> y etiqueten a <b>5</b> de nuestras\n MARCAS ALIADAS\n\n¡ Obtendrán <b>1000</b> Clops extra en su ranking !\n\nNo olvides escribir el nombre que tienes dentro del juego.</string>
+    <string name="botonRecuerdo">Epaaaa</string>
 
     <string name="tituloAlertaGanador">¡ ERES UN GANADOR !</string>
     <string name="textoAlertaGanador">Te contactaremos por correo.\nDéjanos tu teléfono para contactarte si así lo prefieres.\n\n¡ DISFRÚTALO !</string>
@@ -94,7 +101,7 @@
     <string name="infoVidas">Vidas extra</string>
     <string name="infoTiempo">Reajustar Tiempo</string>
 
-    <string name="infoExplicacionExplo">Llega hasta la ronda 12 y tendrás una explosión de colores</string>
+    <string name="infoExplicacionExplo">Llega hasta la ronda 13 y tendrás una explosión de colores</string>
     <string name="infoExplicacionMitad">Consigue 100\nclops seguidos y podrás jugar en un tablero reducido</string>
     <string name="infoExplicacionVidas">Consigue 70 clops seguidos y\npodrás reclamar 5 vidas extra en tu partida</string>
     <string name="infoExplicacionTiempo">Llega hasta la ronda 8 y podrás volver el tiempo lento por 10 segundos además de reiniciar los tiempos de reacción</string>

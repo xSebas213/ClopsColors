@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -48,12 +49,8 @@ public class NivelesActivity extends AppCompatActivity {
         Animation primeraAnimacion, segundaAnimacion, sextaAnimacion, septimaAnimacion, octavaAnimacion;
         TextView textoFacil, textoNormal, textoDificil, textoExperto, textoInfo;
         int[] colores, seleccionados;
-        AdView adView;
         SharedPreferences datos;
-
-        adView = findViewById(R.id.adViewNiveles);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        adView.loadAd(adRequest);
+        AdView adView;
 
         datos = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
         soundPool = new SoundPool.Builder().setMaxStreams(10)
@@ -61,6 +58,10 @@ public class NivelesActivity extends AppCompatActivity {
                 .build();
         efecto = soundPool.load(this, R.raw.efecto, 1);
         intents = soundPool.load(this, R.raw.intents, 1);
+
+        adView = findViewById(R.id.adViewNiveles);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         datos.edit().putBoolean("PARTIDAPERDIDA", false).apply();
 
@@ -314,10 +315,9 @@ public class NivelesActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         if (salir) stopService(new Intent(this, Musica.class));
-
     }
 
     public void onBackPressed(){

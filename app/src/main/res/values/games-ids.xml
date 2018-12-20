@@ -13,16 +13,19 @@
     <string name="banner_final" translatable="false">ca-app-pub-5684983410597851/1758172839</string>
     <string name="banner_niveles" translatable="false">ca-app-pub-5684983410597851/5776065629</string>
     <!-- FullScreen -->
-    <string name="screen_main" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="screen_main" translatable="false">ca-app-pub-5684983410597851/7398949118</string>
     <string name="screen_compue" translatable="false">ca-app-pub-5684983410597851/4088409359</string>
     <!-- videos -->
     <string name="video_inicio" translatable="false">123</string>
     <string name="video_niveles" translatable="false">123</string>
     <string name="video_competencia" translatable="false">123</string>
     <string name="video_final" translatable="false">123</string>
-    <string name="video_puntos" translatable="false">ca-app-pub-5684983410597851/2127205474</string>
+    <string name="video_puntos" translatable="false">ca-app-pub-5684983410597851/3937134021</string>
 
 
-    <string name="page_face" translatable="false">fb://note/1169848496515058</string>
-    <string name="web_face" translatable="false">https://www.facebook.com/notes/clops-colors/premios-semanales/1169848496515058</string>
+    <string name="page_face" translatable="false">fb://note/1181022435397664</string>
+    <string name="web_face" translatable="false">https://www.facebook.com/notes/clops-colors/ranking-de-lanzamiento/1181022435397664/</string>
+
+    <string name="clownsPage" translatable="false">https://www.facebook.com/ClownsDeli</string>
+    <string name="clownsWeb" translatable="false">https://www.facebook.com/ClownsDeli</string>
 </resources>

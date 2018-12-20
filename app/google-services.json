@@ -8,6 +8,50 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:698762017931:android:1d4b75c1107fbba9",
+        "android_client_info": {
+          "package_name": "intentos.sebas.intentos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698762017931-f8bt3rpbqt2kuha5q1ulh9rrj6eev8ef.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "intentos.sebas.intentos",
+            "certificate_hash": "154eeb92dc95a43ebb8a94a1da7724b498ce273f"
+          }
+        },
+        {
+          "client_id": "698762017931-j4e3r730cjvcqqh1f5f7fmgaqqkb1k9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgJdjQ4Hl2nBfD-m_TCo_xPbviDDeD1mQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698762017931-j4e3r730cjvcqqh1f5f7fmgaqqkb1k9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:698762017931:android:95281ce38c1b599d",
         "android_client_info": {
           "package_name": "sebastiangames.clopscolors"
@@ -48,7 +92,8 @@
         "ads_service": {
           "status": 2
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-5684983410597851~2777942164"
     }
   ],
   "configuration_version": "1"

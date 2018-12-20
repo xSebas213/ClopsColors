@@ -21,6 +21,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
+            <ImageView
+                android:foreground="?selectableItemBackground"
+                android:visibility="invisible"
+                android:id="@+id/pregunta"
+                android:padding="3dp"
+                android:src="@drawable/pregunta"
+                android:background="@drawable/blanco"
+                android:layout_marginEnd="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,6 +54,7 @@
                     android:textColor="@color/blanco"/>
 
                 <TextView
+                    android:gravity="center"
                     android:id="@+id/mensajeAlerta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

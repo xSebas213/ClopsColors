@@ -11,14 +11,12 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:elevation="2dp"
+            android:foreground="?selectableItemBackground"
             android:layout_gravity="end"
             android:id="@+id/cerrarTuto"
             android:layout_margin="@dimen/margenBotonCerrarPremios"
-            android:layout_width="@dimen/tamañoCerrar"
-            android:layout_height="@dimen/tamañoCerrar"
-            android:src="@drawable/cerrar"
-            android:background="@drawable/blanco"/>
+            android:layout_width="80dp"
+            android:layout_height="80dp"/>
 
         <VideoView
             android:id="@+id/videoTuto"

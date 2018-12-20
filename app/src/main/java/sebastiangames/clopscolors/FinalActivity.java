@@ -31,9 +31,7 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,7 +61,6 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     private SharedPreferences datos;
     private SharedPreferences.Editor editor;
     private Toast toast;
-    private FirebaseFirestore db;
 
 
 
@@ -76,6 +73,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         TextView textoMultiplica, record, puntosRecord;
         int[] fondos, seleccionados;
         Random random;
+        FirebaseFirestore db;
         Typeface normalita, negrita;
         Animation primeraAnimacion, segundaAnimacion, cuartaAnimacion;
 
@@ -85,7 +83,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         View viewToast;
 
         adView = findViewById(R.id.adViewFinal);
-        AdRequest adRequest;adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        AdRequest adRequest;adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         Bundle extras = getIntent().getExtras();
@@ -310,7 +308,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
 
     public void cargarVideo(){
         rewardedVideoAd.loadAd(getString(R.string.video_puntos), new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+                .build());
     }
     public void multiplicaPuntos(View view){
         if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
@@ -380,7 +378,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
         salir = false;
         if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
         if (competencia){
-            if (isOnline(this)) {
+            if (isOnline(this) && datos.getBoolean("VERSION", true)) {
                 Intent intent = new Intent(this, CompetenciaActivity.class);
                 startActivity(intent);
             }else {
@@ -426,8 +424,8 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         if (salir) stopService(new Intent(this, Musica.class));
     }
 
@@ -474,6 +472,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     }
     @Override
     public void onRewardedVideoAdFailedToLoad(int i) {
+        cargarVideo();
     }
     @Override
     public void onRewardedVideoCompleted() {

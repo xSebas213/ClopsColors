@@ -14,6 +14,8 @@
     <dimen name="marginHome">5dp</dimen>
     <dimen name="tamañoHome">48dp</dimen>
 
+    <dimen name="banner">73dp</dimen>
+
     <dimen name="toastLargo">85dp</dimen>
 
     <dimen name="botonPremioEnterateAncho">190dp</dimen>

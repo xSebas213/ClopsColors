@@ -1,6 +1,5 @@
 package sebastiangames.clopscolors;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -42,7 +41,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -57,40 +55,41 @@ import javax.annotation.Nullable;
 
 public class CompetenciaActivity extends AppCompatActivity {
     private static final int RC_LEADERBOARD_UI = 9004;
-    private ImageView fondoPremio;
+    private ImageView fondoPremio, pregunta;
     private ImageManager imageManager;
-    private ImageView imagenJugador, imagenToast;
+    private ImageView imagenJugador, imagenToast, toque1, toque2;
     private String  intentos, id, puntos;
     private FrameLayout infoCompe, competir, botonAlerta, botonAlertaNo, botonAlertaSi, botonIntentos;
     private TextView textoPuntosIntentos, puntosJuador, nombreJugador, puestoJugador,
             textoBotonAlerta, mensajeAlerta, tituloAlerta, textoToast, textoBotonNo, textoBotonSi;
-    private Animation primeraAnimacion, cuartaAnimacion;
+    private Animation primeraAnimacion, cuartaAnimacion, animacionToque, animacionToque2;
     private int[] premiosFondo;
     private CollectionReference usuarios;
     private Map<String, Object> usuario;
-    private Boolean aBoolean, sonidosSi, create, musicaSi, salir, actualizacion;
+    private Boolean aBoolean, sonidosSi, create, musicaSi, salir, actualizacion, alerta;
     private Handler handler;
     private SoundPool soundPool;
-    private Dialog dialog, premios, ganador, progressBar;
-    private int puntosIntentos, numeroPremio, efecto, intents, fallo, nice;
+    private Dialog dialog, premios, ganador, progressBar, recuerdo;
+    private int puntosIntentos, efecto, intents, fallo, nice, fondo;
     private SharedPreferences datos;
     private SharedPreferences.Editor editor;
     private Toast toast;
     private EditText numeroGanador;
+    private Random random;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_competencia);
 
-        FirebaseAuth mAuth;
         FirebaseFirestore db;
         ImageView cerrar,informaImagen;
-        Random random;
 
         final CheckBox checkGanador;
-        FrameLayout homeCompe, posiciones, masIntentos, botonPremios, botonGanador;
-        TextView textoCompetir, textoIntentos, textoBotonIntentos, textoPremios, textoBotonPremio, tituloGanador, mensajeGanador, textoBotonGanador;
+        FrameLayout homeCompe, posiciones, masIntentos, botonPremios, botonGanador, botonRecuerdo;
+        TextView textoCompetir, textoIntentos, textoBotonIntentos, textoPremios, textoBotonPremio,
+                tituloGanador, mensajeGanador, textoBotonGanador, textoBotonRecuerdo, mensajeRecuerdo,tituloRecuerdo;
         Animation segundaAnimacion, terceraAnimacion, quientaAnimacion, sextaAnimacion;
         Typeface negrita, normalita;
         int[] colores, seleccionados;
@@ -112,7 +111,7 @@ public class CompetenciaActivity extends AppCompatActivity {
         datos.edit().putBoolean("PARTIDAPERDIDA", false).apply();
 
         adView = findViewById(R.id.adViewCompetir);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         progressBar = new Dialog(this);
@@ -122,10 +121,9 @@ public class CompetenciaActivity extends AppCompatActivity {
 
         random = new Random(System.currentTimeMillis());
         colores = new int[5];
-        numeroPremio = 0;
         create = false;
         seleccionados = new int[3];
-        premiosFondo = new int[5];
+        premiosFondo = new int[12];
         usuario = new HashMap<>();
         aBoolean = false;
         actualizacion = false;
@@ -143,6 +141,15 @@ public class CompetenciaActivity extends AppCompatActivity {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.alerta);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        recuerdo = new Dialog(this);
+        recuerdo.setContentView(R.layout.recuerdo);
+        recuerdo.setCancelable(false);
+        Objects.requireNonNull(recuerdo.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        textoBotonRecuerdo = recuerdo.findViewById(R.id.textoBotonRecuerdo);
+        tituloRecuerdo = recuerdo.findViewById(R.id.tituloRecuerdp);
+        mensajeRecuerdo = recuerdo.findViewById(R.id.textoRecuerdo);
+        botonRecuerdo = recuerdo.findViewById(R.id.botonRecuerdo);
 
         ganador = new Dialog(this);
         ganador.setContentView(R.layout.ganador);
@@ -180,6 +187,7 @@ public class CompetenciaActivity extends AppCompatActivity {
         mensajeAlerta = dialog.findViewById(R.id.mensajeAlerta);
         textoBotonAlerta = dialog.findViewById(R.id.textoBotonAlerta);
         botonIntentos = dialog.findViewById(R.id.botonIntentos);
+        pregunta = dialog.findViewById(R.id.pregunta);
         textoBotonIntentos = dialog.findViewById(R.id.textoBotonIntentos);
         textoBotonNo = dialog.findViewById(R.id.textoBotonNo);
         textoBotonSi = dialog.findViewById(R.id.textoBotonSi);
@@ -189,6 +197,8 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonPremios = premios.findViewById(R.id.enterate);
         textoBotonPremio = premios.findViewById(R.id.textoBotonPremios);
         fondoPremio = premios.findViewById(R.id.fondoPremio);
+        toque1 = premios.findViewById(R.id.toque1);
+        toque2 = premios.findViewById(R.id.toque2);
 
         textoToast.setTypeface(normalita);
         textoCompetir.setTypeface(negrita);
@@ -215,52 +225,57 @@ public class CompetenciaActivity extends AppCompatActivity {
         usuarios = db.collection("Usuarios");
         progressBar.show();
 
-        DocumentReference documentReference = db.collection("Versiones").document("VERSION");
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if (!Objects.equals(Objects.requireNonNull(documentSnapshot).get("version"), "1.0")){
-                    alertaActu();
-                    actualizacion = true;
-                    datos.edit().putBoolean("VERSION", false).apply();
-                }else {
-                    usuarios.document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        if (mAuth.getCurrentUser() != null) {
+            db.collection("Versiones").document("VERSION")
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (Objects.requireNonNull(task.getResult()).get("intentos") == null || task.getResult().get("puntos") == null){
-                                intentos = "10";
-                                puntos = "0";
-                            }else {
-                                puntos = (String) task.getResult().get("puntos");
-                                intentos = (String) task.getResult().get("intentos");
-                            }
+                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                            if (mAuth.getCurrentUser() != null) {
+                                alerta = (Objects.equals(Objects.requireNonNull(documentSnapshot).get("recuerdo"), "Si"));
+                                if (!Objects.equals(Objects.requireNonNull(documentSnapshot).get("version"), "1.0")) {
+                                    alertaActu();
+                                    actualizacion = true;
+                                    datos.edit().putBoolean("VERSION", false).apply();
+                                } else {
+                                    usuarios.document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (Objects.requireNonNull(task.getResult()).get("intentos") == null || task.getResult().get("puntos") == null) {
+                                                intentos = "10";
+                                                puntos = "0";
+                                            } else {
+                                                puntos = (String) task.getResult().get("puntos");
+                                                intentos = (String) task.getResult().get("intentos");
+                                            }
 
-                            mostrarPerfil();
+                                            mostrarPerfil();
 
-                            if (Objects.requireNonNull(task.getResult()).get("ganador") != null && Objects.equals(task.getResult().get("ganador"), "Sisa")){
-                                usuario.put("ganador", "Sisa");
-                                ganador.show();
-                                if (sonidosSi) soundPool.play(nice, 1,1,1, 0, 1);
-                            }else if (Objects.requireNonNull(task.getResult()).get("ganador") != null && Objects.equals(task.getResult().get("ganador"), "correo")){
-                                usuario.put("ganador", "correo");
-                            }else{
-                                usuario.put("ganador", "");
-                            }
-                            usuario.put("puntos", puntos);
-                            usuario.put("intentos", intentos);
+                                            if (Objects.requireNonNull(task.getResult()).get("ganador") != null && Objects.equals(task.getResult().get("ganador"), "Sisa")) {
+                                                usuario.put("ganador", "Sisa");
+                                                ganador.show();
+                                                if (sonidosSi) soundPool.play(nice, 1, 1, 1, 0, 1);
+                                            } else if (Objects.requireNonNull(task.getResult()).get("ganador") != null && Objects.equals(task.getResult().get("ganador"), "correo")) {
+                                                usuario.put("ganador", "correo");
+                                            } else {
+                                                usuario.put("ganador", "");
+                                            }
+                                            usuario.put("puntos", puntos);
+                                            usuario.put("intentos", intentos);
 
-                            if (task.getResult().exists()){
-                                usuarios.document(id).update(usuario);
-                            }else {
-                                usuarios.document(id).set(usuario);
+                                            if (task.getResult().exists()) {
+                                                usuarios.document(id).update(usuario);
+                                            } else {
+                                                usuarios.document(id).set(usuario);
+                                            }
+                                            textoPuntosIntentos.setText(intentos);
+                                        }
+                                    });
+                                    datos.edit().putBoolean("VERSION", true).apply();
+                                }
                             }
-                            textoPuntosIntentos.setText(intentos);
                         }
                     });
-                    datos.edit().putBoolean("VERSION", true).apply();
-                }
-            }
-        });
+        }
 
         colores[0] = R.drawable.rosado;
         colores[1] = R.drawable.verde;
@@ -272,13 +287,18 @@ public class CompetenciaActivity extends AppCompatActivity {
         seleccionados[1] = colores[random.nextInt(5)];
         seleccionados[2] = colores[random.nextInt(5)];
 
-        premiosFondo[0] = R.drawable.clowns;
-        premiosFondo[1] = R.drawable.skin;
-        premiosFondo[2] = R.drawable.ofocus;
-        premiosFondo[3] = R.drawable.superfood;
-        premiosFondo[4] = R.drawable.leo;
-
-        fondoPremio.setBackgroundResource(premiosFondo[numeroPremio]);
+        premiosFondo[0] = R.drawable.gabo;
+        premiosFondo[1] = R.drawable.clowns;
+        premiosFondo[2] = R.drawable.skin;
+        premiosFondo[3] = R.drawable.ufocus;
+        premiosFondo[4] = R.drawable.superfood;
+        premiosFondo[5] = R.drawable.leo;
+        premiosFondo[6] = R.drawable.olivetos;
+        premiosFondo[7] = R.drawable.retro;
+        premiosFondo[8] = R.drawable.gaon;
+        premiosFondo[9] = R.drawable.friends;
+        premiosFondo[10] = R.drawable.chihua;
+        premiosFondo[11] = R.drawable.ruta;
 
         while (seleccionados[0] == seleccionados[1]){
             seleccionados[0] = colores[random.nextInt(5)];
@@ -293,7 +313,7 @@ public class CompetenciaActivity extends AppCompatActivity {
 
         primeraAnimacion = AnimationUtils.loadAnimation(this, R.anim.agrandar);
         competir.setEnabled(false);
-        competir.setAlpha((float) 0.8);
+        competir.setAlpha((float) 0.7);
 
         segundaAnimacion = AnimationUtils.loadAnimation(this, R.anim.rotacion3);
         textoPuntosIntentos.startAnimation(segundaAnimacion);
@@ -302,6 +322,54 @@ public class CompetenciaActivity extends AppCompatActivity {
         cuartaAnimacion = AnimationUtils.loadAnimation(this, R.anim.agran);
         quientaAnimacion = AnimationUtils.loadAnimation(this, R.anim.ganador);
         sextaAnimacion = AnimationUtils.loadAnimation(this, R.anim.ganadorboton);
+        animacionToque = AnimationUtils.loadAnimation(this, R.anim.toque);
+        animacionToque2 = AnimationUtils.loadAnimation(this, R.anim.toque2);
+
+        textoBotonRecuerdo.setTypeface(negrita);
+        tituloRecuerdo.setTypeface(negrita);
+        mensajeRecuerdo.setTypeface(normalita);
+        botonRecuerdo.startAnimation(sextaAnimacion);
+        tituloRecuerdo.startAnimation(quientaAnimacion);
+
+        botonRecuerdo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
+                if (alerta){
+                    alerta = false;
+                    Games.getLeaderboardsClient(getApplicationContext(), Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(getApplicationContext())))
+                            .getLeaderboardIntent(getString(R.string.leaderboard_ranking))
+                            .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                                @Override
+                                public void onSuccess(Intent intent) {
+                                    Games.getLeaderboardsClient(CompetenciaActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)))
+                                            .submitScore(getString(R.string.leaderboard_ranking), Integer.parseInt(puntos));
+                                    salir = false;
+                                    create = true;
+                                    progressBar.dismiss();
+                                    recuerdo.dismiss();
+                                    startActivityForResult(intent, RC_LEADERBOARD_UI);
+                                }
+                            });
+                }else {
+                    Games.getLeaderboardsClient(getApplicationContext(), Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(getApplicationContext())))
+                            .getLeaderboardIntent(getString(R.string.leaderboard_ranking))
+                            .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                                @Override
+                                public void onSuccess(Intent intent) {
+                                    Games.getLeaderboardsClient(CompetenciaActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)))
+                                            .submitScore(getString(R.string.leaderboard_ranking), Integer.parseInt(puntos));
+                                    salir = false;
+                                    create = true;
+                                    recuerdo.dismiss();
+                                    progressBar.dismiss();
+                                    startActivityForResult(intent, RC_LEADERBOARD_UI);
+
+                                }
+                            });
+                }
+            }
+        });
 
         textoBotonGanador.setTypeface(negrita);
         tituloGanador.setTypeface(negrita);
@@ -358,6 +426,7 @@ public class CompetenciaActivity extends AppCompatActivity {
 
             }
         });
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -371,33 +440,51 @@ public class CompetenciaActivity extends AppCompatActivity {
         competir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.show();
-                if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
-                if (isOnline(CompetenciaActivity.this)) {
-                    if (!intentos.equals("0")) {
-                        if (puntos.equals("0")){
+                if (competir.getAlpha() == 1) {
+                    progressBar.show();
+                    if (sonidosSi) soundPool.play(intents, 0.5f, 0.5f, 1, 0, 1);
+                    if (isOnline(CompetenciaActivity.this)) {
+                        if (!intentos.equals("0")) {
+                            if (puntos.equals("0")) {
+                                progressBar.dismiss();
+                                alertaCompetir();
+                            } else {
+                                progressBar.dismiss();
+                                salir = false;
+                                Intent intent = new Intent(CompetenciaActivity.this, MainActivity.class);
+                                intent.putExtra("NIVEL", 4);
+                                intent.putExtra("COMPETENCIA", true);
+                                intent.putExtra("INTENTOS", intentos);
+                                startActivity(intent);
+                            }
+                        } else {
                             progressBar.dismiss();
-                            alertaCompetir();
-                        }else {
-                            progressBar.dismiss();
-                            salir = false;
-                            Intent intent = new Intent(CompetenciaActivity.this, MainActivity.class);
-                            intent.putExtra("NIVEL", 4);
-                            intent.putExtra("COMPETENCIA", true);
-                            intent.putExtra("INTENTOS", intentos);
-                            startActivity(intent);
+                            textoToast.setText(getString(R.string.sinIntentos));
+                            imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                            toast.setGravity(Gravity.CENTER, 0, 100);
+                            toast.show();
                         }
-                    }else {
+                    } else {
                         progressBar.dismiss();
-                        textoToast.setText(getString(R.string.sinIntentos));
-                        imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
-                        toast.setGravity(Gravity.CENTER, 0, 100);
-                        toast.show();
+                        alertaInternet();
                     }
                 }else {
-                    progressBar.dismiss();
-                    alertaInternet();
+                    textoToast.setText(getString(R.string.sinRankingPlay));
+                    imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                    toast.setGravity(Gravity.BOTTOM, 0, 100);
+                    toast.show();
                 }
+            }
+        });
+
+        pregunta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
+                textoToast.setText(getString(R.string.clopsAcumulados));
+                imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
+                toast.setGravity(Gravity.BOTTOM, 0, 100);
+                toast.show();
             }
         });
 
@@ -441,11 +528,11 @@ public class CompetenciaActivity extends AppCompatActivity {
                 if (isOnline(CompetenciaActivity.this) && (!actualizacion)) {
                     if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                     dialog.dismiss();
+                    progressBar.dismiss();
                 }else {
                     if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
                     salir = false;
                     Intent intent = new Intent(CompetenciaActivity.this, InicioActivity.class);
-                    intent.putExtra("actualizacion", true);
                     startActivity(intent);
                 }
             }
@@ -482,7 +569,7 @@ public class CompetenciaActivity extends AppCompatActivity {
                     textoToast.setText(getString(R.string.falloMensaje));
                     dialog.dismiss();
                     imagenToast.setImageDrawable(getResources().getDrawable(R.drawable.errortoast));
-                    toast.setGravity(Gravity.CENTER, 0, 100);
+                    toast.setGravity(Gravity.BOTTOM, 0, 100);
                     toast.show();
                 }else {
                     if (isOnline(CompetenciaActivity.this)) {
@@ -512,22 +599,29 @@ public class CompetenciaActivity extends AppCompatActivity {
         posiciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                salir = false;
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                 progressBar.show();
                 if (isOnline(CompetenciaActivity.this)) {
-                    Games.getLeaderboardsClient(getApplicationContext(), Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(getApplicationContext())))
-                            .getLeaderboardIntent(getString(R.string.leaderboard_ranking))
-                            .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                                @Override
-                                public void onSuccess(Intent intent) {
-                                    Games.getLeaderboardsClient(CompetenciaActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)))
-                                            .submitScore(getString(R.string.leaderboard_ranking), Integer.parseInt(puntos));
-                                    salir = false;
-                                    startActivityForResult(intent, RC_LEADERBOARD_UI);
-                                    progressBar.dismiss();
-                                    create = true;
-                                }
-                            });
+                    if (alerta) {
+                        recuerdo.show();
+                    }else {
+                        Games.getLeaderboardsClient(getApplicationContext(), Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(getApplicationContext())))
+                                .getLeaderboardIntent(getString(R.string.leaderboard_ranking))
+                                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                                    @Override
+                                    public void onSuccess(Intent intent) {
+                                        Games.getLeaderboardsClient(CompetenciaActivity.this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)))
+                                                .submitScore(getString(R.string.leaderboard_ranking), Integer.parseInt(puntos));
+                                        salir = false;
+                                        create = true;
+                                        progressBar.dismiss();
+                                        startActivityForResult(intent, RC_LEADERBOARD_UI);
+
+                                    }
+                                });
+                    }
+
                 }else {
                     progressBar.dismiss();
                     alertaInternet();
@@ -540,9 +634,20 @@ public class CompetenciaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
-                if (numeroPremio == 4) numeroPremio = -1;
-                fondoPremio.setBackgroundResource(premiosFondo[numeroPremio + 1]);
-                numeroPremio = numeroPremio + 1;
+                if (fondo == 11){
+                    fondoPremio.setBackgroundResource(premiosFondo[0]);
+                    fondo = 0;
+                }else {
+                    fondo++;
+                    fondoPremio.setBackgroundResource(premiosFondo[fondo]);
+                }
+                toque1.startAnimation(animacionToque);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        toque2.startAnimation(animacionToque2);
+                    }
+                }, 200);
             }
         });
 
@@ -551,6 +656,15 @@ public class CompetenciaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                 premios.show();
+                fondo = random.nextInt(12);
+                fondoPremio.setBackgroundResource(premiosFondo[fondo]);
+                toque1.startAnimation(animacionToque);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        toque2.startAnimation(animacionToque2);
+                    }
+                }, 300);
             }
         });
 
@@ -571,21 +685,6 @@ public class CompetenciaActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (GoogleSignIn.getLastSignedInAccount(this) == null){
-            if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
-            salir = false;
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(CompetenciaActivity.this, InicioActivity.class);
-            startActivity(intent);
-        }else {
-            if (sonidosSi && create) soundPool.play(efecto, 1,1,1, 0, 1);
-        }
-    }
-
     private void alertaIntentos(){
         dialog.setCancelable(true);
         tituloAlerta.setText(getString(R.string.tituloIntentos));
@@ -599,6 +698,8 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonAlertaSi.setEnabled(false);
         botonAlerta.setVisibility(View.INVISIBLE);
         botonAlerta.setEnabled(false);
+        pregunta.setVisibility(View.VISIBLE);
+        pregunta.setEnabled(true);
         dialog.show();
     }
 
@@ -617,6 +718,8 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonAlertaSi.setEnabled(true);
         botonAlerta.setVisibility(View.INVISIBLE);
         botonAlerta.setEnabled(false);
+        pregunta.setVisibility(View.INVISIBLE);
+        pregunta.setEnabled(false);
         dialog.show();
     }
     private void alertaActu() {
@@ -634,6 +737,8 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonAlerta.setEnabled(true);
         botonIntentos.setVisibility(View.INVISIBLE);
         botonIntentos.setEnabled(false);
+        pregunta.setVisibility(View.INVISIBLE);
+        pregunta.setEnabled(false);
         dialog.show();
     }
     private void alertaInternet() {
@@ -650,6 +755,8 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonAlerta.setEnabled(true);
         botonIntentos.setVisibility(View.INVISIBLE);
         botonIntentos.setEnabled(false);
+        pregunta.setVisibility(View.INVISIBLE);
+        pregunta.setEnabled(false);
         dialog.show();
     }
 
@@ -667,7 +774,7 @@ public class CompetenciaActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     Uri uri = Objects.requireNonNull(task.getResult()).getHiResImageUri();
                     imageManager.loadImage(imagenJugador, uri);
-                    nombreJugador.setText(Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(CompetenciaActivity.this)).getDisplayName());
+                    nombreJugador.setText(Objects.requireNonNull(task.getResult().getDisplayName()));
                     puntosJuador.setText(puntos);
                 }else{
                     imagenJugador.setBackgroundResource(R.drawable.usuarioerror);
@@ -676,6 +783,7 @@ public class CompetenciaActivity extends AppCompatActivity {
                 }
             }
         });
+
         Games.getLeaderboardsClient(this, Objects.requireNonNull(GoogleSignIn.getLastSignedInAccount(this)))
                 .loadCurrentPlayerLeaderboardScore(getString(R.string.leaderboard_ranking), 2, 0)
                 .addOnCompleteListener(new OnCompleteListener<AnnotatedData<LeaderboardScore>>() {
@@ -700,7 +808,6 @@ public class CompetenciaActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
     @Override
@@ -711,10 +818,31 @@ public class CompetenciaActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        salir = true;
+        if (GoogleSignIn.getLastSignedInAccount(this) == null){
+            mAuth.signOut();
+            if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
+            salir = false;
+            Intent intent = new Intent(CompetenciaActivity.this, InicioActivity.class);
+            startActivity(intent);
+        }else {
+            if (sonidosSi && create) soundPool.play(efecto, 1,1,1, 0, 1);
+            create = false;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (salir) stopService(new Intent(this, Musica.class));
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        if (salir) stopService(new Intent(this, Musica.class));
-
+        if (create) stopService(new Intent(this, Musica.class));
     }
 
     public void onBackPressed(){

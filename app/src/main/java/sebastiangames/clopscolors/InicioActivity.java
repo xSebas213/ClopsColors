@@ -17,7 +17,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -35,20 +34,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.games.AnnotatedData;
-import com.google.android.gms.games.Games;
-import com.google.android.gms.games.leaderboard.LeaderboardScore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Objects;
 import java.util.Random;
@@ -60,7 +53,7 @@ public class InicioActivity extends AppCompatActivity {
     private Vibrator vibrator;
     private SoundPool soundPool;
     private int efecto, intents, fallo;
-    private ImageView competencia, musicaImagen, sonidoImagen;
+    private ImageView competencia, musicaImagen, sonidoImagen, pregunta;
     private FrameLayout icono, jugar, music, info, informa, atras, botonAlerta, botonAlertaNo, botonAlertaSi, botonIntentos;
     private Animation terceraAnimacion, cuartaAnimacion;
     private Boolean aBoolean, sonidosSi, salir;
@@ -72,7 +65,6 @@ public class InicioActivity extends AppCompatActivity {
     private Dialog dialog, progressBar, musica;
     private InterstitialAd interstitialAd;
     private SharedPreferences datos;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +78,13 @@ public class InicioActivity extends AppCompatActivity {
         int[] colores, seleccionados;
         GoogleSignInOptions googleSignInOptions;
         AdView adView;
-        View viewToast;
         final FirebaseFirestore db;
 
         MobileAds.initialize(this, getString(R.string.mods_id));
 
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getString(R.string.screen_compue));
-        interstitialAd.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+        interstitialAd.loadAd(new AdRequest.Builder().build());
         interstitialAd.setAdListener(new AdListener(){
             @Override
             public void onAdClosed() {
@@ -107,7 +98,7 @@ public class InicioActivity extends AppCompatActivity {
         });
 
         adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         soundPool = new SoundPool.Builder().setMaxStreams(10)
@@ -169,6 +160,7 @@ public class InicioActivity extends AppCompatActivity {
         botonAlertaNo = dialog.findViewById(R.id.botonNo);
         botonAlertaSi = dialog.findViewById(R.id.botonSi);
         botonIntentos = dialog.findViewById(R.id.botonIntentos);
+        pregunta = dialog.findViewById(R.id.pregunta);
         musicAlerta = musica.findViewById(R.id.musicaAlerta);
         sonidoAlerta = musica.findViewById(R.id.sonidoAlerta);
         musicaImagen = musica.findViewById(R.id.musicaImagen);
@@ -215,7 +207,6 @@ public class InicioActivity extends AppCompatActivity {
         textoBotonAlertaNo.setTypeface(negrita);
         textoBotonAlertaSi.setTypeface(negrita);
 
-
         primeraAnimacion = AnimationUtils.loadAnimation(this, R.anim.iconoinicio);
         icono.startAnimation(primeraAnimacion);
 
@@ -231,33 +222,13 @@ public class InicioActivity extends AppCompatActivity {
             competencia.setAlpha((float) 0.6);
         }
 
-        if (isOnline(this)) {
-            Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                DocumentReference documentReference = db.collection("Versiones").document("VERSION");
-                documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                        if (!Objects.equals(Objects.requireNonNull(documentSnapshot).get("version"), "1.0")) {
-                            alertaActu();
-                            competencia.setAlpha((float) 0.5);
-                            datos.edit().putBoolean("VERSION", false).apply();
-                        } else {
-                            datos.edit().putBoolean("VERSION", true).apply();
-                        }
-                    }
-                });
-            } else {
-                competencia.setAlpha((float) 0.5);
-            }
-        }
-
         quintaAnimacion = AnimationUtils.loadAnimation(this, R.anim.competencia);
         competencia.startAnimation(quintaAnimacion);
 
         competencia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                salir = false;
                 if (competencia.getAlpha() == ((float)0.5)){
                     alertaActu();
                 }else {
@@ -268,15 +239,27 @@ public class InicioActivity extends AppCompatActivity {
                             progressBar.dismiss();
                             alertaInicio();
                         }else if (isOnline(InicioActivity.this)){
-                            if (interstitialAd.isLoaded()){
-                                interstitialAd.show();
-                            }else {
-                                salir = false;
-                                Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
-                                startActivity(intent);
-                                progressBar.dismiss();
-                                if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
-                            }
+                            db.collection("Versiones").document("VERSION").get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (Objects.equals(Objects.requireNonNull(task.getResult()).get("version"), "1.0")){
+                                                if (interstitialAd.isLoaded()){
+                                                    interstitialAd.show();
+                                                }else {
+                                                    salir = false;
+                                                    Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
+                                                    startActivity(intent);
+                                                    progressBar.dismiss();
+                                                    if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                                                }
+                                            }else {
+                                                progressBar.dismiss();
+                                                alertaActu();
+                                                competencia.setAlpha((float) 0.5);
+                                            }
+                                        }
+                                    });
                         }else{
                             progressBar.dismiss();
                             alertaInternet();
@@ -288,29 +271,6 @@ public class InicioActivity extends AppCompatActivity {
                 }
             }
         });
-
-        /*if (datos.getBoolean("version", false)){
-            db.collection("Versiones").document("VERSION").get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (Objects.equals(Objects.requireNonNull(task.getResult()).get("version"), "1.0")){
-                                if (interstitialAd.isLoaded()){
-                                    interstitialAd.show();
-                                }else {
-                                    salir = false;
-                                    Intent intent = new Intent(InicioActivity.this, CompetenciaActivity.class);
-                                    startActivity(intent);
-                                    progressBar.dismiss();
-                                    if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
-                                }
-                            }else {
-                                progressBar.dismiss();
-                                alertaActu();
-                            }
-                        }
-                    });
-        }*/
 
         botonAlerta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,6 +297,7 @@ public class InicioActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (sonidosSi) soundPool.play(intents, 0.5f,0.5f,1, 0, 1);
+                stopService(new Intent(InicioActivity.this, Musica.class));
                 dialog.dismiss();
                 salir = false;
                 Intent intent = new Intent(InicioActivity.this, TutoActivity.class);
@@ -470,6 +431,8 @@ public class InicioActivity extends AppCompatActivity {
         tituloAlerta.setText(getString(R.string.tituloAlerta));
         mensajeAlerta.setText(getString(R.string.textoAlerta));
         textoBotonAlerta.setText(getString(R.string.botonAlerta));
+        pregunta.setVisibility(View.INVISIBLE);
+        pregunta.setEnabled(false);
         dialog.show();
     }
     public void alertaInicioError(){
@@ -486,10 +449,12 @@ public class InicioActivity extends AppCompatActivity {
         tituloAlerta.setText(getString(R.string.tituloAlerta));
         mensajeAlerta.setText(getString(R.string.errorSesion));
         textoBotonAlerta.setText(getString(R.string.botonAlerta));
+        pregunta.setVisibility(View.INVISIBLE);
+        pregunta.setEnabled(false);
         dialog.show();
     }
-    public void alertaInternet(){
-        if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
+    public void alertaInternet() {
+        if (sonidosSi) soundPool.play(fallo, 2f, 2f, 1, 0, 1);
         mensajeAlerta.setTextSize(25);
         tituloAlerta.setText(getString(R.string.tituloAlertaInternet));
         mensajeAlerta.setText(getString(R.string.textoAlertaInternet));
@@ -502,6 +467,8 @@ public class InicioActivity extends AppCompatActivity {
         botonAlerta.setEnabled(true);
         botonIntentos.setVisibility(View.INVISIBLE);
         botonIntentos.setEnabled(false);
+        pregunta.setVisibility(View.INVISIBLE);
+        pregunta.setEnabled(false);
         dialog.show();
     }
     private void alertaActu() {
@@ -518,6 +485,8 @@ public class InicioActivity extends AppCompatActivity {
         botonAlerta.setEnabled(true);
         botonIntentos.setVisibility(View.INVISIBLE);
         botonIntentos.setEnabled(false);
+        pregunta.setVisibility(View.INVISIBLE);
+        pregunta.setEnabled(false);
         dialog.show();
     }
     public void alertaJugar(){
@@ -534,6 +503,8 @@ public class InicioActivity extends AppCompatActivity {
         botonAlertaSi.setEnabled(true);
         botonIntentos.setVisibility(View.INVISIBLE);
         botonIntentos.setEnabled(false);
+        pregunta.setVisibility(View.INVISIBLE);
+        pregunta.setEnabled(false);
         dialog.show();
     }
 
@@ -564,6 +535,7 @@ public class InicioActivity extends AppCompatActivity {
                 GoogleSignInAccount signedInAccount = task.getResult();
                 firebaseGooglePlay(Objects.requireNonNull(signedInAccount));
             } else {
+                Toast.makeText(this, getString(R.string.errorSesion), Toast.LENGTH_LONG).show();
                 alertaInicio();
             }
         }
@@ -596,8 +568,8 @@ public class InicioActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         if (salir) {
             stopService(new Intent(this, Musica.class));
             vibrator.cancel();

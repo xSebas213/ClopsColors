@@ -10,9 +10,30 @@
     android:layout_marginEnd="5dp">
 
     <ImageView
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
         android:id="@+id/fondoPremio"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <ImageView
+        android:layout_gravity="end"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="50dp"
+        android:id="@+id/toque1"
+        android:src="@drawable/blanco"
+        android:layout_width="10dp"
+        android:layout_height="10dp"/>
+
+    <ImageView
+        android:layout_gravity="end"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="50dp"
+        android:id="@+id/toque2"
+        android:src="@drawable/blanco"
+        android:layout_width="10dp"
+        android:layout_height="10dp"/>
 
     <ImageView
         android:id="@+id/cerrar"

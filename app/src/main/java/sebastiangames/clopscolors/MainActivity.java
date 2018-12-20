@@ -31,6 +31,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private SoundPool soundPool;
     private MediaPlayer mediaPlayer;
     private int toque, efecto, intents, fallo, fin, cuentaSonido;
-    private ImageView iconoPuntos, imagenToast;
+    private ImageView iconoPuntos, imagenToast, pregunta;
     private int contador, vidas, nivel, colorPlay, segundos, cuenta, vueltas, seguidasMitad, seguidasVidas, vueltasGeneral, mejoraView, mejora;
     private int opcionRandom1, opcionRandom2, opcionRandom3, opcionRandom4, opcionRandom5, colorPuto1, opcionRandom6;
     private int color, color2, color6, numeroBotones, cuentaTiempo, cuentaFaltaExpo, intentos;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     private Typeface negrita, normalita;
     private Animation primeraAnimacion, segundaAnimacion, terceraAnimacion, cuartaAnimacion, quintaAnimacion, sextaAnimacion, septimaAnimacion,
-            octavaAnimacion, novenaAnimacion, decimaAnimacion, cuentaAnimacion;
+            octavaAnimacion, novenaAnimacion, decimaAnimacion, cuentaAnimacion, exploAnimacion;
     private int velocidadSalida, velocidadEntrada;
     private ImageView[] imageViews;
 
@@ -395,6 +396,7 @@ public class MainActivity extends AppCompatActivity {
         novenaAnimacion = AnimationUtils.loadAnimation(this, R.anim.desaparecer);
         decimaAnimacion = AnimationUtils.loadAnimation(this, R.anim.rotacion5);
         cuentaAnimacion = AnimationUtils.loadAnimation(this, R.anim.cuenta);
+        exploAnimacion = AnimationUtils.loadAnimation(this, R.anim.exploanim);
 
         normalita = Typeface.createFromAsset(getAssets(), "fuentes/normal.otf");
         negrita = Typeface.createFromAsset(getAssets(), "fuentes/negrita.otf");
@@ -424,6 +426,7 @@ public class MainActivity extends AppCompatActivity {
         botonAlertaNo = dialog.findViewById(R.id.botonNo);
         botonAlertaSi = dialog.findViewById(R.id.botonSi);
         botonIntentos = dialog.findViewById(R.id.botonIntentos);
+        pregunta = dialog.findViewById(R.id.pregunta);
 
         tituloAlerta = dialog.findViewById(R.id.tituloAlerta);
         mensajeAlerta = dialog.findViewById(R.id.mensajeAlerta);
@@ -438,16 +441,16 @@ public class MainActivity extends AppCompatActivity {
         soundPool = new SoundPool.Builder().setMaxStreams(20)
                 .setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
                 .build();
-        toque = soundPool.load(this, R.raw.toque, 1);
-        efecto = soundPool.load(this, R.raw.efecto, 1);
-        intents = soundPool.load(this, R.raw.intents, 1);
-        fallo = soundPool.load(this, R.raw.fallo, 1);
-        fin = soundPool.load(this, R.raw.fin, 1);
-        cuentaSonido = soundPool.load(this, R.raw.brillo, 1);
+        toque = soundPool.load(MainActivity.this, R.raw.toque, 1);
+        efecto = soundPool.load(MainActivity.this, R.raw.efecto, 1);
+        intents = soundPool.load(MainActivity.this, R.raw.intents, 1);
+        fallo = soundPool.load(MainActivity.this, R.raw.fallo, 1);
+        fin = soundPool.load(MainActivity.this, R.raw.fin, 1);
+        cuentaSonido = soundPool.load(MainActivity.this, R.raw.brillo, 1);
 
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getString(R.string.screen_main));
-        interstitialAd.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+        interstitialAd.loadAd(new AdRequest.Builder().build());
 
 
         botonAlertaNo.setOnClickListener(new View.OnClickListener() {
@@ -792,6 +795,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 if (Build.VERSION.SDK_INT >= 23 && musicaSi) mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(1.4f));
+                miLayout.startAnimation(exploAnimacion);
                 enExplo = true;
                 entraMejora = true;
                 finalizar();
@@ -904,7 +908,7 @@ public class MainActivity extends AppCompatActivity {
     public void cuenta(){
         vueltasGeneral++;
         vueltas++;
-        if(vueltasGeneral == 12) {
+        if(vueltasGeneral == 13) {
             mejoraExplo();
         }
         if(vueltas == 8) {
@@ -1175,7 +1179,7 @@ public class MainActivity extends AppCompatActivity {
                                 pulsadin.startAnimation(cuartaAnimacion);
                             }
                         }
-                    } else {
+                    } else if (restar){
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
@@ -1206,7 +1210,7 @@ public class MainActivity extends AppCompatActivity {
                                 pulsadin.startAnimation(cuartaAnimacion);
                             }
                         }
-                    } else {
+                    } else if (restar) {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
@@ -1237,7 +1241,7 @@ public class MainActivity extends AppCompatActivity {
                                 pulsadin.startAnimation(cuartaAnimacion);
                             }
                         }
-                    } else {
+                    } else if (restar) {
                         view.setBackgroundResource(R.drawable.error);
                         handler.postDelayed(hilo21, 50);
                         vidas--;
@@ -1853,15 +1857,16 @@ public class MainActivity extends AppCompatActivity {
         if (musicaSi && datos.getBoolean("REINI", true))startService(new Intent(this, Musica.class));
         if (datos.getBoolean("PARTIDAPERDIDA", false)) {
             alertaPartida();
+            salir = false;
         }else {
             inicio();
+            salir = true;
         }
-        salir = true;
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         octavaAnimacion.setFillAfter(false);
         finalizar();
         handler.removeCallbacks(hilo22);
@@ -1895,6 +1900,9 @@ public class MainActivity extends AppCompatActivity {
         botonAlerta.setEnabled(false);
         botonIntentos.setVisibility(View.INVISIBLE);
         botonIntentos.setEnabled(false);
+        pregunta.setVisibility(View.INVISIBLE);
+        pregunta.setEnabled(false);
+
         tituloAlerta.setText(getString(R.string.tituloPartida));
         mensajeAlerta.setText(getString(R.string.mensajePartida));
         textoBotonAlertaNo.setText(getString(R.string.botonPartidaNo));

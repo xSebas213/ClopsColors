@@ -3,6 +3,7 @@
     <dimen name="margenMejorasMain">65dp</dimen>
     <dimen name="tamañoMejorasMain">45dp</dimen>
     <dimen name="paddingMejora">7dp</dimen>
+    <dimen name="banner">50dp</dimen>
 
     <dimen name="margenLineaPlay">20dp</dimen>
     <dimen name="margenPlay">7dp</dimen>
