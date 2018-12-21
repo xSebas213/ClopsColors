@@ -574,6 +574,7 @@ public class InicioActivity extends AppCompatActivity {
             stopService(new Intent(this, Musica.class));
             vibrator.cancel();
         }
+        Runtime.getRuntime().gc();
     }
 
     public void onBackPressed(){

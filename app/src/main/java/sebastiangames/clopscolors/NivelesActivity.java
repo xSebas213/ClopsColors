@@ -318,6 +318,7 @@ public class NivelesActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if (salir) stopService(new Intent(this, Musica.class));
+        Runtime.getRuntime().gc();
     }
 
     public void onBackPressed(){

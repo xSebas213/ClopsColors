@@ -45,7 +45,7 @@
     <string name="sinNumero">Te contactaremos por correo.\n¡Que lo disfrutes!</string>
     <string name="conNumero">Te contactaremos por teléfono y por correo.\n¡Que lo disfrutes!</string>
 
-    <string name="falloMensaje">Necesitas 3000 clops para canjear por un intento</string>
+    <string name="falloMensaje">Necesitas <b>10000</b> clops para canjear por un intento</string>
     <string name="felicidadesMensaje">Tus clops han sido canjeados exitosamente</string>
 
     <string name="tituloAlerta">Inicio de sesión</string>
@@ -101,10 +101,10 @@
     <string name="infoVidas">Vidas extra</string>
     <string name="infoTiempo">Reajustar Tiempo</string>
 
-    <string name="infoExplicacionExplo">Llega hasta la ronda 13 y tendrás una explosión de colores</string>
-    <string name="infoExplicacionMitad">Consigue 100\nclops seguidos y podrás jugar en un tablero reducido</string>
-    <string name="infoExplicacionVidas">Consigue 70 clops seguidos y\npodrás reclamar 5 vidas extra en tu partida</string>
-    <string name="infoExplicacionTiempo">Llega hasta la ronda 8 y podrás volver el tiempo lento por 10 segundos además de reiniciar los tiempos de reacción</string>
+    <string name="infoExplicacionExplo">Llega hasta la ronda <b>13</b> y tendrás una explosión de colores</string>
+    <string name="infoExplicacionMitad">Consigue <b>120</b>\nclops seguidos y podrás jugar en un tablero reducido</string>
+    <string name="infoExplicacionVidas">Consigue <b>70</b> clops seguidos y\npodrás reclamar 3 vidas extra en tu partida</string>
+    <string name="infoExplicacionTiempo">Llega hasta la ronda <b>8</b> y podrás volver el tiempo lento por 10 segundos además de reiniciar los tiempos de reacción</string>
 
     <string name="explicacionMejoras">Explicación de mejoras</string>
     <string name="expliMejoras">\n\nAquí te explicamos como conseguir las diferentes mejoras y bonus del juego.\n\nSolo presiona en ellas\n</string>

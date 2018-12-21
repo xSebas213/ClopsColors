@@ -48,6 +48,7 @@ public class TutoActivity extends AppCompatActivity {
                 if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                 Intent intent = new Intent(TutoActivity.this, NivelesActivity.class);
                 startActivity(intent);
+                Runtime.getRuntime().gc();
             }
         });
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -56,6 +57,7 @@ public class TutoActivity extends AppCompatActivity {
                 if (sonidosSi) soundPool.play(intents, 1,1,1, 0, 1);
                 Intent intent = new Intent(TutoActivity.this, NivelesActivity.class);
                 startActivity(intent);
+                Runtime.getRuntime().gc();
             }
         });
     }

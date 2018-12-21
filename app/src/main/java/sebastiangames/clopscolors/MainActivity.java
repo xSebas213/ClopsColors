@@ -31,7 +31,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -395,7 +394,6 @@ public class MainActivity extends AppCompatActivity {
         octavaAnimacion = AnimationUtils.loadAnimation(this, R.anim.desaparecer3);
         novenaAnimacion = AnimationUtils.loadAnimation(this, R.anim.desaparecer);
         decimaAnimacion = AnimationUtils.loadAnimation(this, R.anim.rotacion5);
-        cuentaAnimacion = AnimationUtils.loadAnimation(this, R.anim.cuenta);
         exploAnimacion = AnimationUtils.loadAnimation(this, R.anim.exploanim);
 
         normalita = Typeface.createFromAsset(getAssets(), "fuentes/normal.otf");
@@ -403,7 +401,6 @@ public class MainActivity extends AppCompatActivity {
 
         datos = getSharedPreferences("MisDatos", Context.MODE_PRIVATE);
 
-        enJuego = false;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             nivel = extras.getInt("NIVEL");
@@ -437,16 +434,6 @@ public class MainActivity extends AppCompatActivity {
         mensajeAlerta.setTypeface(normalita);
         textoBotonAlertaNo.setTypeface(negrita);
         textoBotonAlertaSi.setTypeface(negrita);
-
-        soundPool = new SoundPool.Builder().setMaxStreams(20)
-                .setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
-                .build();
-        toque = soundPool.load(MainActivity.this, R.raw.toque, 1);
-        efecto = soundPool.load(MainActivity.this, R.raw.efecto, 1);
-        intents = soundPool.load(MainActivity.this, R.raw.intents, 1);
-        fallo = soundPool.load(MainActivity.this, R.raw.fallo, 1);
-        fin = soundPool.load(MainActivity.this, R.raw.fin, 1);
-        cuentaSonido = soundPool.load(MainActivity.this, R.raw.brillo, 1);
 
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getString(R.string.screen_main));
@@ -485,36 +472,6 @@ public class MainActivity extends AppCompatActivity {
 
         cuentaRegre = findViewById(R.id.regresiva);
         cuentaRegre.setTypeface(negrita);
-
-        cuentaAnimacion.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                cuentica--;
-                cuentaRegre.setText(String.valueOf(cuentica));
-            }
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (cuentica != 1) {
-                    cuentaRegre.startAnimation(cuentaAnimacion);
-                }
-                if (cuentica == 1) {
-                    stopService(new Intent(MainActivity.this, Musica.class));
-                    if (musicaSi) {
-                        soundPool.play(cuentaSonido, 1,1,1, 0, 1);
-                        mediaPlayer.start();
-                    }
-                    paraAnimacion(primeraAnimacion);
-                    enJuego = true;
-                    cuentica = 4;
-                    cuentaAnimacion.cancel();
-                    handler.postDelayed(hilo28, 500);
-                    cuentaRegre.setVisibility(View.INVISIBLE);
-                }
-            }
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
 
     }
 
@@ -805,7 +762,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 3:
                 lasVidas.startAnimation(sextaAnimacion);
-                vidas = vidas + 5;
+                vidas = vidas + 3;
                 vida.setText(String.valueOf(vidas));
                 enVida = false;
                 break;
@@ -1097,7 +1054,7 @@ public class MainActivity extends AppCompatActivity {
         }else {
             datos.edit().putBoolean("SUBIRPUNTOS", false).apply();
         }
-
+        salir = false;
         if (interstitialAd.isLoaded()) {
             interstitialAd.show();
             interstitialAd.setAdListener(new AdListener() {
@@ -1120,7 +1077,6 @@ public class MainActivity extends AppCompatActivity {
             if (nivel == 2) contador = (int) (contador * (1.15));
             if (nivel == 3) contador = (int) (contador * (1.3));
             soundPool.release();
-            salir = false;
             Intent intent = new Intent(this, FinalActivity.class);
             intent.putExtra("PUNTOS", contador);
             intent.putExtra("NIVEL", nivel);
@@ -1312,7 +1268,7 @@ public class MainActivity extends AppCompatActivity {
             finDelJuego();
         }else {
 
-            if(seguidasMitad == 100 && !enMitad){
+            if(seguidasMitad == 120 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
@@ -1382,7 +1338,7 @@ public class MainActivity extends AppCompatActivity {
         if (vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         } else {
-            if(seguidasMitad == 100 && !enMitad){
+            if(seguidasMitad == 120 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
@@ -1512,7 +1468,7 @@ public class MainActivity extends AppCompatActivity {
         if(vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         }else {
-            if(seguidasMitad == 100 && !enMitad){
+            if(seguidasMitad == 120 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
@@ -1564,7 +1520,7 @@ public class MainActivity extends AppCompatActivity {
         if(vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         }else {
-            if(seguidasMitad == 100 && !enMitad){
+            if(seguidasMitad == 120 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
@@ -1616,7 +1572,7 @@ public class MainActivity extends AppCompatActivity {
         if(vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         }else {
-            if(seguidasMitad == 100 && !enMitad){
+            if(seguidasMitad == 120 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
@@ -1668,7 +1624,7 @@ public class MainActivity extends AppCompatActivity {
         if (vidas == 0 || vidas == -1 || vidas == -2 || vidas == -3 || vidas == -4) {
             finDelJuego();
         } else {
-            if(seguidasMitad == 100 && !enMitad){
+            if(seguidasMitad == 120 && !enMitad){
                 enMitad = true;
                 mejoraMitad();
             }
@@ -1854,13 +1810,52 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        salir = true;
+        enJuego = false;
+        cuentaAnimacion = AnimationUtils.loadAnimation(this, R.anim.cuenta);
+        cuentaAnimacion.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                cuentica--;
+                cuentaRegre.setText(String.valueOf(cuentica));
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (cuentica != 1) {
+                    cuentaRegre.startAnimation(cuentaAnimacion);
+                }
+                if (cuentica == 1) {
+                    stopService(new Intent(MainActivity.this, Musica.class));
+                    if (musicaSi) {
+                        soundPool.play(cuentaSonido, 1,1,1, 0, 1);
+                        mediaPlayer.start();
+                    }
+                    paraAnimacion(primeraAnimacion);
+                    enJuego = true;
+                    cuentica = 4;
+                    cuentaAnimacion.cancel();
+                    handler.postDelayed(hilo28, 500);
+                    cuentaRegre.setVisibility(View.INVISIBLE);
+                }
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+        soundPool = new SoundPool.Builder().setMaxStreams(20)
+                .setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
+                .build();
+        toque = soundPool.load(MainActivity.this, R.raw.toque, 1);
+        efecto = soundPool.load(MainActivity.this, R.raw.efecto, 1);
+        intents = soundPool.load(MainActivity.this, R.raw.intents, 1);
+        fallo = soundPool.load(MainActivity.this, R.raw.fallo, 1);
+        fin = soundPool.load(MainActivity.this, R.raw.fin, 1);
+        cuentaSonido = soundPool.load(MainActivity.this, R.raw.brillo, 1);
         if (musicaSi && datos.getBoolean("REINI", true))startService(new Intent(this, Musica.class));
         if (datos.getBoolean("PARTIDAPERDIDA", false)) {
             alertaPartida();
-            salir = false;
         }else {
             inicio();
-            salir = true;
         }
     }
 
@@ -1875,7 +1870,11 @@ public class MainActivity extends AppCompatActivity {
         handler.removeCallbacks(hilo26);
         handler.removeCallbacks(hilo27);
         handler.removeCallbacks(hilo28);
-        if (!play.isEnabled()) {
+        if (!play.isEnabled() && !enJuego){
+            cuentaAnimacion.cancel();
+            cuentaAnimacion.setAnimationListener(null);
+        }
+        if (!play.isEnabled() && enJuego) {
             countDownTimer.cancel();
         }
         if (salir) {
@@ -1887,6 +1886,7 @@ public class MainActivity extends AppCompatActivity {
                 stopService(new Intent(this, Musica.class));
             }
         }
+        Runtime.getRuntime().gc();
     }
 
     private void alertaPartida() {

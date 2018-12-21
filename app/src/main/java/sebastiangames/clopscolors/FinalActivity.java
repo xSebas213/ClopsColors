@@ -427,6 +427,7 @@ public class FinalActivity extends AppCompatActivity implements RewardedVideoAdL
     protected void onPause() {
         super.onPause();
         if (salir) stopService(new Intent(this, Musica.class));
+        Runtime.getRuntime().gc();
     }
 
     @Override

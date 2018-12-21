@@ -229,7 +229,7 @@ public class CompetenciaActivity extends AppCompatActivity {
             db.collection("Versiones").document("VERSION")
                     .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
-                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        public void onEvent(@Nullable final DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                             if (mAuth.getCurrentUser() != null) {
                                 alerta = (Objects.equals(Objects.requireNonNull(documentSnapshot).get("recuerdo"), "Si"));
                                 if (!Objects.equals(Objects.requireNonNull(documentSnapshot).get("version"), "1.0")) {
@@ -237,40 +237,26 @@ public class CompetenciaActivity extends AppCompatActivity {
                                     actualizacion = true;
                                     datos.edit().putBoolean("VERSION", false).apply();
                                 } else {
+                                    datos.edit().putBoolean("VERSION", true).apply();
                                     usuarios.document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (Objects.requireNonNull(task.getResult()).get("intentos") == null || task.getResult().get("puntos") == null) {
-                                                intentos = "10";
-                                                puntos = "0";
-                                            } else {
+                                            if (Objects.requireNonNull(task.getResult()).exists()) {
+                                                if (Objects.equals(task.getResult().get("ganador"), "Sisa")) ganador.show();
                                                 puntos = (String) task.getResult().get("puntos");
                                                 intentos = (String) task.getResult().get("intentos");
-                                            }
-
-                                            mostrarPerfil();
-
-                                            if (Objects.requireNonNull(task.getResult()).get("ganador") != null && Objects.equals(task.getResult().get("ganador"), "Sisa")) {
-                                                usuario.put("ganador", "Sisa");
-                                                ganador.show();
-                                                if (sonidosSi) soundPool.play(nice, 1, 1, 1, 0, 1);
-                                            } else if (Objects.requireNonNull(task.getResult()).get("ganador") != null && Objects.equals(task.getResult().get("ganador"), "correo")) {
-                                                usuario.put("ganador", "correo");
-                                            } else {
+                                            }else {
+                                                intentos = Objects.requireNonNull(documentSnapshot.get("dias")).toString();
+                                                puntos = "0";
                                                 usuario.put("ganador", "");
-                                            }
-                                            usuario.put("puntos", puntos);
-                                            usuario.put("intentos", intentos);
-
-                                            if (task.getResult().exists()) {
-                                                usuarios.document(id).update(usuario);
-                                            } else {
+                                                usuario.put("puntos", puntos);
+                                                usuario.put("intentos", intentos);
                                                 usuarios.document(id).set(usuario);
                                             }
+                                            mostrarPerfil();
                                             textoPuntosIntentos.setText(intentos);
                                         }
                                     });
-                                    datos.edit().putBoolean("VERSION", true).apply();
                                 }
                             }
                         }
@@ -564,7 +550,7 @@ public class CompetenciaActivity extends AppCompatActivity {
         botonIntentos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (puntosIntentos < 3000){
+                if (puntosIntentos < 10000){
                     if (sonidosSi) soundPool.play(fallo, 2f,2f,1, 0, 1);
                     textoToast.setText(getString(R.string.falloMensaje));
                     dialog.dismiss();
@@ -576,7 +562,7 @@ public class CompetenciaActivity extends AppCompatActivity {
                         if (sonidosSi) soundPool.play(efecto, 1,1,1, 0, 1);
                         intentos = Integer.toString(Integer.parseInt(intentos) + 1);
                         textoPuntosIntentos.setText(intentos);
-                        puntosIntentos =  puntosIntentos - 3000;
+                        puntosIntentos =  puntosIntentos - 10000;
 
                         editor = datos.edit();
                         editor.putInt("PUNTICOS", puntosIntentos);
@@ -837,6 +823,7 @@ public class CompetenciaActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if (salir) stopService(new Intent(this, Musica.class));
+        Runtime.getRuntime().gc();
     }
 
     @Override
